@@ -67,12 +67,12 @@ fi
 echo "检查依赖安装……请稍等"
 if command -v apt &> /dev/null; then
 apt update -y
-apt install grep procps coreutils -y
+apt install grep procps coreutils openssl -y
 elif command -v yum &> /dev/null; then
-yum install grep procps-ng coreutils -y
+yum install grep procps-ng coreutils openssl -y
 elif command -v apk &> /dev/null; then
 apk update -y
-apk add grep procps coreutils -y
+apk add grep procps coreutils openssl -y
 fi
 echo "VPS系统：$op"
 echo "CPU架构：$cpu"
@@ -98,10 +98,10 @@ fi
 openssl ecparam -genkey -name prime256v1 -out ./nixag/private.key
 openssl req -new -x509 -days 36500 -key ./nixag/private.key -out ./nixag/cert.pem -subj "/CN=www.bing.com"
 if [ ! -e ./nixag/private_key ]; then
-key_pair=$(/./nixag/sing-box generate reality-keypair)
+key_pair=$(./nixag/sing-box generate reality-keypair)
 private_key=$(echo "$key_pair" | awk '/PrivateKey/ {print $2}' | tr -d '"')
 public_key=$(echo "$key_pair" | awk '/PublicKey/ {print $2}' | tr -d '"')
-short_id=$(/./nixag/sing-box generate rand --hex 4)
+short_id=$(./nixag/sing-box generate rand --hex 4)
 echo "$private_key" > ./nixag/private_key
 echo "$public_key" > ./nixag/public.key
 echo "$short_id" > ./nixag/short_id
