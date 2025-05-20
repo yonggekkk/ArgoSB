@@ -20,6 +20,11 @@ export argo=${ag:-''}
 hostname=$(uname -a | awk '{print $2}')
 op=$(cat /etc/redhat-release 2>/dev/null || cat /etc/os-release 2>/dev/null | grep -i pretty_name | cut -d \" -f2)
 [[ -z $(systemd-detect-virt 2>/dev/null) ]] && vi=$(virt-what 2>/dev/null) || vi=$(systemd-detect-virt 2>/dev/null)
+case $(uname -m) in
+aarch64) cpu=arm64;;
+x86_64) cpu=amd64;;
+*) echo "目前脚本不支持$(uname -m)架构" && exit
+esac
 mkdir -p ./nixag
 if [[ "$1" == "del" ]]; then
 kill -15 $(cat ./nixag/sbargopid.log 2>/dev/null) >/dev/null 2>&1
@@ -69,7 +74,7 @@ else
 echo "ArgoSB脚本已安装"
 exit
 fi
-curl -L -o ./nixag/sing-box  -# --retry 2 https://github.com/yonggekkk/vless-nodejs/releases/download/vlnodejs/sing-box
+curl -L -o ./nixag/sing-box  -# --retry 2 https://github.com/yonggekkk/ArgoSB/releases/download/singbox/sing-box-$cpu
 chmod +x ./nixag/sing-box
 for var in port_vl_re port_vm_ws port_hy2 port_tu; do
 if [ -z "${!var}" ]; then
