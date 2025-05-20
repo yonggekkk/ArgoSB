@@ -34,6 +34,7 @@ kill -15 $(cat ./nixag/sbpid.log 2>/dev/null) >/dev/null 2>&1
 sed -i '/yonggekkk/d' ~/.bashrc 
 source ~/.bashrc
 rm -rf ./nixag 
+echo "卸载完成"
 exit
 elif [[ "$1" == "list" ]]; then
 if [[ -e ./nixag/list.txt ]]; then
