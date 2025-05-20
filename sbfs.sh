@@ -27,7 +27,8 @@ mkdir -p ./nixag
 if [[ "$1" == "del" ]]; then
 kill -15 $(cat ./nixag/sbargopid.log 2>/dev/null) >/dev/null 2>&1
 kill -15 $(cat ./nixag/sbpid.log 2>/dev/null) >/dev/null 2>&1
-sed -i '/yonggekkk/d' ~/.bashrc 
+sed -i '/yonggekkk/d' ~/.bashrc
+sed -i '/export PATH="\$HOME\/bin:\$PATH"/d' ~/.bashrc
 source ~/.bashrc
 rm -rf ./nixag 
 echo "卸载完成"
@@ -252,6 +253,25 @@ echo "Argo$name隧道申请失败，请稍后再试"
 fi
 fi
 
+if ps -p $(cat ./nixag/sbpid.log 2>/dev/null) > /dev/null 2>&1; then
+[ -f ~/.bashrc ] || touch ~/.bashrc
+sed -i '/yonggekkk/d' ~/.bashrc
+echo "export ip=${ipsw} ag=${argo} uuid=${uuid} vlpt=${port_vl_re} vmpt=${port_vm_ws} hypt=${port_hy2} tupt=${port_tu} reym=${ym_vl_re} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/sbfs.sh)" >> ~/.bashrc
+COMMAND="sb"
+SCRIPT_PATH="$HOME/bin/$COMMAND"
+mkdir -p "$HOME/bin"
+curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/sbfs.sh > "$SCRIPT_PATH"
+chmod +x "$SCRIPT_PATH"
+if [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
+echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
+grep -qxF 'source ~/.bashrc' ~/.bash_profile 2>/dev/null || echo 'source ~/.bashrc' >> ~/.bash_profile
+source ~/.bashrc
+fi
+echo "ArgoSB脚本进程启动成功，安装完毕" && sleep 2
+else
+echo "ArgoSB脚本进程未启动，安装失败" && exit
+fi
+
 cip(){
 ipbest(){
 serip=$(curl -s4m5 icanhazip.com -k || curl -s6m5 icanhazip.com -k)
@@ -347,10 +367,6 @@ line17=$(sed -n '17p' nixag/jh.txt)
 argoshow=$(echo -e "Vmess主协议端口(Argo固定隧道端口)：$port_vm_ws\n当前Argo$name域名：$argodomain\n$nametn\n\n1、443端口的vmess-ws-tls-argo节点，默认优选IPV4：104.16.0.0\n$line5\n\n2、2096端口的vmess-ws-tls-argo节点，默认优选IPV6：[2606:4700::]（本地网络支持IPV6才可用）\n$line10\n\n3、80端口的vmess-ws-argo节点，默认优选IPV4：104.21.0.0\n$line11\n\n4、2095端口的vmess-ws-argo节点，默认优选IPV6：[2400:cb00:2049::]（本地网络支持IPV6才可用）\n$line17\n")
 fi
 jh_txt=$(cat ./nixag/jh.txt)
-[ -f ~/.bashrc ] || touch ~/.bashrc
-sed -i '/yonggekkk/d' ~/.bashrc
-echo "export ip=${ipsw} ag=${argo} uuid=${uuid} vlpt=${port_vl_re} vmpt=${port_vm_ws} hypt=${port_hy2} tupt=${port_tu} reym=${ym_vl_re} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/sbfs.sh)" >> ~/.bashrc
-echo "ArgoSB脚本安装完毕" && sleep 2
 cat > ./nixag/list.txt <<EOF
 ---------------------------------------------------------
 ---------------------------------------------------------
@@ -375,6 +391,12 @@ $tuic5_link
 $argoshow
 ---------------------------------------------------------
 聚合节点信息，请查看nixag/jh.txt文件或者运行cat nixag/jh.txt进行复制
+---------------------------------------------------------
+相关快捷方式如下：
+显示节点信息：sb list
+双栈VPS切换IPv4配置输出：ip=4 sb cip
+双栈VPS切换IPv6配置输出：ip=6 sb cip
+卸载脚本：sb del
 ---------------------------------------------------------
 ---------------------------------------------------------
 EOF
