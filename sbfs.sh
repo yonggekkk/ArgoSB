@@ -30,6 +30,7 @@ kill -15 $(cat ./nixag/sbpid.log 2>/dev/null) >/dev/null 2>&1
 sed -i '/yonggekkk/d' ~/.bashrc 
 source ~/.bashrc
 rm -rf ./nixag 
+unset uuid port_vl_re port_vm_ws port_hy2 port_tu ym_vl_re ARGO_DOMAIN ARGO_AUTH argo ipsw
 echo "卸载完成"
 exit
 elif [[ "$1" == "list" ]]; then
