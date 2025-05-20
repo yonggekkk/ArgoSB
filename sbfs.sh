@@ -242,7 +242,7 @@ cat > ./nixag/sb.json <<EOF
 EOF
 
 nohup ./nixag/sing-box run -c ./nixag/sb.json >/dev/null 2>&1 & echo "$!" > ./nixag/sbpid.log
-if [ -n $ag ]; then
+if [[ -n $ag ]]; then
 if [ ! -e ./nixag/cloudflared ]; then
 curl -L -o ./nixag/cloudflared -# --retry 2 https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-$cpu
 chmod +x ./nixag/cloudflared
