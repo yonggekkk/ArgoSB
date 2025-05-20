@@ -14,7 +14,7 @@ export port_tu=${tupt:-''}
 export ym_vl_re=${reym:-''}
 export ARGO_DOMAIN=${agn:-''}   
 export ARGO_AUTH=${agk:-''} 
-export argo=${ag:-'y'}
+export argo=${ag:-''}
 export ipsw=${ip:-''}
 
 
