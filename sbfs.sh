@@ -5,7 +5,6 @@ echo "甬哥Blogger博客 ：ygkkk.blogspot.com"
 echo "甬哥YouTube频道 ：www.youtube.com/@ygkkk"
 echo "123"
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-
 export uuid=${uuid:-''}
 export port_vl_re=${vlpt:-''}
 export port_vm_ws=${vmpt:-''}
@@ -16,9 +15,6 @@ export ARGO_DOMAIN=${agn:-''}
 export ARGO_AUTH=${agk:-''} 
 export argo=${ag:-''}
 export ipsw=${ip:-''}
-
-
-
 hostname=$(uname -a | awk '{print $2}')
 op=$(cat /etc/redhat-release 2>/dev/null || cat /etc/os-release 2>/dev/null | grep -i pretty_name | cut -d \" -f2)
 [[ -z $(systemd-detect-virt 2>/dev/null) ]] && vi=$(virt-what 2>/dev/null) || vi=$(systemd-detect-virt 2>/dev/null)
@@ -44,7 +40,6 @@ echo "ArgoSB脚本未安装"
 fi
 exit
 fi
-
 
 if [[ ! -e ./nixag/list.txt ]]; then
 warpcheck(){
@@ -99,7 +94,6 @@ fi
 if [ -z $ym_vl_re ]; then
 ym_vl_re=www.yahoo.com
 fi
-
 openssl ecparam -genkey -name prime256v1 -out ./nixag/private.key
 openssl req -new -x509 -days 36500 -key ./nixag/private.key -out ./nixag/cert.pem -subj "/CN=www.bing.com"
 if [ ! -e ./nixag/private_key ]; then
@@ -111,7 +105,6 @@ echo "$private_key" > ./nixag/private_key
 echo "$public_key" > ./nixag/public.key
 echo "$short_id" > ./nixag/short_id
 fi
-
 echo "Vless-reality端口：$port_vl_re"
 echo "Vmess-ws端口：$port_vm_ws"
 echo "Hysteria-2端口：$port_hy2"
@@ -121,7 +114,6 @@ echo "当前reality域名：$ym_vl_re"
 echo "当前reality pr key：$private_key"
 echo "当前reality pu key：$public_key"
 echo "当前reality id：$short_id"
-
 cat > ./nixag/sb.json <<EOF
 {
 "log": {
@@ -229,7 +221,6 @@ cat > ./nixag/sb.json <<EOF
 ]
 }
 EOF
-
 nohup ./nixag/sing-box run -c ./nixag/sb.json >/dev/null 2>&1 & echo "$!" > ./nixag/sbpid.log
 if [[ -n $argo ]]; then
 if [ ! -e ./nixag/cloudflared ]; then
@@ -260,7 +251,6 @@ else
 echo "Argo$name隧道申请失败，请稍后再试"
 fi
 fi
-
 
 cip(){
 ipbest(){
@@ -359,9 +349,8 @@ fi
 jh_txt=$(cat ./nixag/jh.txt)
 [ -f ~/.bashrc ] || touch ~/.bashrc
 sed -i '/yonggekkk/d' ~/.bashrc
-echo "export ag=${argo} uuid=${uuid} vlpt=${port_vl_re} vmpt=${port_vm_ws} hypt=${port_hy2} tupt=${port_tu} reym=${ym_vl_re} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/sbfs.sh)" >> ~/.bashrc
+echo "export ip=${ipsw} ag=${argo} uuid=${uuid} vlpt=${port_vl_re} vmpt=${port_vm_ws} hypt=${port_hy2} tupt=${port_tu} reym=${ym_vl_re} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/sbfs.sh)" >> ~/.bashrc
 echo "ArgoSB脚本安装完毕" && sleep 2
-
 cat > ./nixag/list.txt <<EOF
 ---------------------------------------------------------
 ---------------------------------------------------------
