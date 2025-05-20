@@ -305,7 +305,7 @@ else
 ipbest
 fi
 }
-
+}
 wgcfgo(){
 warpcheck
 if [[ ! $wgcfv4 =~ on|plus && ! $wgcfv6 =~ on|plus ]]; then
