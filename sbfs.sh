@@ -66,13 +66,13 @@ systemctl start warp-go >/dev/null 2>&1
 fi
 echo "检查依赖安装……请稍等"
 if command -v apt &> /dev/null; then
-apt update -y
-apt install grep procps coreutils openssl -y
+apt update -y > /dev/null 2>&1
+apt install grep procps coreutils openssl -y > /dev/null 2>&1
 elif command -v yum &> /dev/null; then
-yum install grep procps-ng coreutils openssl -y
+yum install grep procps-ng coreutils openssl -y > /dev/null 2>&1
 elif command -v apk &> /dev/null; then
-apk update -y
-apk add grep procps coreutils openssl -y
+apk update -y > /dev/null 2>&1
+apk add grep procps coreutils openssl -y > /dev/null 2>&1
 fi
 echo "VPS系统：$op"
 echo "CPU架构：$cpu"
