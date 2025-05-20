@@ -15,6 +15,8 @@ export ym_vl_re=${reym:-''}
 export ARGO_DOMAIN=${agn:-''}   
 export ARGO_AUTH=${agk:-''} 
 export argo=${ag:-''}
+export ipsw=${ip:-''}
+
 
 
 hostname=$(uname -a | awk '{print $2}')
@@ -249,10 +251,60 @@ echo "Argo$name隧道申请失败，请稍后再试"
 fi
 fi
 
+
+cip(){
+ipbest(){
+serip=$(curl -s4m5 icanhazip.com -k || curl -s6m5 icanhazip.com -k)
+if [[ "$serip" =~ : ]]; then
+server_ip="[$serip]"
+echo "$server_ip" > ./nixag/server_ip.log
+else
+server_ip="$serip"
+echo "$server_ip" > ./nixag/server_ip.log
+fi
+}
+ipchange(){
+v4=$(curl -s4m5 icanhazip.com -k)
+v6=$(curl -s6m5 icanhazip.com -k)
+if [ "$ipsw" == "4" ]; then
+if [ -z "$v4" ]; then
+ipbest
+else
+server_ip="$v4"
+echo "$server_ip" > ./nixag/server_ip.log
+fi
+elif [ "$ipsw" == "6" ]; then
+if [ -z "$v6" ]; then
+ipbest
+else
+server_ip="[$v6]"
+echo "$server_ip" > ./nixag/server_ip.log
+fi
+else
+ipbest
+fi
+}
+
+wgcfgo(){
+warpcheck
+if [[ ! $wgcfv4 =~ on|plus && ! $wgcfv6 =~ on|plus ]]; then
+ipchange
+else
+systemctl stop wg-quick@wgcf >/dev/null 2>&1
+kill -15 $(pgrep warp-go) >/dev/null 2>&1 && sleep 2
+ipchange
+systemctl start wg-quick@wgcf >/dev/null 2>&1
+systemctl restart warp-go >/dev/null 2>&1
+systemctl enable warp-go >/dev/null 2>&1
+systemctl start warp-go >/dev/null 2>&1
+fi
+}
+cip
+wgcfgo
 private_key=$(< ./nixag/private_key)
 public_key=$(< ./nixag/public.key)
 short_id=$(< ./nixag/short_id)
-server_ip=$(curl -s4m5 icanhazip.com -k)
+server_ip=$(< ./nixag/server_ip.log)
 vl_link="vless://$uuid@$server_ip:$port_vl_re?encryption=none&flow=xtls-rprx-vision&security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key&sid=$short_id&type=tcp&headerType=none#vl-reality-$hostname"
 echo "$vl_link" > ./nixag/jh.txt
 vm_link="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vm-ws-$hostname\", \"add\": \"$server_ip\", \"port\": \"$port_vm_ws\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"www.bing.com\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
