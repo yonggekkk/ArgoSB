@@ -113,7 +113,7 @@ ym_vl_re=www.yahoo.com
 fi
 
 openssl ecparam -genkey -name prime256v1 -out ./nixag/private.key
-openssl req -new -x509 -days 36500 -key ./nixag/private.key -out cert.pem -subj "/CN=www.bing.com"
+openssl req -new -x509 -days 36500 -key ./nixag/private.key -out ./nixag/cert.pem -subj "/CN=www.bing.com"
 if [ ! -e ./nixag/private_key ]; then
 key_pair=$(/./nixag/sing-box generate reality-keypair)
 private_key=$(echo "$key_pair" | awk '/PrivateKey/ {print $2}' | tr -d '"')
