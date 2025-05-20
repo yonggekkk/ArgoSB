@@ -6,12 +6,12 @@ echo "甬哥YouTube频道 ：www.youtube.com/@ygkkk"
 echo "123"
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 
-export uuid=${uuid:-'bc97f674-c578-4940-9234-0a1da46041b9'}
-export port_vl_re=${vlpt:-'44444'}
-export port_vm_ws=${vmpt:-'33333'}
-export port_hy2=${hypt:-'22222'}
-export port_tu=${tupt:-'11111'}
-export ym_vl_re=${reym:-'blog.cloudflare.com'}
+export uuid=${uuid:-''}
+export port_vl_re=${vlpt:-''}
+export port_vm_ws=${vmpt:-''}
+export port_hy2=${hypt:-''}
+export port_tu=${tupt:-''}
+export ym_vl_re=${reym:-''}
 export ARGO_DOMAIN=${agn:-''}   
 export ARGO_AUTH=${agk:-''} 
 export argo=${ag:-'y'}
@@ -38,18 +38,6 @@ echo "卸载完成"
 exit
 elif [[ "$1" == "list" ]]; then
 if [[ -e ./nixag/list.txt ]]; then
-argoname=$(cat ./nixag/sbargoym.log 2>/dev/null)
-if [ -z $argoname ]; then
-argodomain=$(cat ./nixag/argo.log 2>/dev/null | grep -a trycloudflare.com | awk 'NR==2{print}' | awk -F// '{print $2}' | awk '{print $1}')
-if [ -z $argodomain ]; then
-echo "当前argo临时域名未生成" 
-else
-echo "当前argo最新临时域名：$argodomain"
-fi
-else
-echo "当前argo固定域名：$argoname"
-echo "当前argo固定域名token：$(cat ./nixag/sbargotoken.log 2>/dev/null)"
-fi
 cat ./nixag/list.txt
 else
 echo "ArgoSB脚本未安装"
