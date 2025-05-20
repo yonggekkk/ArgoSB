@@ -371,7 +371,7 @@ fi
 jh_txt=$(cat ./nixag/jh.txt)
 [ -f ~/.bashrc ] || touch ~/.bashrc
 sed -i '/yonggekkk/d' ~/.bashrc
-echo "export ag=${argo} uuid=${uuid} vlpt=${port_vl_re} vmpt=${port_vm_ws} hypt=${port_hy2} tupt=${port_tu} reym=${ym_vl_re} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)" >> ~/.bashrc
+echo "export ag=${argo} uuid=${uuid} vlpt=${port_vl_re} vmpt=${port_vm_ws} hypt=${port_hy2} tupt=${port_tu} reym=${ym_vl_re} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/sbfs.sh)" >> ~/.bashrc
 source ~/.bashrc
 echo "ArgoSB脚本安装完毕" && sleep 2
 
