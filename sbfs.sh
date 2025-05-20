@@ -11,10 +11,10 @@ export port_vl_re=${vlpt:-'44444'}
 export port_vm_ws=${vmpt:-'33333'}
 export port_hy2=${hypt:-'22222'}
 export port_tu=${tupt:-'11111'}
-export ym_vl_re=${reym:-''}
+export ym_vl_re=${reym:-'blog.cloudflare.com'}
 export ARGO_DOMAIN=${agn:-''}   
 export ARGO_AUTH=${agk:-''} 
-export argo=${ag:-''}
+export argo=${ag:-'y'}
 export ipsw=${ip:-''}
 
 
