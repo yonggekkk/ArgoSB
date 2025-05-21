@@ -1,4 +1,5 @@
 #!/bin/bash
+export LANG=en_US.UTF-8
 export uuid=${uuid:-''}
 export port_vl_re=${vlpt:-''}
 export port_vm_ws=${vmpt:-''}
