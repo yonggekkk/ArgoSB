@@ -387,6 +387,8 @@ exit
 fi
 
 if ! ps -p "$(cat ./aspro/sbpid.log 2>/dev/null)" > /dev/null 2>&1; then
+kill -15 $(cat ./aspro/sbargopid.log 2>/dev/null) >/dev/null 2>&1
+kill -15 $(cat ./aspro/sbpid.log 2>/dev/null) >/dev/null 2>&1
 v4orv6(){
 if [ -z $(curl -s4m5 icanhazip.com -k) ]; then
 echo -e "nameserver 2a00:1098:2b::1\nnameserver 2a00:1098:2c::1\nnameserver 2a01:4f8:c2c:123f::1" > /etc/resolv.conf
