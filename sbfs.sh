@@ -364,15 +364,12 @@ source ~/.bashrc
 rm -rf ./nixag 
 echo "卸载完成"
 exit
-elif ps -p "$(cat ./nixag/sbpid.log 2>/dev/null)" > /dev/null 2>&1 && [[ "$1" == "list" ]]; then
+elif [[ "$1" == "list" ]]; then
 cat ./nixag/list.txt
 exit
-elif ps -p "$(cat ./nixag/sbpid.log 2>/dev/null)" > /dev/null 2>&1 && [[ "$1" == "cip" ]]; then
+elif [[ "$1" == "cip" ]]; then
 cip && sleep 2
 echo "配置切换完成" 
-exit
-else
-echo "输入有误或者ArgoSB脚本未安装"
 exit
 fi
 
