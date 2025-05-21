@@ -9,7 +9,7 @@ export ARGO_DOMAIN=${agn:-''}
 export ARGO_AUTH=${agk:-''} 
 export argo=${ag:-''}
 export ipsw=${ip:-''}
-cd ~
+cd "$HOME"
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" 
 echo "甬哥Github项目  ：github.com/yonggekkk"
 echo "甬哥Blogger博客 ：ygkkk.blogspot.com"
