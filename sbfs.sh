@@ -28,7 +28,7 @@ if [[ "$1" == "del" ]]; then
 kill -15 $(cat ./nixag/sbargopid.log 2>/dev/null) >/dev/null 2>&1
 kill -15 $(cat ./nixag/sbpid.log 2>/dev/null) >/dev/null 2>&1
 sed -i '/yonggekkk/d' ~/.bashrc
-sed -i '/export PATH="\$HOME\/bin:\$PATH"/d' ~/.bashrc
+sed -i '/export PATH="\$HOME:\$PATH"/d' ~/.bashrc
 source ~/.bashrc
 rm -rf ./nixag 
 echo "卸载完成"
@@ -256,14 +256,13 @@ fi
 if ps -p $(cat ./nixag/sbpid.log 2>/dev/null) > /dev/null 2>&1; then
 [ -f ~/.bashrc ] || touch ~/.bashrc
 sed -i '/yonggekkk/d' ~/.bashrc
-echo 'cd ~ && export ip='"${ipsw}"' ag='"${argo}"' uuid='"${uuid}"' vlpt='"${port_vl_re}"' vmpt='"${port_vm_ws}"' hypt='"${port_hy2}"' tupt='"${port_tu}"' reym='"${ym_vl_re}"' agn='"${ARGO_DOMAIN}"' agk='"${ARGO_AUTH}"' && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/sbfs.sh)' >> ~/.bashrc
+echo "export ip=${ipsw} ag=${argo} uuid=${uuid} vlpt=${port_vl_re} vmpt=${port_vm_ws} hypt=${port_hy2} tupt=${port_tu} reym=${ym_vl_re} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/sbfs.sh)" >> ~/.bashrc
 COMMAND="sb"
-SCRIPT_PATH="$HOME/bin/$COMMAND"
-mkdir -p "$HOME/bin"
+SCRIPT_PATH="$HOME/$COMMAND"
 curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/sbfs.sh > "$SCRIPT_PATH"
 chmod +x "$SCRIPT_PATH"
-if [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
-echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
+if [[ ":$PATH:" != *":$HOME:"* ]]; then
+echo 'export PATH="$HOME:$PATH"' >> "$HOME/.bashrc"
 grep -qxF 'source ~/.bashrc' ~/.bash_profile 2>/dev/null || echo 'source ~/.bashrc' >> ~/.bash_profile
 source ~/.bashrc
 fi
