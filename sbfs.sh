@@ -42,7 +42,7 @@ fi
 exit
 fi
 
-if [[ ! -e ./nixag/list.txt ]]; then
+if ! ps -p $(cat ./nixag/sbpid.log 2>/dev/null) > /dev/null 2>&1; then
 warpcheck(){
 wgcfv6=$(curl -s6m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 wgcfv4=$(curl -s4m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
