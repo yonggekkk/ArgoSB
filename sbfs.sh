@@ -24,16 +24,16 @@ aarch64) cpu=arm64;;
 x86_64) cpu=amd64;;
 *) echo "目前脚本不支持$(uname -m)架构" && exit
 esac
-mkdir -p ./nixag
+mkdir -p ./aspro
 warpcheck(){
 wgcfv6=$(curl -s6m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 wgcfv4=$(curl -s4m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 }
 ins(){
-if [ ! -e ./nixag/sing-box ]; then
-curl -L -o ./nixag/sing-box  -# --retry 2 https://github.com/yonggekkk/ArgoSB/releases/download/singbox/sing-box-$cpu
-chmod +x ./nixag/sing-box
-sbcore=$(./nixag/sing-box version 2>/dev/null | awk '/version/{print $NF}')
+if [ ! -e ./aspro/sing-box ]; then
+curl -L -o ./aspro/sing-box  -# --retry 2 https://github.com/yonggekkk/ArgoSB/releases/download/singbox/sing-box-$cpu
+chmod +x ./aspro/sing-box
+sbcore=$(./aspro/sing-box version 2>/dev/null | awk '/version/{print $NF}')
 echo "已安装Sing-box正式版内核：$sbcore"
 fi
 for var in port_vl_re port_vm_ws port_hy2 port_tu; do
@@ -42,31 +42,31 @@ eval "$var=$(shuf -i 10000-65535 -n 1)"
 fi
 done
 if [ -z $uuid ]; then
-uuid=$(./nixag/sing-box generate uuid)
+uuid=$(./aspro/sing-box generate uuid)
 fi
 if [ -z $ym_vl_re ]; then
 ym_vl_re=www.yahoo.com
 fi
-echo "$uuid" > ./nixag/uuid
-echo "$port_vl_re" > ./nixag/port_vl_re
-echo "$port_vm_ws" > ./nixag/port_vm_ws
-echo "$port_hy2" > ./nixag/port_hy2
-echo "$port_tu" > ./nixag/port_tu
-echo "$ym_vl_re" > ./nixag/ym_vl_re
-openssl ecparam -genkey -name prime256v1 -out ./nixag/private.key
-openssl req -new -x509 -days 36500 -key ./nixag/private.key -out ./nixag/cert.pem -subj "/CN=www.bing.com"
-if [ ! -e ./nixag/private_key ]; then
-key_pair=$(./nixag/sing-box generate reality-keypair)
+echo "$uuid" > ./aspro/uuid
+echo "$port_vl_re" > ./aspro/port_vl_re
+echo "$port_vm_ws" > ./aspro/port_vm_ws
+echo "$port_hy2" > ./aspro/port_hy2
+echo "$port_tu" > ./aspro/port_tu
+echo "$ym_vl_re" > ./aspro/ym_vl_re
+openssl ecparam -genkey -name prime256v1 -out ./aspro/private.key
+openssl req -new -x509 -days 36500 -key ./aspro/private.key -out ./aspro/cert.pem -subj "/CN=www.bing.com"
+if [ ! -e ./aspro/private_key ]; then
+key_pair=$(./aspro/sing-box generate reality-keypair)
 private_key=$(echo "$key_pair" | awk '/PrivateKey/ {print $2}' | tr -d '"')
 public_key=$(echo "$key_pair" | awk '/PublicKey/ {print $2}' | tr -d '"')
-short_id=$(./nixag/sing-box generate rand --hex 4)
-echo "$private_key" > ./nixag/private_key
-echo "$public_key" > ./nixag/public.key
-echo "$short_id" > ./nixag/short_id
+short_id=$(./aspro/sing-box generate rand --hex 4)
+echo "$private_key" > ./aspro/private_key
+echo "$public_key" > ./aspro/public.key
+echo "$short_id" > ./aspro/short_id
 fi
-private_key=$(< ./nixag/private_key)
-public_key=$(< ./nixag/public.key)
-short_id=$(< ./nixag/short_id)
+private_key=$(< ./aspro/private_key)
+public_key=$(< ./aspro/public.key)
+short_id=$(< ./aspro/short_id)
 echo "Vless-reality端口：$port_vl_re"
 echo "Vmess-ws端口：$port_vm_ws"
 echo "Hysteria-2端口：$port_hy2"
@@ -76,7 +76,7 @@ echo "当前reality域名：$ym_vl_re"
 echo "当前reality pr key：$private_key"
 echo "当前reality pu key：$public_key"
 echo "当前reality id：$short_id"
-cat > ./nixag/sb.json <<EOF
+cat > ./aspro/sb.json <<EOF
 {
 "log": {
     "disabled": false,
@@ -129,8 +129,8 @@ cat > ./nixag/sb.json <<EOF
         "tls":{
                 "enabled": false,
                 "server_name": "www.bing.com",
-                "certificate_path": "./nixag/cert.pem",
-                "key_path": "./nixag/private.key"
+                "certificate_path": "./aspro/cert.pem",
+                "key_path": "./aspro/private.key"
             }
     },
     {
@@ -149,8 +149,8 @@ cat > ./nixag/sb.json <<EOF
             "alpn": [
                 "h3"
             ],
-            "certificate_path": "./nixag/cert.pem",
-            "key_path": "./nixag/private.key"
+            "certificate_path": "./aspro/cert.pem",
+            "key_path": "./aspro/private.key"
         }
     },
         {
@@ -170,8 +170,8 @@ cat > ./nixag/sb.json <<EOF
                 "alpn": [
                     "h3"
                 ],
-                "certificate_path": "./nixag/cert.pem",
-                "key_path": "./nixag/private.key"
+                "certificate_path": "./aspro/cert.pem",
+                "key_path": "./aspro/private.key"
             }
         }
     ],
@@ -183,30 +183,30 @@ cat > ./nixag/sb.json <<EOF
 ]
 }
 EOF
-nohup ./nixag/sing-box run -c ./nixag/sb.json >/dev/null 2>&1 & echo "$!" > ./nixag/sbpid.log
+nohup ./aspro/sing-box run -c ./aspro/sb.json >/dev/null 2>&1 & echo "$!" > ./aspro/sbpid.log
 if [[ -n $argo ]]; then
-if [ ! -e ./nixag/cloudflared ]; then
+if [ ! -e ./aspro/cloudflared ]; then
 argocore=$(curl -Ls https://data.jsdelivr.com/v1/package/gh/cloudflare/cloudflared | grep -Eo '"[0-9.]+",' | sed -n 1p | tr -d '",')
 echo "下载cloudflared-argo最新正式版内核：$argocore"
-curl -L -o ./nixag/cloudflared -# --retry 2 https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-$cpu
-chmod +x ./nixag/cloudflared
+curl -L -o ./aspro/cloudflared -# --retry 2 https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-$cpu
+chmod +x ./aspro/cloudflared
 fi
 if [[ -n "${ARGO_DOMAIN}" && -n "${ARGO_AUTH}" ]]; then
 name='固定'
-nohup ./nixag/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token ${ARGO_AUTH} >/dev/null 2>&1 & echo "$!" > ./nixag/sbargopid.log
-echo ${ARGO_DOMAIN} > ./nixag/sbargoym.log
-echo ${ARGO_AUTH} > ./nixag/sbargotoken.log
+nohup ./aspro/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token ${ARGO_AUTH} >/dev/null 2>&1 & echo "$!" > ./aspro/sbargopid.log
+echo ${ARGO_DOMAIN} > ./aspro/sbargoym.log
+echo ${ARGO_AUTH} > ./aspro/sbargotoken.log
 else
 name='临时'
-nohup ./nixag/cloudflared tunnel --url http://localhost:${port_vm_ws} --edge-ip-version auto --no-autoupdate --protocol http2 > ./nixag/argo.log 2>&1 &
-echo "$!" > ./nixag/sbargopid.log
+nohup ./aspro/cloudflared tunnel --url http://localhost:${port_vm_ws} --edge-ip-version auto --no-autoupdate --protocol http2 > ./aspro/argo.log 2>&1 &
+echo "$!" > ./aspro/sbargopid.log
 fi
 echo "申请Argo$name隧道中……请稍等"
 sleep 8
 if [[ -n "${ARGO_DOMAIN}" && -n "${ARGO_AUTH}" ]]; then
-argodomain=$(cat ./nixag/sbargoym.log 2>/dev/null)
+argodomain=$(cat ./aspro/sbargoym.log 2>/dev/null)
 else
-argodomain=$(cat ./nixag/argo.log 2>/dev/null | grep -a trycloudflare.com | awk 'NR==2{print}' | awk -F// '{print $2}' | awk '{print $1}')
+argodomain=$(cat ./aspro/argo.log 2>/dev/null | grep -a trycloudflare.com | awk 'NR==2{print}' | awk -F// '{print $2}' | awk '{print $1}')
 fi
 if [[ -n $argodomain ]]; then
 echo "Argo$name隧道申请成功，域名为：$argodomain"
@@ -214,7 +214,7 @@ else
 echo "Argo$name隧道申请失败，请稍后再试"
 fi
 fi
-if ps -p $(cat ./nixag/sbpid.log 2>/dev/null) > /dev/null 2>&1; then
+if ps -p $(cat ./aspro/sbpid.log 2>/dev/null) > /dev/null 2>&1; then
 [ -f ~/.bashrc ] || touch ~/.bashrc
 sed -i '/yonggekkk/d' ~/.bashrc
 echo "export ip=${ipsw} ag=${argo} uuid=${uuid} vlpt=${port_vl_re} vmpt=${port_vm_ws} hypt=${port_hy2} tupt=${port_tu} reym=${ym_vl_re} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/sbfs.sh) > /dev/null 2>&1" >> ~/.bashrc
@@ -237,10 +237,10 @@ ipbest(){
 serip=$(curl -s4m5 icanhazip.com -k || curl -s6m5 icanhazip.com -k)
 if [[ "$serip" =~ : ]]; then
 server_ip="[$serip]"
-echo "$server_ip" > ./nixag/server_ip.log
+echo "$server_ip" > ./aspro/server_ip.log
 else
 server_ip="$serip"
-echo "$server_ip" > ./nixag/server_ip.log
+echo "$server_ip" > ./aspro/server_ip.log
 fi
 }
 ipchange(){
@@ -251,14 +251,14 @@ if [ -z "$v4" ]; then
 ipbest
 else
 server_ip="$v4"
-echo "$server_ip" > ./nixag/server_ip.log
+echo "$server_ip" > ./aspro/server_ip.log
 fi
 elif [ "$ipsw" == "6" ]; then
 if [ -z "$v6" ]; then
 ipbest
 else
 server_ip="[$v6]"
-echo "$server_ip" > ./nixag/server_ip.log
+echo "$server_ip" > ./aspro/server_ip.log
 fi
 else
 ipbest
@@ -276,67 +276,67 @@ systemctl restart warp-go >/dev/null 2>&1
 systemctl enable warp-go >/dev/null 2>&1
 systemctl start warp-go >/dev/null 2>&1
 fi
-uuid=$(< ./nixag/uuid)
-port_vl_re=$(< ./nixag/port_vl_re)
-port_vm_ws=$(< ./nixag/port_vm_ws)
-port_hy2=$(< ./nixag/port_hy2)
-port_tu=$(< ./nixag/port_tu)
-ym_vl_re=$(< ./nixag/ym_vl_re)
-private_key=$(< ./nixag/private_key)
-public_key=$(< ./nixag/public.key)
-short_id=$(< ./nixag/short_id)
-server_ip=$(< ./nixag/server_ip.log)
+uuid=$(< ./aspro/uuid)
+port_vl_re=$(< ./aspro/port_vl_re)
+port_vm_ws=$(< ./aspro/port_vm_ws)
+port_hy2=$(< ./aspro/port_hy2)
+port_tu=$(< ./aspro/port_tu)
+ym_vl_re=$(< ./aspro/ym_vl_re)
+private_key=$(< ./aspro/private_key)
+public_key=$(< ./aspro/public.key)
+short_id=$(< ./aspro/short_id)
+server_ip=$(< ./aspro/server_ip.log)
 vl_link="vless://$uuid@$server_ip:$port_vl_re?encryption=none&flow=xtls-rprx-vision&security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key&sid=$short_id&type=tcp&headerType=none#vl-reality-$hostname"
-echo "$vl_link" > ./nixag/jh.txt
+echo "$vl_link" > ./aspro/jh.txt
 vm_link="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vm-ws-$hostname\", \"add\": \"$server_ip\", \"port\": \"$port_vm_ws\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"www.bing.com\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
-echo "$vm_link" >> ./nixag/jh.txt
+echo "$vm_link" >> ./aspro/jh.txt
 hy2_link="hysteria2://$uuid@$server_ip:$port_hy2?security=tls&alpn=h3&insecure=1&sni=www.bing.com#hy2-$hostname"
-echo "$hy2_link" >> ./nixag/jh.txt
+echo "$hy2_link" >> ./aspro/jh.txt
 tuic5_link="tuic://$uuid:$uuid@$server_ip:$port_tu?congestion_control=bbr&udp_relay_mode=native&alpn=h3&sni=www.bing.com&allow_insecure=1#tu5-$hostname"
-echo "$tuic5_link" >> ./nixag/jh.txt
-if { argodomain=$(cat ./nixag/sbargoym.log 2>/dev/null); [[ -z "$argodomain" ]] && argodomain=$(grep -a trycloudflare.com ./nixag/argo.log 2>/dev/null | awk 'NR==2{print}' | awk -F// '{print $2}' | awk '{print $1}'); }; then
+echo "$tuic5_link" >> ./aspro/jh.txt
+if { argodomain=$(cat ./aspro/sbargoym.log 2>/dev/null); [[ -z "$argodomain" ]] && argodomain=$(grep -a trycloudflare.com ./aspro/argo.log 2>/dev/null | awk 'NR==2{print}' | awk -F// '{print $2}' | awk '{print $1}'); }; then
 vmatls_link1="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-tls-argo-$hostname-443\", \"add\": \"104.16.0.0\", \"port\": \"443\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"tls\", \"sni\": \"$argodomain\", \"alpn\": \"\", \"fp\": \"\"}" | base64 -w0)"
-echo "$vmatls_link1" >> ./nixag/jh.txt
+echo "$vmatls_link1" >> ./aspro/jh.txt
 vmatls_link2="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-tls-argo-$hostname-8443\", \"add\": \"104.17.0.0\", \"port\": \"8443\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"tls\", \"sni\": \"$argodomain\", \"alpn\": \"\", \"fp\": \"\"}" | base64 -w0)"
-echo "$vmatls_link2" >> ./nixag/jh.txt
+echo "$vmatls_link2" >> ./aspro/jh.txt
 vmatls_link3="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-tls-argo-$hostname-2053\", \"add\": \"104.18.0.0\", \"port\": \"2053\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"tls\", \"sni\": \"$argodomain\", \"alpn\": \"\", \"fp\": \"\"}" | base64 -w0)"
-echo "$vmatls_link3" >> ./nixag/jh.txt
+echo "$vmatls_link3" >> ./aspro/jh.txt
 vmatls_link4="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-tls-argo-$hostname-2083\", \"add\": \"104.19.0.0\", \"port\": \"2083\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"tls\", \"sni\": \"$argodomain\", \"alpn\": \"\", \"fp\": \"\"}" | base64 -w0)"
-echo "$vmatls_link4" >> ./nixag/jh.txt
+echo "$vmatls_link4" >> ./aspro/jh.txt
 vmatls_link5="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-tls-argo-$hostname-2087\", \"add\": \"104.20.0.0\", \"port\": \"2087\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"tls\", \"sni\": \"$argodomain\", \"alpn\": \"\", \"fp\": \"\"}" | base64 -w0)"
-echo "$vmatls_link5" >> ./nixag/jh.txt
+echo "$vmatls_link5" >> ./aspro/jh.txt
 vmatls_link6="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-tls-argo-$hostname-2096\", \"add\": \"[2606:4700::0]\", \"port\": \"2096\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"tls\", \"sni\": \"$argodomain\", \"alpn\": \"\", \"fp\": \"\"}" | base64 -w0)"
-echo "$vmatls_link6" >> ./nixag/jh.txt
+echo "$vmatls_link6" >> ./aspro/jh.txt
 vma_link7="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-argo-$hostname-80\", \"add\": \"104.21.0.0\", \"port\": \"80\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
-echo "$vma_link7" >> ./nixag/jh.txt
+echo "$vma_link7" >> ./aspro/jh.txt
 vma_link8="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-argo-$hostname-8080\", \"add\": \"104.22.0.0\", \"port\": \"8080\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
-echo "$vma_link8" >> ./nixag/jh.txt
+echo "$vma_link8" >> ./aspro/jh.txt
 vma_link9="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-argo-$hostname-8880\", \"add\": \"104.24.0.0\", \"port\": \"8880\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
-echo "$vma_link9" >> ./nixag/jh.txt
+echo "$vma_link9" >> ./aspro/jh.txt
 vma_link10="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-argo-$hostname-2052\", \"add\": \"104.25.0.0\", \"port\": \"2052\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
-echo "$vma_link10" >> ./nixag/jh.txt
+echo "$vma_link10" >> ./aspro/jh.txt
 vma_link11="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-argo-$hostname-2082\", \"add\": \"104.26.0.0\", \"port\": \"2082\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
-echo "$vma_link11" >> ./nixag/jh.txt
+echo "$vma_link11" >> ./aspro/jh.txt
 vma_link12="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-argo-$hostname-2086\", \"add\": \"104.27.0.0\", \"port\": \"2086\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
-echo "$vma_link12" >> ./nixag/jh.txt
+echo "$vma_link12" >> ./aspro/jh.txt
 vma_link13="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-argo-$hostname-2095\", \"add\": \"[2400:cb00:2049::]\", \"port\": \"2095\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
-echo "$vma_link13" >> ./nixag/jh.txt
-line5=$(sed -n '5p' nixag/jh.txt)
-line10=$(sed -n '10p' nixag/jh.txt)
-line11=$(sed -n '11p' nixag/jh.txt)
-line17=$(sed -n '17p' nixag/jh.txt)
-sbtk=$(cat ./nixag/sbargotoken.log 2>/dev/null)
+echo "$vma_link13" >> ./aspro/jh.txt
+line5=$(sed -n '5p' aspro/jh.txt)
+line10=$(sed -n '10p' aspro/jh.txt)
+line11=$(sed -n '11p' aspro/jh.txt)
+line17=$(sed -n '17p' aspro/jh.txt)
+sbtk=$(cat ./aspro/sbargotoken.log 2>/dev/null)
 if [ -n "$sbtk" ]; then
 nametn="当前Argo固定隧道token：$sbtk"
 fi
 argoshow=$(echo -e "Vmess主协议端口(Argo固定隧道端口)：$port_vm_ws\n当前Argo$name域名：$argodomain\n$nametn\n\n1、443端口的vmess-ws-tls-argo节点，默认优选IPV4：104.16.0.0\n$line5\n\n2、2096端口的vmess-ws-tls-argo节点，默认优选IPV6：[2606:4700::]（本地网络支持IPV6才可用）\n$line10\n\n3、80端口的vmess-ws-argo节点，默认优选IPV4：104.21.0.0\n$line11\n\n4、2095端口的vmess-ws-argo节点，默认优选IPV6：[2400:cb00:2049::]（本地网络支持IPV6才可用）\n$line17\n")
 fi
-jh_txt=$(cat ./nixag/jh.txt)
-cat > ./nixag/list.txt <<EOF
+jh_txt=$(cat ./aspro/jh.txt)
+cat > ./aspro/list.txt <<EOF
 ---------------------------------------------------------
 ---------------------------------------------------------
 ---------------------------------------------------------
-以下节点信息内容，请查看nixag/list.txt文件或者运行cat nixag/jh.txt进行复制
+以下节点信息内容，请查看aspro/list.txt文件或者运行cat aspro/jh.txt进行复制
 ---------------------------------------------------------
 
 节点配置输出：
@@ -355,7 +355,7 @@ $tuic5_link
 ---------------------------------------------------------
 $argoshow
 ---------------------------------------------------------
-聚合节点信息，请查看nixag/jh.txt文件或者运行cat nixag/jh.txt进行复制
+聚合节点信息，请查看aspro/jh.txt文件或者运行cat aspro/jh.txt进行复制
 ---------------------------------------------------------
 相关快捷方式如下：
 显示节点信息：sb list
@@ -365,20 +365,20 @@ $argoshow
 ---------------------------------------------------------
 ---------------------------------------------------------
 EOF
-cat ./nixag/list.txt
+cat ./aspro/list.txt
 }
 
 if [[ "$1" == "del" ]]; then
-kill -15 $(cat ./nixag/sbargopid.log 2>/dev/null) >/dev/null 2>&1
-kill -15 $(cat ./nixag/sbpid.log 2>/dev/null) >/dev/null 2>&1
+kill -15 $(cat ./aspro/sbargopid.log 2>/dev/null) >/dev/null 2>&1
+kill -15 $(cat ./aspro/sbpid.log 2>/dev/null) >/dev/null 2>&1
 sed -i '/yonggekkk/d' ~/.bashrc
 sed -i '/export PATH="\$HOME:\$PATH"/d' ~/.bashrc
 source ~/.bashrc
-rm -rf ./nixag ./sb
+rm -rf ./aspro ./sb
 echo "卸载完成"
 exit
 elif [[ "$1" == "list" ]]; then
-cat ./nixag/list.txt
+cat ./aspro/list.txt
 exit
 elif [[ "$1" == "cip" ]]; then
 cip && sleep 2
@@ -386,7 +386,7 @@ echo "配置切换完成"
 exit
 fi
 
-if ! ps -p "$(cat ./nixag/sbpid.log 2>/dev/null)" > /dev/null 2>&1; then
+if ! ps -p "$(cat ./aspro/sbpid.log 2>/dev/null)" > /dev/null 2>&1; then
 v4orv6(){
 if [ -z $(curl -s4m5 icanhazip.com -k) ]; then
 echo -e "nameserver 2a00:1098:2b::1\nnameserver 2a00:1098:2c::1\nnameserver 2a01:4f8:c2c:123f::1" > /etc/resolv.conf
