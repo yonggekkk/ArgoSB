@@ -24,66 +24,10 @@ x86_64) cpu=amd64;;
 *) echo "目前脚本不支持$(uname -m)架构" && exit
 esac
 mkdir -p ./nixag
-if [[ "$1" == "del" ]]; then
-kill -15 $(cat ./nixag/sbargopid.log 2>/dev/null) >/dev/null 2>&1
-kill -15 $(cat ./nixag/sbpid.log 2>/dev/null) >/dev/null 2>&1
-sed -i '/yonggekkk/d' ~/.bashrc
-sed -i '/export PATH="\$HOME:\$PATH"/d' ~/.bashrc
-source ~/.bashrc
-rm -rf ./nixag 
-echo "卸载完成"
-exit
-elif [[ "$1" == "list" ]]; then
-if [[ -e ./nixag/list.txt ]]; then
-cat ./nixag/list.txt
-else
-echo "ArgoSB脚本未安装"
-fi
-exit
-fi
-
-if ! ps -p $(cat ./nixag/sbpid.log 2>/dev/null) > /dev/null 2>&1; then
 warpcheck(){
 wgcfv6=$(curl -s6m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 wgcfv4=$(curl -s4m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 }
-v4orv6(){
-if [ -z $(curl -s4m5 icanhazip.com -k) ]; then
-echo -e "nameserver 2a00:1098:2b::1\nnameserver 2a00:1098:2c::1\nnameserver 2a01:4f8:c2c:123f::1" > /etc/resolv.conf
-fi
-}
-warpcheck
-if [[ ! $wgcfv4 =~ on|plus && ! $wgcfv6 =~ on|plus ]]; then
-v4orv6
-else
-systemctl stop wg-quick@wgcf >/dev/null 2>&1
-kill -15 $(pgrep warp-go) >/dev/null 2>&1 && sleep 2
-v4orv6
-systemctl start wg-quick@wgcf >/dev/null 2>&1
-systemctl restart warp-go >/dev/null 2>&1
-systemctl enable warp-go >/dev/null 2>&1
-systemctl start warp-go >/dev/null 2>&1
-fi
-echo "检查依赖安装……请稍等"
-if command -v apt &> /dev/null; then
-apt update -y > /dev/null 2>&1
-apt install grep procps coreutils openssl -y > /dev/null 2>&1
-elif command -v yum &> /dev/null; then
-yum install grep procps-ng coreutils openssl -y > /dev/null 2>&1
-elif command -v apk &> /dev/null; then
-apk update -y > /dev/null 2>&1
-apk add grep procps coreutils openssl -y > /dev/null 2>&1
-fi
-echo "VPS系统：$op"
-echo "CPU架构：$cpu"
-echo "ArgoSB脚本未安装，开始安装…………" && sleep 2
-ins
-cip
-echo
-else
-echo "ArgoSB脚本已安装"
-exit
-fi
 ins(){
 curl -L -o ./nixag/sing-box  -# --retry 2 https://github.com/yonggekkk/ArgoSB/releases/download/singbox/sing-box-$cpu
 chmod +x ./nixag/sing-box
@@ -410,3 +354,63 @@ $argoshow
 EOF
 cat ./nixag/list.txt
 }
+
+if [[ "$1" == "del" ]]; then
+kill -15 $(cat ./nixag/sbargopid.log 2>/dev/null) >/dev/null 2>&1
+kill -15 $(cat ./nixag/sbpid.log 2>/dev/null) >/dev/null 2>&1
+sed -i '/yonggekkk/d' ~/.bashrc
+sed -i '/export PATH="\$HOME:\$PATH"/d' ~/.bashrc
+source ~/.bashrc
+rm -rf ./nixag 
+echo "卸载完成"
+exit
+elif ps -p "$(cat ./nixag/sbpid.log 2>/dev/null)" > /dev/null 2>&1 && [[ "$1" == "list" ]]; then
+cat ./nixag/list.txt
+exit
+elif ps -p "$(cat ./nixag/sbpid.log 2>/dev/null)" > /dev/null 2>&1 && [[ "$1" == "cip" ]]; then
+cip && sleep 2
+echo "配置切换完成" 
+exit
+else
+echo "输入有误或者ArgoSB脚本未安装"
+exit
+fi
+
+if ! ps -p "$(cat ./nixag/sbpid.log 2>/dev/null)" > /dev/null 2>&1; then
+v4orv6(){
+if [ -z $(curl -s4m5 icanhazip.com -k) ]; then
+echo -e "nameserver 2a00:1098:2b::1\nnameserver 2a00:1098:2c::1\nnameserver 2a01:4f8:c2c:123f::1" > /etc/resolv.conf
+fi
+}
+warpcheck
+if [[ ! $wgcfv4 =~ on|plus && ! $wgcfv6 =~ on|plus ]]; then
+v4orv6
+else
+systemctl stop wg-quick@wgcf >/dev/null 2>&1
+kill -15 $(pgrep warp-go) >/dev/null 2>&1 && sleep 2
+v4orv6
+systemctl start wg-quick@wgcf >/dev/null 2>&1
+systemctl restart warp-go >/dev/null 2>&1
+systemctl enable warp-go >/dev/null 2>&1
+systemctl start warp-go >/dev/null 2>&1
+fi
+echo "检查依赖安装……请稍等"
+if command -v apt &> /dev/null; then
+apt update -y > /dev/null 2>&1
+apt install grep procps coreutils openssl -y > /dev/null 2>&1
+elif command -v yum &> /dev/null; then
+yum install grep procps-ng coreutils openssl -y > /dev/null 2>&1
+elif command -v apk &> /dev/null; then
+apk update -y > /dev/null 2>&1
+apk add grep procps coreutils openssl -y > /dev/null 2>&1
+fi
+echo "VPS系统：$op"
+echo "CPU架构：$cpu"
+echo "ArgoSB脚本未安装，开始安装…………" && sleep 2
+ins
+cip
+echo
+else
+echo "ArgoSB脚本已安装"
+exit
+fi
