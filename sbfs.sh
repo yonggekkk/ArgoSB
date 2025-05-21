@@ -28,7 +28,7 @@ if [[ "$1" == "del" ]]; then
 kill -15 $(cat ./nixag/sbargopid.log 2>/dev/null) >/dev/null 2>&1
 kill -15 $(cat ./nixag/sbpid.log 2>/dev/null) >/dev/null 2>&1
 sed -i '/yonggekkk/d' ~/.bashrc
-sed -i '/case ":$PATH:" in/,/esac/d' ~/.bashrc
+sed -i '/export PATH="\$HOME\/bin:\$PATH"/d' ~/.bashrc
 source ~/.bashrc
 rm -rf ./nixag 
 echo "卸载完成"
@@ -263,10 +263,7 @@ mkdir -p "$HOME/bin"
 curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/sbfs.sh > "$SCRIPT_PATH"
 chmod +x "$SCRIPT_PATH"
 if [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
-echo 'case ":$PATH:" in
-*:"$HOME/bin":*) ;;
-*) export PATH="$HOME/bin:$PATH" ;;
-esac' >> "$HOME/.bashrc"
+echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
 grep -qxF 'source ~/.bashrc' ~/.bash_profile 2>/dev/null || echo 'source ~/.bashrc' >> ~/.bash_profile
 source ~/.bashrc
 fi
