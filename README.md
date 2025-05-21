@@ -85,6 +85,8 @@ nix=y uuid=你的uuid vmpt=可使用的端口 agn=固定域名 agk=ey开头的to
 
 [IDX Google免费VPS代理搭建教程（三）：NIX容器最新工作区方式搭建Argo免费节点 | 一次回车搞定一切 | Argo固定隧道一键复活](https://youtu.be/0I5eI1KKx08)
 
+[IDX Google免费VPS代理搭建教程（四）：支持重置后自动启动代理节点功能 | 最简单的保活方法](https://youtu.be/EGrz6Wvevqc)
+
 更新中……
 
 ----------------------------------------------------------
