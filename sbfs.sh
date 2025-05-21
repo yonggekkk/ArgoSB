@@ -9,7 +9,6 @@ export ARGO_DOMAIN=${agn:-''}
 export ARGO_AUTH=${agk:-''} 
 export argo=${ag:-''}
 export ipsw=${ip:-''}
-cd "$HOME"
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" 
 echo "甬哥Github项目  ：github.com/yonggekkk"
 echo "甬哥Blogger博客 ：ygkkk.blogspot.com"
@@ -257,7 +256,7 @@ fi
 if ps -p $(cat ./nixag/sbpid.log 2>/dev/null) > /dev/null 2>&1; then
 [ -f ~/.bashrc ] || touch ~/.bashrc
 sed -i '/yonggekkk/d' ~/.bashrc
-echo "export ip=${ipsw} ag=${argo} uuid=${uuid} vlpt=${port_vl_re} vmpt=${port_vm_ws} hypt=${port_hy2} tupt=${port_tu} reym=${ym_vl_re} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/sbfs.sh)" >> ~/.bashrc
+echo 'cd ~ && export ip='"${ipsw}"' ag='"${argo}"' uuid='"${uuid}"' vlpt='"${port_vl_re}"' vmpt='"${port_vm_ws}"' hypt='"${port_hy2}"' tupt='"${port_tu}"' reym='"${ym_vl_re}"' agn='"${ARGO_DOMAIN}"' agk='"${ARGO_AUTH}"' && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/sbfs.sh)' >> ~/.bashrc
 COMMAND="sb"
 SCRIPT_PATH="$HOME/bin/$COMMAND"
 mkdir -p "$HOME/bin"
