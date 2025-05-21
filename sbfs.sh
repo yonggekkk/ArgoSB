@@ -28,7 +28,7 @@ if [[ "$1" == "del" ]]; then
 kill -15 $(cat ./nixag/sbargopid.log 2>/dev/null) >/dev/null 2>&1
 kill -15 $(cat ./nixag/sbpid.log 2>/dev/null) >/dev/null 2>&1
 sed -i '/yonggekkk/d' ~/.bashrc
-sed -i '/export PATH="\$HOME\/bin:\$PATH"/d' ~/.bashrc
+sed -i '/case ":$PATH:" in/,/esac/d' ~/.bashrc
 source ~/.bashrc
 rm -rf ./nixag 
 echo "卸载完成"
