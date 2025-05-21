@@ -42,6 +42,12 @@ fi
 if [ -z $ym_vl_re ]; then
 ym_vl_re=www.yahoo.com
 fi
+echo "$uuid" > ./nixag/uuid
+echo "$port_vl_re" > ./nixag/port_vl_re
+echo "$port_vm_ws" > ./nixag/port_vm_ws
+echo "$port_hy2" > ./nixag/port_hy2
+echo "$port_tu" > ./nixag/port_tu
+echo "$ym_vl_re" > ./nixag/ym_vl_re
 openssl ecparam -genkey -name prime256v1 -out ./nixag/private.key
 openssl req -new -x509 -days 36500 -key ./nixag/private.key -out ./nixag/cert.pem -subj "/CN=www.bing.com"
 if [ ! -e ./nixag/private_key ]; then
