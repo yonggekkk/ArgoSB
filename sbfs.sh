@@ -77,11 +77,14 @@ fi
 echo "VPS系统：$op"
 echo "CPU架构：$cpu"
 echo "ArgoSB脚本未安装，开始安装…………" && sleep 2
+ins
+cip
 echo
 else
 echo "ArgoSB脚本已安装"
 exit
 fi
+ins(){
 curl -L -o ./nixag/sing-box  -# --retry 2 https://github.com/yonggekkk/ArgoSB/releases/download/singbox/sing-box-$cpu
 chmod +x ./nixag/sing-box
 for var in port_vl_re port_vm_ws port_hy2 port_tu; do
@@ -106,6 +109,9 @@ echo "$private_key" > ./nixag/private_key
 echo "$public_key" > ./nixag/public.key
 echo "$short_id" > ./nixag/short_id
 fi
+private_key=$(< ./nixag/private_key)
+public_key=$(< ./nixag/public.key)
+short_id=$(< ./nixag/short_id)
 echo "Vless-reality端口：$port_vl_re"
 echo "Vmess-ws端口：$port_vm_ws"
 echo "Hysteria-2端口：$port_hy2"
@@ -242,7 +248,6 @@ echo "申请Argo$name隧道中……请稍等"
 sleep 8
 if [[ -n "${ARGO_DOMAIN}" && -n "${ARGO_AUTH}" ]]; then
 argodomain=$(cat ./nixag/sbargoym.log 2>/dev/null)
-nametn="当前Argo固定隧道token：$(cat ./nixag/sbargotoken.log 2>/dev/null)"
 else
 argodomain=$(cat ./nixag/argo.log 2>/dev/null | grep -a trycloudflare.com | awk 'NR==2{print}' | awk -F// '{print $2}' | awk '{print $1}')
 fi
@@ -252,7 +257,6 @@ else
 echo "Argo$name隧道申请失败，请稍后再试"
 fi
 fi
-
 if ps -p $(cat ./nixag/sbpid.log 2>/dev/null) > /dev/null 2>&1; then
 [ -f ~/.bashrc ] || touch ~/.bashrc
 sed -i '/yonggekkk/d' ~/.bashrc
@@ -270,7 +274,7 @@ echo "ArgoSB脚本进程启动成功，安装完毕" && sleep 2
 else
 echo "ArgoSB脚本进程未启动，安装失败" && exit
 fi
-
+}
 cip(){
 ipbest(){
 serip=$(curl -s4m5 icanhazip.com -k || curl -s6m5 icanhazip.com -k)
@@ -303,8 +307,6 @@ else
 ipbest
 fi
 }
-}
-wgcfgo(){
 warpcheck
 if [[ ! $wgcfv4 =~ on|plus && ! $wgcfv6 =~ on|plus ]]; then
 ipchange
@@ -317,9 +319,12 @@ systemctl restart warp-go >/dev/null 2>&1
 systemctl enable warp-go >/dev/null 2>&1
 systemctl start warp-go >/dev/null 2>&1
 fi
-}
-cip
-wgcfgo
+uuid=$(< ./nixag/uuid)
+port_vl_re=$(< ./nixag/port_vl_re)
+port_vm_ws=$(< ./nixag/port_vm_ws)
+port_hy2=$(< ./nixag/port_hy2)
+port_tu=$(< ./nixag/port_tu)
+ym_vl_re=$(< ./nixag/ym_vl_re)
 private_key=$(< ./nixag/private_key)
 public_key=$(< ./nixag/public.key)
 short_id=$(< ./nixag/short_id)
@@ -363,6 +368,10 @@ line5=$(sed -n '5p' nixag/jh.txt)
 line10=$(sed -n '10p' nixag/jh.txt)
 line11=$(sed -n '11p' nixag/jh.txt)
 line17=$(sed -n '17p' nixag/jh.txt)
+sbtk=$(cat ./nixag/sbargotoken.log 2>/dev/null)
+if [ -n "$sbtk" ]; then
+nametn="当前Argo固定隧道token：$sbtk"
+fi
 argoshow=$(echo -e "Vmess主协议端口(Argo固定隧道端口)：$port_vm_ws\n当前Argo$name域名：$argodomain\n$nametn\n\n1、443端口的vmess-ws-tls-argo节点，默认优选IPV4：104.16.0.0\n$line5\n\n2、2096端口的vmess-ws-tls-argo节点，默认优选IPV6：[2606:4700::]（本地网络支持IPV6才可用）\n$line10\n\n3、80端口的vmess-ws-argo节点，默认优选IPV4：104.21.0.0\n$line11\n\n4、2095端口的vmess-ws-argo节点，默认优选IPV6：[2400:cb00:2049::]（本地网络支持IPV6才可用）\n$line17\n")
 fi
 jh_txt=$(cat ./nixag/jh.txt)
@@ -400,3 +409,4 @@ $argoshow
 ---------------------------------------------------------
 EOF
 cat ./nixag/list.txt
+}
