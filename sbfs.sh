@@ -29,8 +29,12 @@ wgcfv6=$(curl -s6m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cu
 wgcfv4=$(curl -s4m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 }
 ins(){
+if [ ! -e ./nixag/sing-box ]; then
 curl -L -o ./nixag/sing-box  -# --retry 2 https://github.com/yonggekkk/ArgoSB/releases/download/singbox/sing-box-$cpu
 chmod +x ./nixag/sing-box
+sbcore=$(./nixag/sing-box version 2>/dev/null | awk '/version/{print $NF}')
+echo "已安装Sing-box正式版内核：$sbcore"
+fi
 for var in port_vl_re port_vm_ws port_hy2 port_tu; do
 if [ -z "${!var}" ]; then
 eval "$var=$(shuf -i 10000-65535 -n 1)"
@@ -181,6 +185,8 @@ EOF
 nohup ./nixag/sing-box run -c ./nixag/sb.json >/dev/null 2>&1 & echo "$!" > ./nixag/sbpid.log
 if [[ -n $argo ]]; then
 if [ ! -e ./nixag/cloudflared ]; then
+argocore=$(curl -Ls https://data.jsdelivr.com/v1/package/gh/cloudflare/cloudflared | grep -Eo '"[0-9.]+",' | sed -n 1p | tr -d '",')
+echo "下载cloudflared-argo最新正式版内核：$argocore"
 curl -L -o ./nixag/cloudflared -# --retry 2 https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-$cpu
 chmod +x ./nixag/cloudflared
 fi
