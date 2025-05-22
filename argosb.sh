@@ -112,7 +112,7 @@ fi
 if ps -p $(cat ./as/sbpid.log 2>/dev/null) > /dev/null 2>&1 && ps -p $(cat ./as/sbargopid.log 2>/dev/null) > /dev/null 2>&1 ; then
 [ -f ~/.bashrc ] || touch ~/.bashrc
 sed -i '/yonggekkk/d' ~/.bashrc
-echo "export uuid=${uuid} vmpt=${port_vm_ws} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/sbfs.sh) > /dev/null 2>&1" >> ~/.bashrc
+echo "export uuid=${uuid} vmpt=${port_vm_ws} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh) > /dev/null 2>&1" >> ~/.bashrc
 COMMAND="sb"
 SCRIPT_PATH="$HOME/$COMMAND"
 curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/sbfs.sh > "$SCRIPT_PATH"
