@@ -38,7 +38,12 @@ warpcheck(){
 wgcfv6=$(curl -s6m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 wgcfv4=$(curl -s4m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 }
-if ! ps -p $(cat ./as/sbpid.log 2>/dev/null) > /dev/null 2>&1 || ! ps -p $(cat ./as/sbargopid.log 2>/dev/null) > /dev/null 2>&1 ; then
+sbpid=$(cat ./as/sbpid.log 2>/dev/null) 
+sbpidp=$(cat /proc/$sbpid/status 2>/dev/null)
+sbargopid=$(cat ./as/sbargopid.log 2>/dev/null) 
+sbargopidp=$(cat /proc/$sbargopid/status 2>/dev/null)
+if [ -z "$sbargopidp" ] && ! ps -p "$sbargopid" > /dev/null 2>&1 || \
+   [ -z "$sbpidp" ] && ! ps -p "$sbpid" > /dev/null 2>&1; then
 kill -15 $(cat ./as/sbargopid.log 2>/dev/null) >/dev/null 2>&1
 kill -15 $(cat ./as/sbpid.log 2>/dev/null) >/dev/null 2>&1
 v4orv6(){
@@ -57,16 +62,6 @@ systemctl start wg-quick@wgcf >/dev/null 2>&1
 systemctl restart warp-go >/dev/null 2>&1
 systemctl enable warp-go >/dev/null 2>&1
 systemctl start warp-go >/dev/null 2>&1
-fi
-echo "检查依赖安装……请稍等"
-if command -v apt &> /dev/null; then
-apt update -y > /dev/null 2>&1
-apt install grep procps coreutils -y > /dev/null 2>&1
-elif command -v yum &> /dev/null; then
-yum install grep procps-ng coreutils -y > /dev/null 2>&1
-elif command -v apk &> /dev/null; then
-apk update > /dev/null 2>&1
-apk add grep procps coreutils > /dev/null 2>&1
 fi
 echo "VPS系统：$op"
 echo "CPU架构：$cpu"
