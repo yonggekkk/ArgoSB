@@ -219,11 +219,12 @@ if ps -p $(cat ./aspro/sbpid.log 2>/dev/null) > /dev/null 2>&1; then
 sed -i '/yonggekkk/d' ~/.bashrc
 echo "export ip=${ipsw} ag=${argo} uuid=${uuid} vlpt=${port_vl_re} vmpt=${port_vm_ws} hypt=${port_hy2} tupt=${port_tu} reym=${ym_vl_re} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/sbfs.sh) > /dev/null 2>&1" >> ~/.bashrc
 COMMAND="sb"
-SCRIPT_PATH="$HOME/$COMMAND"
+SCRIPT_PATH="$HOME/bin/$COMMAND"
+mkdir -p "$HOME/bin"
 curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/sbfs.sh > "$SCRIPT_PATH"
 chmod +x "$SCRIPT_PATH"
-if [[ ":$PATH:" != *":$HOME:"* ]]; then
-echo 'export PATH="$HOME:$PATH"' >> "$HOME/.bashrc"
+if [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
+echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
 grep -qxF 'source ~/.bashrc' ~/.bash_profile 2>/dev/null || echo 'source ~/.bashrc' >> ~/.bash_profile
 source ~/.bashrc
 fi
@@ -372,9 +373,9 @@ if [[ "$1" == "del" ]]; then
 kill -15 $(cat ./aspro/sbargopid.log 2>/dev/null) >/dev/null 2>&1
 kill -15 $(cat ./aspro/sbpid.log 2>/dev/null) >/dev/null 2>&1
 sed -i '/yonggekkk/d' ~/.bashrc
-sed -i '/export PATH="\$HOME:\$PATH"/d' ~/.bashrc
+sed -i '/export PATH="\$HOME\/bin:\$PATH"/d' ~/.bashrc
 source ~/.bashrc
-rm -rf ./aspro ./sb
+rm -rf ./aspro
 echo "卸载完成"
 exit
 elif [[ "$1" == "list" ]]; then
