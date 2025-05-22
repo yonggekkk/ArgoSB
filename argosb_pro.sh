@@ -427,7 +427,6 @@ apk update >/dev/null 2>&1
 apk add openssl >/dev/null 2>&1
 fi
 fi
-done
 echo "VPS系统：$op"
 echo "CPU架构：$cpu"
 echo "ArgoSB_PRO脚本未安装，开始安装…………" && sleep 2
