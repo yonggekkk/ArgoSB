@@ -24,7 +24,7 @@ if [[ "$1" == "del" ]]; then
 kill -15 $(cat ./as/sbargopid.log 2>/dev/null) >/dev/null 2>&1
 kill -15 $(cat ./as/sbpid.log 2>/dev/null) >/dev/null 2>&1
 sed -i '/yonggekkk/d' ~/.bashrc
-sed -i '/export PATH="\$HOME:\$PATH"/d' ~/.bashrc
+sed -i '/export PATH="\$HOME\/bin:\$PATH"/d' ~/.bashrc
 source ~/.bashrc
 rm -rf ./as ./sb
 echo "卸载完成"
@@ -166,11 +166,12 @@ if ps -p $(cat ./as/sbpid.log 2>/dev/null) > /dev/null 2>&1 && ps -p $(cat ./as/
 sed -i '/yonggekkk/d' ~/.bashrc
 echo "export uuid=${uuid} vmpt=${port_vm_ws} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh) > /dev/null 2>&1" >> ~/.bashrc
 COMMAND="sb"
-SCRIPT_PATH="$HOME/$COMMAND"
+SCRIPT_PATH="$HOME/bin/$COMMAND"
+mkdir -p "$HOME/bin"
 curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh > "$SCRIPT_PATH"
 chmod +x "$SCRIPT_PATH"
-if [[ ":$PATH:" != *":$HOME:"* ]]; then
-echo 'export PATH="$HOME:$PATH"' >> "$HOME/.bashrc"
+if [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
+echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
 grep -qxF 'source ~/.bashrc' ~/.bash_profile 2>/dev/null || echo 'source ~/.bashrc' >> ~/.bash_profile
 source ~/.bashrc
 fi
