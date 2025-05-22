@@ -410,15 +410,25 @@ systemctl enable warp-go >/dev/null 2>&1
 systemctl start warp-go >/dev/null 2>&1
 fi
 echo "检查依赖安装……请稍等"
-if command -v apt &> /dev/null; then
-apt update -y > /dev/null 2>&1
-apt install grep procps coreutils openssl -y > /dev/null 2>&1
-elif command -v yum &> /dev/null; then
-yum install grep procps-ng coreutils openssl -y > /dev/null 2>&1
-elif command -v apk &> /dev/null; then
-apk update > /dev/null 2>&1
-apk add grep procps coreutils openssl > /dev/null 2>&1
+commands=(grep ps cat openssl)
+packages=(grep procps coreutils openssl)
+for i in "${!commands[@]}"; do
+cmd="${commands[$i]}"
+pkg="${packages[$i]}"
+if ! command -v "$cmd" >/dev/null 2>&1; then
+if command -v apt-get >/dev/null 2>&1; then
+apt-get update -y >/dev/null 2>&1
+apt-get install -y "$pkg" >/dev/null 2>&1
+apt-get clean
+elif command -v yum >/dev/null 2>&1; then
+yum install -y "$pkg" >/dev/null 2>&1
+yum clean all
+elif command -v apk >/dev/null 2>&1; then
+apk update >/dev/null 2>&1
+apk add "$pkg" >/dev/null 2>&1
 fi
+fi
+done
 echo "VPS系统：$op"
 echo "CPU架构：$cpu"
 echo "ArgoSB_PRO脚本未安装，开始安装…………" && sleep 2
