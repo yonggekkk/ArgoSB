@@ -29,6 +29,10 @@ warpcheck(){
 wgcfv6=$(curl -s6m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 wgcfv4=$(curl -s4m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 }
+pidshow(){
+sbpid=$(cat ./aspro/sbpid.log 2>/dev/null) 
+sbpidp=$(cat /proc/$sbpid/status 2>/dev/null)
+}
 ins(){
 if [ ! -e ./aspro/sing-box ]; then
 curl -L -o ./aspro/sing-box  -# --retry 2 https://github.com/yonggekkk/ArgoSB/releases/download/singbox/sing-box-$cpu
@@ -214,8 +218,7 @@ else
 echo "Argo$name隧道申请失败，请稍后再试"
 fi
 fi
-sbpid=$(cat ./aspro/sbpid.log 2>/dev/null) 
-sbpidp=$(cat /proc/$sbpid/status 2>/dev/null)
+pidshow
 if [ -n "$sbpidp" ] || ps -p "$sbpid" > /dev/null 2>&1; then
 [ -f ~/.bashrc ] || touch ~/.bashrc
 sed -i '/yonggekkk/d' ~/.bashrc
@@ -391,8 +394,7 @@ echo "配置切换完成"
 exit
 fi
 
-sbpid=$(cat ./aspro/sbpid.log 2>/dev/null) 
-sbpidp=$(cat /proc/$sbpid/status 2>/dev/null)
+pidshow
 if [ -z "$sbpidp" ] && ! ps -p "$sbpid" > /dev/null 2>&1; then
 kill -15 $(cat ./aspro/sbargopid.log 2>/dev/null) >/dev/null 2>&1
 kill -15 $(cat ./aspro/sbpid.log 2>/dev/null) >/dev/null 2>&1
