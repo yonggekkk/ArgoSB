@@ -74,6 +74,9 @@ echo "ArgoSB脚本未安装，开始安装…………" && sleep 2
 echo
 else
 echo "ArgoSB脚本已安装"
+echo "相关快捷方式如下："
+echo "显示节点信息：as或者脚本 list"
+echo "卸载脚本：as或者脚本 del"
 exit
 fi
 
@@ -165,7 +168,7 @@ if ps -p $(cat ./as/sbpid.log 2>/dev/null) > /dev/null 2>&1 && ps -p $(cat ./as/
 [ -f ~/.bashrc ] || touch ~/.bashrc
 sed -i '/yonggekkk/d' ~/.bashrc
 echo "export uuid=${uuid} vmpt=${port_vm_ws} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh) > /dev/null 2>&1" >> ~/.bashrc
-COMMAND="sb"
+COMMAND="as"
 SCRIPT_PATH="$HOME/bin/$COMMAND"
 mkdir -p "$HOME/bin"
 curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh > "$SCRIPT_PATH"
@@ -241,8 +244,8 @@ $line13
 Argo节点13个端口聚合节点配置输出：请查看./as/jh.txt文件或者运行cat ./as/jh.txt进行复制
 ---------------------------------------------------------
 相关快捷方式如下：
-显示节点信息：agsb或者脚本 list
-卸载脚本：agsb或者脚本 del
+显示节点信息：as或者脚本 list
+卸载脚本：as或者脚本 del
 ---------------------------------------------------------
 EOF
 cat ./as/list.txt
