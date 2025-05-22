@@ -217,11 +217,11 @@ fi
 if ps -p $(cat ./aspro/sbpid.log 2>/dev/null) > /dev/null 2>&1; then
 [ -f ~/.bashrc ] || touch ~/.bashrc
 sed -i '/yonggekkk/d' ~/.bashrc
-echo "export ip=${ipsw} ag=${argo} uuid=${uuid} vlpt=${port_vl_re} vmpt=${port_vm_ws} hypt=${port_hy2} tupt=${port_tu} reym=${ym_vl_re} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/sbfs.sh) > /dev/null 2>&1" >> ~/.bashrc
-COMMAND="sb"
+echo "export ip=${ipsw} ag=${argo} uuid=${uuid} vlpt=${port_vl_re} vmpt=${port_vm_ws} hypt=${port_hy2} tupt=${port_tu} reym=${ym_vl_re} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb_pro.sh) > /dev/null 2>&1" >> ~/.bashrc
+COMMAND="asp"
 SCRIPT_PATH="$HOME/bin/$COMMAND"
 mkdir -p "$HOME/bin"
-curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/sbfs.sh > "$SCRIPT_PATH"
+curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb_pro.sh > "$SCRIPT_PATH"
 chmod +x "$SCRIPT_PATH"
 if [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
 echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
@@ -359,10 +359,10 @@ $argoshow
 聚合节点信息，请查看aspro/jh.txt文件或者运行cat aspro/jh.txt进行复制
 ---------------------------------------------------------
 相关快捷方式如下：
-显示节点信息：sb或者脚本 list
-双栈VPS切换IPv4配置输出：ip=4 sb或者脚本 cip
-双栈VPS切换IPv6配置输出：ip=6 sb或者脚本 cip
-卸载脚本：sb或者脚本 del
+显示节点信息：asp或者脚本 list
+双栈VPS显示IPv4节点配置：ip=4 asp或者脚本 cip
+双栈VPS显示IPv6节点配置：ip=6 asp或者脚本 cip
+卸载脚本：asp或者脚本 del
 ---------------------------------------------------------
 ---------------------------------------------------------
 EOF
@@ -425,5 +425,10 @@ cip
 echo
 else
 echo "ArgoSB脚本已安装"
+echo "相关快捷方式如下："
+echo "显示节点信息：asp或者脚本 list"
+echo "双栈VPS显示IPv4节点配置：ip=4 asp或者脚本 cip"
+echo "双栈VPS显示IPv6节点配置：ip=6 asp或者脚本 cip"
+echo "卸载脚本：asp或者脚本 del"
 exit
 fi
