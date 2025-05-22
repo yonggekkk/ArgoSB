@@ -207,16 +207,12 @@ echo "$!" > ./aspro/sbargopid.log
 fi
 echo "申请Argo$name隧道中……请稍等"
 sleep 8
-grep -a trycloudflare.com ./aspro/argo.log 2>/dev/null | awk 'NR==2{print}' | awk -F// '{print $2}' | awk '{print $1}'
-echo "1"
 if [[ -n "${ARGO_DOMAIN}" && -n "${ARGO_AUTH}" ]]; then
 argodomain=$(cat ./aspro/sbargoym.log 2>/dev/null)
 else
 argodomain=$(grep -a trycloudflare.com ./aspro/argo.log 2>/dev/null | awk 'NR==2{print}' | awk -F// '{print $2}' | awk '{print $1}')
 fi
-grep -a trycloudflare.com ./aspro/argo.log 2>/dev/null | awk 'NR==2{print}' | awk -F// '{print $2}' | awk '{print $1}'
-echo "2"
-if [[ -n "$argodomain" ]]; then
+if [[ -n "${argodomain}" ]]; then
 echo "Argo$name隧道申请成功，域名为：$argodomain"
 else
 echo "Argo$name隧道申请失败，请稍后再试"
