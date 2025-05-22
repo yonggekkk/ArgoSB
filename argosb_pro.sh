@@ -8,7 +8,7 @@ export port_tu=${tupt:-''}
 export ym_vl_re=${reym:-''}
 export ARGO_DOMAIN=${agn:-''}   
 export ARGO_AUTH=${agk:-''} 
-export argo=${ag:-''}
+export argo=${argo:-''}
 export ipsw=${ip:-''}
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" 
 echo "甬哥Github项目  ：github.com/yonggekkk"
