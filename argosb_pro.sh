@@ -389,7 +389,9 @@ echo "配置切换完成"
 exit
 fi
 
-if ! ps -p "$(cat ./aspro/sbpid.log 2>/dev/null)" > /dev/null 2>&1; then
+sbpid=$(cat ./aspro/sbpid.log 2>/dev/null) 
+sbpidp=$(cat /proc/$sbpid/status 2>/dev/null)
+if [ -z "$sbpidp" ] && ! ps -p "$sbpid" > /dev/null 2>&1; then
 kill -15 $(cat ./aspro/sbargopid.log 2>/dev/null) >/dev/null 2>&1
 kill -15 $(cat ./aspro/sbpid.log 2>/dev/null) >/dev/null 2>&1
 v4orv6(){
@@ -410,22 +412,15 @@ systemctl enable warp-go >/dev/null 2>&1
 systemctl start warp-go >/dev/null 2>&1
 fi
 echo "检查依赖安装……请稍等"
-commands=(grep ps cat openssl)
-packages=(grep procps coreutils openssl)
-for i in "${!commands[@]}"; do
-cmd="${commands[$i]}"
-pkg="${packages[$i]}"
-if ! command -v "$cmd" >/dev/null 2>&1; then
+if ! command -v openssl >/dev/null 2>&1; then
 if command -v apt-get >/dev/null 2>&1; then
 apt-get update -y >/dev/null 2>&1
-apt-get install -y "$pkg" >/dev/null 2>&1
-apt-get clean
+apt-get install -y openssl >/dev/null 2>&1
 elif command -v yum >/dev/null 2>&1; then
-yum install -y "$pkg" >/dev/null 2>&1
-yum clean all
+yum install -y openssl >/dev/null 2>&1
 elif command -v apk >/dev/null 2>&1; then
 apk update >/dev/null 2>&1
-apk add "$pkg" >/dev/null 2>&1
+apk add openssl >/dev/null 2>&1
 fi
 fi
 done
