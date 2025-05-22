@@ -147,7 +147,7 @@ echo ${ARGO_DOMAIN} > ./as/sbargoym.log
 echo ${ARGO_AUTH} > ./as/sbargotoken.log
 else
 name='临时'
-nohup ./as/cloudflared tunnel --url http://localhost:$(sed 's://.*::g' ./as/sb.json | jq -r '.inbounds[0].listen_port') --edge-ip-version auto --no-autoupdate --protocol http2 > ./as/argo.log 2>&1 &
+nohup ./as/cloudflared tunnel --url http://localhost:${port_vm_ws} --edge-ip-version auto --no-autoupdate --protocol http2 > ./as/argo.log 2>&1 &
 echo "$!" > ./as/sbargopid.log
 fi
 echo "申请Argo$name隧道中……请稍等"
