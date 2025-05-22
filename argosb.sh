@@ -167,7 +167,7 @@ sed -i '/yonggekkk/d' ~/.bashrc
 echo "export uuid=${uuid} vmpt=${port_vm_ws} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh) > /dev/null 2>&1" >> ~/.bashrc
 COMMAND="sb"
 SCRIPT_PATH="$HOME/$COMMAND"
-curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/sbfs.sh > "$SCRIPT_PATH"
+curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh > "$SCRIPT_PATH"
 chmod +x "$SCRIPT_PATH"
 if [[ ":$PATH:" != *":$HOME:"* ]]; then
 echo 'export PATH="$HOME:$PATH"' >> "$HOME/.bashrc"
