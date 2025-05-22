@@ -214,7 +214,9 @@ else
 echo "Argo$name隧道申请失败，请稍后再试"
 fi
 fi
-if ps -p $(cat ./aspro/sbpid.log 2>/dev/null) > /dev/null 2>&1; then
+sbpid=$(cat ./aspro/sbpid.log 2>/dev/null) 
+sbpidp=$(cat /proc/$sbpid/status 2>/dev/null)
+if [ -n "$sbpidp" ] || ps -p "$sbpid" > /dev/null 2>&1; then
 [ -f ~/.bashrc ] || touch ~/.bashrc
 sed -i '/yonggekkk/d' ~/.bashrc
 echo "export ip=${ipsw} ag=${argo} uuid=${uuid} vlpt=${port_vl_re} vmpt=${port_vm_ws} hypt=${port_hy2} tupt=${port_tu} reym=${ym_vl_re} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb_pro.sh) > /dev/null 2>&1" >> ~/.bashrc
