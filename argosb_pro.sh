@@ -228,9 +228,9 @@ echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
 grep -qxF 'source ~/.bashrc' ~/.bash_profile 2>/dev/null || echo 'source ~/.bashrc' >> ~/.bash_profile
 source ~/.bashrc
 fi
-echo "ArgoSB脚本进程启动成功，安装完毕" && sleep 2
+echo "ArgoSB_PRO脚本进程启动成功，安装完毕" && sleep 2
 else
-echo "ArgoSB脚本进程未启动，安装失败" && exit
+echo "ArgoSB_PRO脚本进程未启动，安装失败" && exit
 fi
 }
 cip(){
@@ -419,12 +419,12 @@ apk add grep procps coreutils openssl -y > /dev/null 2>&1
 fi
 echo "VPS系统：$op"
 echo "CPU架构：$cpu"
-echo "ArgoSB脚本未安装，开始安装…………" && sleep 2
+echo "ArgoSB_PRO脚本未安装，开始安装…………" && sleep 2
 ins
 cip
 echo
 else
-echo "ArgoSB脚本已安装"
+echo "ArgoSB_PRO脚本已安装"
 echo "相关快捷方式如下："
 echo "显示节点信息：asp或者脚本 list"
 echo "双栈VPS显示IPv4节点配置：ip=4 asp或者脚本 cip"
