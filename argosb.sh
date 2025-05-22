@@ -157,7 +157,7 @@ argodomain=$(cat ./as/sbargoym.log 2>/dev/null)
 else
 argodomain=$(cat ./as/argo.log 2>/dev/null | grep -a trycloudflare.com | awk 'NR==2{print}' | awk -F// '{print $2}' | awk '{print $1}')
 fi
-if [[ -n "$argodomain" ]]; then
+if [[ -n "${argodomain}" ]]; then
 echo "Argo$name隧道申请成功，域名为：$argodomain"
 else
 echo "Argo$name隧道申请失败，请卸载重装，稍后再试" && exit
