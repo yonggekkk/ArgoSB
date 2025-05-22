@@ -38,10 +38,13 @@ warpcheck(){
 wgcfv6=$(curl -s6m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 wgcfv4=$(curl -s4m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 }
+pidshow(){
 sbpid=$(cat ./as/sbpid.log 2>/dev/null) 
 sbpidp=$(cat /proc/$sbpid/status 2>/dev/null)
 sbargopid=$(cat ./as/sbargopid.log 2>/dev/null) 
 sbargopidp=$(cat /proc/$sbargopid/status 2>/dev/null)
+}
+pidshow
 if [ -z "$sbargopidp" ] && ! ps -p "$sbargopid" > /dev/null 2>&1 || \
    [ -z "$sbpidp" ] && ! ps -p "$sbpid" > /dev/null 2>&1; then
 kill -15 $(cat ./as/sbargopid.log 2>/dev/null) >/dev/null 2>&1
@@ -159,7 +162,9 @@ echo "Argo$name隧道申请成功，域名为：$argodomain"
 else
 echo "Argo$name隧道申请失败，请卸载重装，稍后再试" && exit
 fi
-if ps -p $(cat ./as/sbpid.log 2>/dev/null) > /dev/null 2>&1 && ps -p $(cat ./as/sbargopid.log 2>/dev/null) > /dev/null 2>&1 ; then
+pidshow
+if [ -n "$sbargopidp" ] || ps -p "$sbargopid" > /dev/null 2>&1 && \
+   [ -n "$sbpidp" ] || ps -p "$sbpid" > /dev/null 2>&1; then
 [ -f ~/.bashrc ] || touch ~/.bashrc
 sed -i '/yonggekkk/d' ~/.bashrc
 echo "export uuid=${uuid} vmpt=${port_vm_ws} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh) > /dev/null 2>&1" >> ~/.bashrc
