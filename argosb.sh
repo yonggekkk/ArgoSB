@@ -71,8 +71,6 @@ fi
 echo "VPS系统：$op"
 echo "CPU架构：$cpu"
 echo "ArgoSB脚本未安装，开始安装…………" && sleep 2
-ins
-cip
 echo
 else
 echo "ArgoSB脚本已安装"
