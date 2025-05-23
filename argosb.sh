@@ -168,11 +168,10 @@ SCRIPT_PATH="$HOME/bin/$COMMAND"
 mkdir -p "$HOME/bin"
 curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh > "$SCRIPT_PATH"
 chmod +x "$SCRIPT_PATH"
-if [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
+sed -i '/export PATH="\$HOME\/bin:\$PATH"/d' ~/.bashrc
 echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
 grep -qxF 'source ~/.bashrc' ~/.bash_profile 2>/dev/null || echo 'source ~/.bashrc' >> ~/.bash_profile
 source ~/.bashrc
-fi
 crontab -l > /tmp/crontab.tmp 2>/dev/null
 sed -i '/as\/sing-box/d' /tmp/crontab.tmp
 echo '@reboot /bin/bash -c "nohup ./as/sing-box run -c ./as/sb.json >/dev/null 2>&1 &"' >> /tmp/crontab.tmp
