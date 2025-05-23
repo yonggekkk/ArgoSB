@@ -382,7 +382,7 @@ kill -15 $(cat ./aspro/sbpid.log 2>/dev/null) >/dev/null 2>&1
 sed -i '/yonggekkk/d' ~/.bashrc
 sed -i '/export PATH="\$HOME\/bin:\$PATH"/d' ~/.bashrc
 source ~/.bashrc
-rm -rf ./aspro /bin/asp
+rm -rf ./aspro ./bin/asp
 echo "卸载完成"
 exit
 elif [[ "$1" == "list" ]]; then
