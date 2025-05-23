@@ -44,7 +44,6 @@ wgcfv4=$(curl -s4m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cu
 }
 if { ! ( find /proc/*/exe -type l 2>/dev/null | grep -q 'as/s' || pgrep -f 'as/s' &>/dev/null ) } || \
    { ! ( find /proc/*/exe -type l 2>/dev/null | grep -q 'as/c' || pgrep -f 'as/c' &>/dev/null ) }; then
-fi  
 pkill -x sing-box
 pkill -x cloudflared
 v4orv6(){
