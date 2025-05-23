@@ -246,7 +246,7 @@ if [[ -n "${ARGO_DOMAIN}" && -n "${ARGO_AUTH}" ]]; then
 echo '@reboot /bin/bash -c "nohup ./aspro/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token $(cat ./aspro/sbargotoken.log 2>/dev/null) >/dev/null 2>&1 & pid=\$! && echo \$pid > ./aspro/sbargopid.log"' >> /tmp/crontab.tmp
 else
 #echo '@reboot /bin/bash -c "nohup ./aspro/cloudflared tunnel --url http://localhost:$(grep "listen_port" ./aspro/sb.json | grep -oP '\d+' | sed -n '2p') --edge-ip-version auto --no-autoupdate --protocol http2 > ./aspro/argo.log 2>&1 & pid=\$! && echo \$pid > ./aspro/sbargopid.log"' >> /tmp/crontab.tmp
-echo '@reboot /bin/bash -c "nohup ./aspro/cloudflared tunnel --url http://localhost:$(grep "listen_port" ./aspro/sb.json | grep -oP '\''\\d+'\'' | sed -n '\''2p'\'') --edge-ip-version auto --no-autoupdate --protocol http2 > ./aspro/argo.log 2>&1 & pid=\$! && echo \$pid > ./aspro/sbargopid.log"' >> /tmp/crontab.tmp
+echo '@reboot /bin/bash -c "nohup ./aspro/cloudflared tunnel --url http://localhost:$(grep "listen_port" ./aspro/sb.json | grep -oP '\''\d+'\'' | sed -n '\''2p'\'') --edge-ip-version auto --no-autoupdate --protocol http2 > ./aspro/argo.log 2>&1 & pid=\$! && echo \$pid > ./aspro/sbargopid.log"' >> /tmp/crontab.tmp
 fi
 fi
 crontab /tmp/crontab.tmp 2>/dev/null
