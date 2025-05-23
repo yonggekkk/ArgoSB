@@ -233,9 +233,9 @@ grep -qxF 'source ~/.bashrc' ~/.bash_profile 2>/dev/null || echo 'source ~/.bash
 source ~/.bashrc
 
 crontab -l > /tmp/crontab.tmp 2>/dev/null
-sed -i '/sbpid/d' /tmp/crontab.tmp
+sed -i '/aspro\/sing-box/d' /tmp/crontab.tmp
 echo '@reboot /bin/bash -c "nohup ./aspro/sing-box run -c ./aspro/sb.json >/dev/null 2>&1 &"' >> /tmp/crontab.tmp
-sed -i '/sbargopid/d' /tmp/crontab.tmp
+sed -i '/aspro\/cloudflared/d' /tmp/crontab.tmp
 if [[ -n $argo ]]; then
 if [[ -n "${ARGO_DOMAIN}" && -n "${ARGO_AUTH}" ]]; then
 echo '@reboot /bin/bash -c "nohup ./aspro/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token $(cat ./aspro/sbargotoken.log 2>/dev/null) >/dev/null 2>&1 &"' >> /tmp/crontab.tmp
@@ -395,8 +395,8 @@ sed -i '/yonggekkk/d' ~/.bashrc
 sed -i '/export PATH="\$HOME\/bin:\$PATH"/d' ~/.bashrc
 source ~/.bashrc
 crontab -l > /tmp/crontab.tmp 2>/dev/null
-sed -i '/sbpid/d' /tmp/crontab.tmp
-sed -i '/sbargopid/d' /tmp/crontab.tmp
+sed -i '/aspro\/sing-box/d' /tmp/crontab.tmp
+sed -i '/aspro\/cloudflared/d' /tmp/crontab.tmp
 crontab /tmp/crontab.tmp 2>/dev/null
 rm /tmp/crontab.tmp
 rm -rf ./aspro ./bin/asp
