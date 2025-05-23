@@ -21,14 +21,14 @@ x86_64) cpu=amd64;;
 esac
 mkdir -p ./as
 if [[ "$1" == "del" ]]; then
-kill -15 $(cat ./as/sbargopid.log 2>/dev/null) >/dev/null 2>&1
-kill -15 $(cat ./as/sbpid.log 2>/dev/null) >/dev/null 2>&1
+pkill -x sing-box
+pkill -x cloudflared
 sed -i '/yonggekkk/d' ~/.bashrc
 sed -i '/export PATH="\$HOME\/bin:\$PATH"/d' ~/.bashrc
 source ~/.bashrc
 crontab -l > /tmp/crontab.tmp 2>/dev/null
-sed -i '/sbpid/d' /tmp/crontab.tmp
-sed -i '/sbargopid/d' /tmp/crontab.tmp
+sed -i '/as\/sing-box/d' /tmp/crontab.tmp
+sed -i '/as\/cloudflared/d' /tmp/crontab.tmp
 crontab /tmp/crontab.tmp 2>/dev/null
 rm /tmp/crontab.tmp
 rm -rf ./as ./bin/as
@@ -42,17 +42,11 @@ warpcheck(){
 wgcfv6=$(curl -s6m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 wgcfv4=$(curl -s4m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 }
-pidshow(){
-sbpid=$(cat ./as/sbpid.log 2>/dev/null) 
-sbpidp=$(cat /proc/$sbpid/status 2>/dev/null)
-sbargopid=$(cat ./as/sbargopid.log 2>/dev/null) 
-sbargopidp=$(cat /proc/$sbargopid/status 2>/dev/null)
-}
-pidshow
-if [ -z "$sbargopidp" ] && ! ps -p "$sbargopid" > /dev/null 2>&1 || \
-   [ -z "$sbpidp" ] && ! ps -p "$sbpid" > /dev/null 2>&1; then
-kill -15 $(cat ./as/sbargopid.log 2>/dev/null) >/dev/null 2>&1
-kill -15 $(cat ./as/sbpid.log 2>/dev/null) >/dev/null 2>&1
+if { ! ( find /proc/*/exe -type l 2>/dev/null | grep -q 'as/s' || pgrep -f 'as/s' &>/dev/null ) } || \
+   { ! ( find /proc/*/exe -type l 2>/dev/null | grep -q 'as/c' || pgrep -f 'as/c' &>/dev/null ) }; then
+fi  
+pkill -x sing-box
+pkill -x cloudflared
 v4orv6(){
 if [ -z $(curl -s4m5 icanhazip.com -k) ]; then
 echo -e "nameserver 2a00:1098:2b::1\nnameserver 2a00:1098:2c::1\nnameserver 2a01:4f8:c2c:123f::1" > /etc/resolv.conf
@@ -137,7 +131,7 @@ cat > ./as/sb.json <<EOF
 ]
 }
 EOF
-nohup ./as/sing-box run -c ./as/sb.json >/dev/null 2>&1 & echo "$!" > ./as/sbpid.log
+nohup ./as/sing-box run -c ./as/sb.json >/dev/null 2>&1 &
 if [ ! -e ./as/cloudflared ]; then
 argocore=$(curl -Ls https://data.jsdelivr.com/v1/package/gh/cloudflare/cloudflared | grep -Eo '"[0-9.]+",' | sed -n 1p | tr -d '",')
 echo "下载cloudflared-argo最新正式版内核：$argocore"
@@ -146,13 +140,12 @@ chmod +x ./as/cloudflared
 fi
 if [[ -n "${ARGO_DOMAIN}" && -n "${ARGO_AUTH}" ]]; then
 name='固定'
-nohup ./as/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token ${ARGO_AUTH} >/dev/null 2>&1 & echo "$!" > ./as/sbargopid.log
+nohup ./as/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token ${ARGO_AUTH} >/dev/null 2>&1 &
 echo ${ARGO_DOMAIN} > ./as/sbargoym.log
 echo ${ARGO_AUTH} > ./as/sbargotoken.log
 else
 name='临时'
 nohup ./as/cloudflared tunnel --url http://localhost:${port_vm_ws} --edge-ip-version auto --no-autoupdate --protocol http2 > ./as/argo.log 2>&1 &
-echo "$!" > ./as/sbargopid.log
 fi
 echo "申请Argo$name隧道中……请稍等"
 sleep 8
@@ -166,12 +159,12 @@ echo "Argo$name隧道申请成功，域名为：$argodomain"
 else
 echo "Argo$name隧道申请失败，请卸载重装，稍后再试" && exit
 fi
-pidshow
-if [ -n "$sbargopidp" ] || ps -p "$sbargopid" > /dev/null 2>&1 && \
-   [ -n "$sbpidp" ] || ps -p "$sbpid" > /dev/null 2>&1; then
+if ( find /proc/*/exe -type l 2>/dev/null | grep -q 'as/s' || pgrep -f 'as/s' &>/dev/null ) && \
+   ( find /proc/*/exe -type l 2>/dev/null | grep -q 'as/c' || pgrep -f 'as/c' &>/dev/null ); then
+fi   
 [ -f ~/.bashrc ] || touch ~/.bashrc
 sed -i '/yonggekkk/d' ~/.bashrc
-echo "export uuid=${uuid} vmpt=${port_vm_ws} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh) > /dev/null 2>&1" >> ~/.bashrc
+echo "if { ! ( find /proc/*/exe -type l 2>/dev/null | grep -q 'as/s' || pgrep -f 'as/s' &>/dev/null ) } || { ! ( find /proc/*/exe -type l 2>/dev/null | grep -q 'as/c' || pgrep -f 'as/c' &>/dev/null ) }; then export uuid=\"${uuid}\" vmpt=\"${port_vm_ws}\" agn=\"${ARGO_DOMAIN}\" agk=\"${ARGO_AUTH}\"; bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh); fi" >> ~/.bashrc
 COMMAND="as"
 SCRIPT_PATH="$HOME/bin/$COMMAND"
 mkdir -p "$HOME/bin"
@@ -183,13 +176,13 @@ grep -qxF 'source ~/.bashrc' ~/.bash_profile 2>/dev/null || echo 'source ~/.bash
 source ~/.bashrc
 fi
 crontab -l > /tmp/crontab.tmp 2>/dev/null
-sed -i '/sbpid/d' /tmp/crontab.tmp
-echo '@reboot /bin/bash -c "nohup ./as/sing-box run -c ./as/sb.json >/dev/null 2>&1 & echo "$!" > ./as/sbpid.log"' >> /tmp/crontab.tmp
-sed -i '/sbargopid/d' /tmp/crontab.tmp
+sed -i '/as\/sing-box/d' /tmp/crontab.tmp
+echo '@reboot /bin/bash -c "nohup ./as/sing-box run -c ./as/sb.json >/dev/null 2>&1 &"' >> /tmp/crontab.tmp
+sed -i '/as\/cloudflared/d' /tmp/crontab.tmp
 if [[ -n "${ARGO_DOMAIN}" && -n "${ARGO_AUTH}" ]]; then
-echo '@reboot /bin/bash -c "nohup ./as/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token $(cat ./as/sbargotoken.log 2>/dev/null) >/dev/null 2>&1 & pid=\$! && echo \$pid > ./as/sbargopid.log"' >> /tmp/crontab.tmp
+echo '@reboot /bin/bash -c "nohup ./as/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token $(cat ./as/sbargotoken.log 2>/dev/null) >/dev/null 2>&1 &"' >> /tmp/crontab.tmp
 else
-echo '@reboot /bin/bash -c "nohup ./as/cloudflared tunnel --url http://localhost:$(grep "listen_port" ./as/sb.json | grep -oP '\d+' | sed -n '1p') --edge-ip-version auto --no-autoupdate --protocol http2 > ./as/argo.log 2>&1 & pid=\$! && echo \$pid > ./as/sbargopid.log"' >> /tmp/crontab.tmp
+echo '@reboot /bin/bash -c "nohup ./as/cloudflared tunnel --url http://localhost:$(grep "listen_port" ./as/sb.json | grep -oP '\''\d+'\'' | sed -n '\''1p'\'') --edge-ip-version auto --no-autoupdate --protocol http2 > ./as/argo.log 2>&1 &"' >> /tmp/crontab.tmp
 fi
 crontab /tmp/crontab.tmp 2>/dev/null
 rm /tmp/crontab.tmp
