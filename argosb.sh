@@ -26,6 +26,11 @@ kill -15 $(cat ./as/sbpid.log 2>/dev/null) >/dev/null 2>&1
 sed -i '/yonggekkk/d' ~/.bashrc
 sed -i '/export PATH="\$HOME\/bin:\$PATH"/d' ~/.bashrc
 source ~/.bashrc
+crontab -l > /tmp/crontab.tmp
+sed -i '/sbpid/d' /tmp/crontab.tmp
+sed -i '/sbargopid/d' /tmp/crontab.tmp
+crontab /tmp/crontab.tmp
+rm /tmp/crontab.tmp
 rm -rf ./as ./bin/as
 echo "卸载完成"
 exit
@@ -178,6 +183,17 @@ echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
 grep -qxF 'source ~/.bashrc' ~/.bash_profile 2>/dev/null || echo 'source ~/.bashrc' >> ~/.bash_profile
 source ~/.bashrc
 fi
+crontab -l > /tmp/crontab.tmp
+sed -i '/sbpid/d' /tmp/crontab.tmp
+echo '@reboot /bin/bash -c "nohup ./as/sing-box run -c ./as/sb.json >/dev/null 2>&1 & echo "$!" > ./as/sbpid.log"' >> /tmp/crontab.tmp
+sed -i '/sbargopid/d' /tmp/crontab.tmp
+if [[ -n "${ARGO_DOMAIN}" && -n "${ARGO_AUTH}" ]]; then
+echo '@reboot /bin/bash -c "nohup ./as/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token $(cat ./as/sbargotoken.log 2>/dev/null) >/dev/null 2>&1 & pid=\$! && echo \$pid > ./as/sbargopid.log"' >> /tmp/crontab.tmp
+else
+echo '@reboot /bin/bash -c "nohup ./as/cloudflared tunnel --url http://localhost:$(grep "listen_port" ./as/sb.json | grep -oP '\d+' | sed -n '1p') --edge-ip-version auto --no-autoupdate --protocol http2 > ./as/argo.log 2>&1 & pid=\$! && echo \$pid > ./as/sbargopid.log"' >> /tmp/crontab.tmp
+fi
+crontab /tmp/crontab.tmp
+rm /tmp/crontab.tmp
 echo "ArgoSB脚本进程启动成功，安装完毕" && sleep 2
 else
 echo "ArgoSB脚本进程未启动，安装失败，请卸载重装" && exit
