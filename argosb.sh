@@ -19,7 +19,7 @@ aarch64) cpu=arm64;;
 x86_64) cpu=amd64;;
 *) echo "目前脚本不支持$(uname -m)架构" && exit
 esac
-
+mkdir -p ./as
 if [[ "$1" == "del" ]]; then
 kill -15 $(cat ./as/sbargopid.log 2>/dev/null) >/dev/null 2>&1
 kill -15 $(cat ./as/sbpid.log 2>/dev/null) >/dev/null 2>&1
@@ -38,7 +38,6 @@ elif [[ "$1" == "list" ]]; then
 cat ./as/list.txt
 exit
 fi
-mkdir -p ./as
 warpcheck(){
 wgcfv6=$(curl -s6m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 wgcfv4=$(curl -s4m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
