@@ -159,8 +159,7 @@ else
 echo "Argo$name隧道申请失败，请卸载重装，稍后再试" && exit
 fi
 if ( find /proc/*/exe -type l 2>/dev/null | grep -q 'as/s' || pgrep -f 'as/s' &>/dev/null ) && \
-   ( find /proc/*/exe -type l 2>/dev/null | grep -q 'as/c' || pgrep -f 'as/c' &>/dev/null ); then
-fi   
+   ( find /proc/*/exe -type l 2>/dev/null | grep -q 'as/c' || pgrep -f 'as/c' &>/dev/null ); then 
 [ -f ~/.bashrc ] || touch ~/.bashrc
 sed -i '/yonggekkk/d' ~/.bashrc
 echo "if { ! ( find /proc/*/exe -type l 2>/dev/null | grep -q 'as/s' || pgrep -f 'as/s' &>/dev/null ) } || { ! ( find /proc/*/exe -type l 2>/dev/null | grep -q 'as/c' || pgrep -f 'as/c' &>/dev/null ) }; then export uuid=\"${uuid}\" vmpt=\"${port_vm_ws}\" agn=\"${ARGO_DOMAIN}\" agk=\"${ARGO_AUTH}\"; bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh); fi" >> ~/.bashrc
