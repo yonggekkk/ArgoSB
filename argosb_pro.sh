@@ -219,13 +219,16 @@ echo "Argo$name隧道申请失败，请稍后再试"
 fi
 fi
 
-sbpid=$(cat ./aspro/sbpid.log 2>/dev/null) 
-sbpidp=$(cat /proc/$sbpid/status 2>/dev/null)
+pidshow
 if [ -n "$sbpidp" ] || ps -p "$sbpid" > /dev/null 2>&1; then
 [ -f ~/.bashrc ] || touch ~/.bashrc
 
 sed -i '/yonggekkk/d' ~/.bashrc
-echo "ip=${ipsw} argo=${argo} uuid=${uuid} vlpt=${port_vl_re} vmpt=${port_vm_ws} hypt=${port_hy2} tupt=${port_tu} reym=${ym_vl_re} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb_pro.sh)" >> ~/.bashrc
+#echo "export ip=${ipsw} argo=${argo} uuid=${uuid} vlpt=${port_vl_re} vmpt=${port_vm_ws} hypt=${port_hy2} tupt=${port_tu} reym=${ym_vl_re} agn=${ARGO_DOMAIN} agk=${ARGO_AUTH} && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb_pro.sh)" >> ~/.bashrc
+
+echo 'sbpid=$(cat ./aspro/sbpid.log 2>/dev/null); sbpidp=$(cat /proc/$sbpid/status 2>/dev/null); if [ -z "$sbpidp" ] && ! ps -p "$sbpid" > /dev/null 2>&1; then export ip="${ipsw}" argo="${argo}" uuid="${uuid}" vlpt="${port_vl_re}" vmpt="${port_vm_ws}" hypt="${hypt}" tupt="${tupt}" reym="${ym_vl_re}" agn="${ARGO_DOMAIN}" agk="${ARGO_AUTH}"; bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb_pro.sh); fi' >> ~/.bashrc
+
+
 COMMAND="asp"
 SCRIPT_PATH="$HOME/bin/$COMMAND"
 mkdir -p "$HOME/bin"
@@ -245,7 +248,6 @@ if [[ -n $argo ]]; then
 if [[ -n "${ARGO_DOMAIN}" && -n "${ARGO_AUTH}" ]]; then
 echo '@reboot /bin/bash -c "nohup ./aspro/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token $(cat ./aspro/sbargotoken.log 2>/dev/null) >/dev/null 2>&1 & pid=\$! && echo \$pid > ./aspro/sbargopid.log"' >> /tmp/crontab.tmp
 else
-#echo '@reboot /bin/bash -c "nohup ./aspro/cloudflared tunnel --url http://localhost:$(grep "listen_port" ./aspro/sb.json | grep -oP '\d+' | sed -n '2p') --edge-ip-version auto --no-autoupdate --protocol http2 > ./aspro/argo.log 2>&1 & pid=\$! && echo \$pid > ./aspro/sbargopid.log"' >> /tmp/crontab.tmp
 echo '@reboot /bin/bash -c "nohup ./aspro/cloudflared tunnel --url http://localhost:$(grep "listen_port" ./aspro/sb.json | grep -oP '\''\d+'\'' | sed -n '\''2p'\'') --edge-ip-version auto --no-autoupdate --protocol http2 > ./aspro/argo.log 2>&1 & pid=\$! && echo \$pid > ./aspro/sbargopid.log"' >> /tmp/crontab.tmp
 fi
 fi
@@ -417,8 +419,7 @@ echo "配置切换完成"
 exit
 fi
 
-sbpid=$(cat ./aspro/sbpid.log 2>/dev/null) 
-sbpidp=$(cat /proc/$sbpid/status 2>/dev/null)
+pidshow
 if [ -z "$sbpidp" ] && ! ps -p "$sbpid" > /dev/null 2>&1; then
 kill -15 $(cat ./aspro/sbargopid.log 2>/dev/null) >/dev/null 2>&1
 kill -15 $(cat ./aspro/sbpid.log 2>/dev/null) >/dev/null 2>&1
