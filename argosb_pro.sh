@@ -224,12 +224,10 @@ SCRIPT_PATH="$HOME/bin/$COMMAND"
 mkdir -p "$HOME/bin"
 curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb_pro.sh > "$SCRIPT_PATH"
 chmod +x "$SCRIPT_PATH"
-
 sed -i '/export PATH="\$HOME\/bin:\$PATH"/d' ~/.bashrc
 echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
 grep -qxF 'source ~/.bashrc' ~/.bash_profile 2>/dev/null || echo 'source ~/.bashrc' >> ~/.bash_profile
 source ~/.bashrc
-
 crontab -l > /tmp/crontab.tmp 2>/dev/null
 sed -i '/aspro\/sing-box/d' /tmp/crontab.tmp
 echo '@reboot /bin/bash -c "nohup $HOME/aspro/sing-box run -c $HOME/aspro/sb.json >/dev/null 2>&1 &"' >> /tmp/crontab.tmp
@@ -239,7 +237,6 @@ if [[ -n "${ARGO_DOMAIN}" && -n "${ARGO_AUTH}" ]]; then
 echo '@reboot /bin/bash -c "nohup $HOME/aspro/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token $(cat $HOME/aspro/sbargotoken.log 2>/dev/null) >/dev/null 2>&1 &"' >> /tmp/crontab.tmp
 else
 echo '@reboot /bin/bash -c "nohup $HOME/aspro/cloudflared tunnel --url http://localhost:$(grep "listen_port" $HOME/aspro/sb.json | grep -oP '\''\d+'\'' | sed -n '\''2p'\'') --edge-ip-version auto --no-autoupdate --protocol http2 > $HOME/aspro/argo.log 2>&1 &"' >> /tmp/crontab.tmp
-#echo '@reboot /bin/bash -c "sleep 10 && PORT=$(grep "listen_port" $HOME/aspro/sb.json | grep -oP '\''\d+'\'' | sed -n '\''2p'\'') && nohup $HOME/aspro/cloudflared tunnel --url http://localhost:$PORT --edge-ip-version auto --no-autoupdate --protocol http2 > $HOME/aspro/argo.log 2>&1 &"' >> /tmp/crontab.tmp
 fi
 fi
 crontab /tmp/crontab.tmp 2>/dev/null
@@ -340,10 +337,10 @@ vma_link12="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-argo-$hostname-20
 echo "$vma_link12" >> $HOME/aspro/jh.txt
 vma_link13="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-argo-$hostname-2095\", \"add\": \"[2400:cb00:2049::]\", \"port\": \"2095\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
 echo "$vma_link13" >> $HOME/aspro/jh.txt
-line5=$(sed -n '5p' aspro/jh.txt)
-line10=$(sed -n '10p' aspro/jh.txt)
-line11=$(sed -n '11p' aspro/jh.txt)
-line17=$(sed -n '17p' aspro/jh.txt)
+line5=$(sed -n '5p' $HOME/aspro/jh.txt)
+line10=$(sed -n '10p' $HOME/aspro/jh.txt)
+line11=$(sed -n '11p' $HOME/aspro/jh.txt)
+line17=$(sed -n '17p' $HOME/aspro/jh.txt)
 sbtk=$(cat $HOME/aspro/sbargotoken.log 2>/dev/null)
 if [ -n "$sbtk" ]; then
 nametn="当前Argo固定隧道token：$sbtk"
