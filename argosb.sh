@@ -19,7 +19,7 @@ aarch64) cpu=arm64;;
 x86_64) cpu=amd64;;
 *) echo "目前脚本不支持$(uname -m)架构" && exit
 esac
-mkdir -p ./as
+mkdir -p $HOME/as
 if [[ "$1" == "del" ]]; then
 pkill -x sing-box
 pkill -x cloudflared
@@ -31,11 +31,11 @@ sed -i '/as\/sing-box/d' /tmp/crontab.tmp
 sed -i '/as\/cloudflared/d' /tmp/crontab.tmp
 crontab /tmp/crontab.tmp 2>/dev/null
 rm /tmp/crontab.tmp
-rm -rf ./as ./bin/as
+rm -rf $HOME/as $HOME/bin/as
 echo "卸载完成"
 exit
 elif [[ "$1" == "list" ]]; then
-cat ./as/list.txt
+cat $HOME/as/list.txt
 exit
 fi
 warpcheck(){
@@ -75,21 +75,21 @@ echo "卸载脚本：as或者脚本 del"
 exit
 fi
 
-if [ ! -e ./as/sing-box ]; then
-curl -L -o ./as/sing-box  -# --retry 2 https://github.com/yonggekkk/ArgoSB/releases/download/singbox/sing-box-$cpu
-chmod +x ./as/sing-box
-sbcore=$(./as/sing-box version 2>/dev/null | awk '/version/{print $NF}')
+if [ ! -e $HOME/as/sing-box ]; then
+curl -L -o $HOME/as/sing-box  -# --retry 2 https://github.com/yonggekkk/ArgoSB/releases/download/singbox/sing-box-$cpu
+chmod +x $HOME/as/sing-box
+sbcore=$($HOME/as/sing-box version 2>/dev/null | awk '/version/{print $NF}')
 echo "已安装Sing-box正式版内核：$sbcore"
 fi
 if [ -z $port_vm_ws ]; then
 port_vm_ws=$(shuf -i 10000-65535 -n 1)
 fi
 if [ -z $uuid ]; then
-uuid=$(./as/sing-box generate uuid)
+uuid=$($HOME/as/sing-box generate uuid)
 fi
 echo "当前vmess主协议端口：$port_vm_ws"
 echo "当前uuid密码：$uuid"
-cat > ./as/sb.json <<EOF
+cat > $HOME/as/sb.json <<EOF
 {
 "log": {
     "disabled": false,
@@ -117,8 +117,8 @@ cat > ./as/sb.json <<EOF
         "tls":{
                 "enabled": false,
                 "server_name": "www.bing.com",
-                "certificate_path": "./as/cert.pem",
-                "key_path": "./as/private.key"
+                "certificate_path": "$HOME/as/cert.pem",
+                "key_path": "$HOME/as/private.key"
             }
     }
     ],
@@ -130,28 +130,28 @@ cat > ./as/sb.json <<EOF
 ]
 }
 EOF
-nohup ./as/sing-box run -c ./as/sb.json >/dev/null 2>&1 &
-if [ ! -e ./as/cloudflared ]; then
+nohup $HOME/as/sing-box run -c $HOME/as/sb.json >/dev/null 2>&1 &
+if [ ! -e $HOME/as/cloudflared ]; then
 argocore=$(curl -Ls https://data.jsdelivr.com/v1/package/gh/cloudflare/cloudflared | grep -Eo '"[0-9.]+",' | sed -n 1p | tr -d '",')
 echo "下载cloudflared-argo最新正式版内核：$argocore"
-curl -L -o ./as/cloudflared -# --retry 2 https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-$cpu
-chmod +x ./as/cloudflared
+curl -L -o $HOME/as/cloudflared -# --retry 2 https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-$cpu
+chmod +x $HOME/as/cloudflared
 fi
 if [[ -n "${ARGO_DOMAIN}" && -n "${ARGO_AUTH}" ]]; then
 name='固定'
-nohup ./as/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token ${ARGO_AUTH} >/dev/null 2>&1 &
-echo ${ARGO_DOMAIN} > ./as/sbargoym.log
-echo ${ARGO_AUTH} > ./as/sbargotoken.log
+nohup $HOME/as/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token ${ARGO_AUTH} >/dev/null 2>&1 &
+echo ${ARGO_DOMAIN} > $HOME/as/sbargoym.log
+echo ${ARGO_AUTH} > $HOME/as/sbargotoken.log
 else
 name='临时'
-nohup ./as/cloudflared tunnel --url http://localhost:${port_vm_ws} --edge-ip-version auto --no-autoupdate --protocol http2 > ./as/argo.log 2>&1 &
+nohup $HOME/as/cloudflared tunnel --url http://localhost:${port_vm_ws} --edge-ip-version auto --no-autoupdate --protocol http2 > $HOME/as/argo.log 2>&1 &
 fi
 echo "申请Argo$name隧道中……请稍等"
 sleep 8
 if [[ -n "${ARGO_DOMAIN}" && -n "${ARGO_AUTH}" ]]; then
-argodomain=$(cat ./as/sbargoym.log 2>/dev/null)
+argodomain=$(cat $HOME/as/sbargoym.log 2>/dev/null)
 else
-argodomain=$(cat ./as/argo.log 2>/dev/null | grep -a trycloudflare.com | awk 'NR==2{print}' | awk -F// '{print $2}' | awk '{print $1}')
+argodomain=$(cat $HOME/as/argo.log 2>/dev/null | grep -a trycloudflare.com | awk 'NR==2{print}' | awk -F// '{print $2}' | awk '{print $1}')
 fi
 if [[ -n "${argodomain}" ]]; then
 echo "Argo$name隧道申请成功，域名为：$argodomain"
@@ -174,12 +174,12 @@ grep -qxF 'source ~/.bashrc' ~/.bash_profile 2>/dev/null || echo 'source ~/.bash
 source ~/.bashrc
 crontab -l > /tmp/crontab.tmp 2>/dev/null
 sed -i '/as\/sing-box/d' /tmp/crontab.tmp
-echo '@reboot /bin/bash -c "nohup ./as/sing-box run -c ./as/sb.json >/dev/null 2>&1 &"' >> /tmp/crontab.tmp
+echo '@reboot /bin/bash -c "nohup $HOME/as/sing-box run -c $HOME/as/sb.json >/dev/null 2>&1 &"' >> /tmp/crontab.tmp
 sed -i '/as\/cloudflared/d' /tmp/crontab.tmp
 if [[ -n "${ARGO_DOMAIN}" && -n "${ARGO_AUTH}" ]]; then
-echo '@reboot /bin/bash -c "nohup ./as/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token $(cat ./as/sbargotoken.log 2>/dev/null) >/dev/null 2>&1 &"' >> /tmp/crontab.tmp
+echo '@reboot /bin/bash -c "nohup $HOME/as/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token $(cat $HOME/as/sbargotoken.log 2>/dev/null) >/dev/null 2>&1 &"' >> /tmp/crontab.tmp
 else
-echo '@reboot /bin/bash -c "nohup ./as/cloudflared tunnel --url http://localhost:$(grep "listen_port" ./as/sb.json | grep -oP '\''\d+'\'' | sed -n '\''1p'\'') --edge-ip-version auto --no-autoupdate --protocol http2 > ./as/argo.log 2>&1 &"' >> /tmp/crontab.tmp
+echo '@reboot /bin/bash -c "nohup $HOME/as/cloudflared tunnel --url http://localhost:$(grep "listen_port" $HOME/as/sb.json | grep -oP '\''\d+'\'' | sed -n '\''1p'\'') --edge-ip-version auto --no-autoupdate --protocol http2 > $HOME/as/argo.log 2>&1 &"' >> /tmp/crontab.tmp
 fi
 crontab /tmp/crontab.tmp 2>/dev/null
 rm /tmp/crontab.tmp
@@ -188,41 +188,41 @@ else
 echo "ArgoSB脚本进程未启动，安装失败，请卸载重装" && exit
 fi
 vmatls_link1="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-tls-argo-$hostname-443\", \"add\": \"104.16.0.0\", \"port\": \"443\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"tls\", \"sni\": \"$argodomain\", \"alpn\": \"\", \"fp\": \"\"}" | base64 -w0)"
-echo "$vmatls_link1" > ./as/jh.txt
+echo "$vmatls_link1" > $HOME/as/jh.txt
 vmatls_link2="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-tls-argo-$hostname-8443\", \"add\": \"104.17.0.0\", \"port\": \"8443\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"tls\", \"sni\": \"$argodomain\", \"alpn\": \"\", \"fp\": \"\"}" | base64 -w0)"
-echo "$vmatls_link2" >> ./as/jh.txt
+echo "$vmatls_link2" >> $HOME/as/jh.txt
 vmatls_link3="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-tls-argo-$hostname-2053\", \"add\": \"104.18.0.0\", \"port\": \"2053\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"tls\", \"sni\": \"$argodomain\", \"alpn\": \"\", \"fp\": \"\"}" | base64 -w0)"
-echo "$vmatls_link3" >> ./as/jh.txt
+echo "$vmatls_link3" >> $HOME/as/jh.txt
 vmatls_link4="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-tls-argo-$hostname-2083\", \"add\": \"104.19.0.0\", \"port\": \"2083\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"tls\", \"sni\": \"$argodomain\", \"alpn\": \"\", \"fp\": \"\"}" | base64 -w0)"
-echo "$vmatls_link4" >> ./as/jh.txt
+echo "$vmatls_link4" >> $HOME/as/jh.txt
 vmatls_link5="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-tls-argo-$hostname-2087\", \"add\": \"104.20.0.0\", \"port\": \"2087\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"tls\", \"sni\": \"$argodomain\", \"alpn\": \"\", \"fp\": \"\"}" | base64 -w0)"
-echo "$vmatls_link5" >> ./as/jh.txt
+echo "$vmatls_link5" >> $HOME/as/jh.txt
 vmatls_link6="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-tls-argo-$hostname-2096\", \"add\": \"[2606:4700::0]\", \"port\": \"2096\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"tls\", \"sni\": \"$argodomain\", \"alpn\": \"\", \"fp\": \"\"}" | base64 -w0)"
-echo "$vmatls_link6" >> ./as/jh.txt
+echo "$vmatls_link6" >> $HOME/as/jh.txt
 vma_link7="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-argo-$hostname-80\", \"add\": \"104.21.0.0\", \"port\": \"80\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
-echo "$vma_link7" >> ./as/jh.txt
+echo "$vma_link7" >> $HOME/as/jh.txt
 vma_link8="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-argo-$hostname-8080\", \"add\": \"104.22.0.0\", \"port\": \"8080\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
-echo "$vma_link8" >> ./as/jh.txt
+echo "$vma_link8" >> $HOME/as/jh.txt
 vma_link9="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-argo-$hostname-8880\", \"add\": \"104.24.0.0\", \"port\": \"8880\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
-echo "$vma_link9" >> ./as/jh.txt
+echo "$vma_link9" >> $HOME/as/jh.txt
 vma_link10="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-argo-$hostname-2052\", \"add\": \"104.25.0.0\", \"port\": \"2052\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
-echo "$vma_link10" >> ./as/jh.txt
+echo "$vma_link10" >> $HOME/as/jh.txt
 vma_link11="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-argo-$hostname-2082\", \"add\": \"104.26.0.0\", \"port\": \"2082\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
-echo "$vma_link11" >> ./as/jh.txt
+echo "$vma_link11" >> $HOME/as/jh.txt
 vma_link12="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-argo-$hostname-2086\", \"add\": \"104.27.0.0\", \"port\": \"2086\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
-echo "$vma_link12" >> ./as/jh.txt
+echo "$vma_link12" >> $HOME/as/jh.txt
 vma_link13="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vmess-ws-argo-$hostname-2095\", \"add\": \"[2400:cb00:2049::]\", \"port\": \"2095\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
-echo "$vma_link13" >> ./as/jh.txt
-line1=$(sed -n '1p' ./as/jh.txt)
-line6=$(sed -n '6p' ./as/jh.txt)
-line7=$(sed -n '7p' ./as/jh.txt)
-line13=$(sed -n '13p' ./as/jh.txt)
-sbtk=$(cat ./as/sbargotoken.log 2>/dev/null)
+echo "$vma_link13" >> $HOME/as/jh.txt
+line1=$(sed -n '1p' $HOME/as/jh.txt)
+line6=$(sed -n '6p' $HOME/as/jh.txt)
+line7=$(sed -n '7p' $HOME/as/jh.txt)
+line13=$(sed -n '13p' $HOME/as/jh.txt)
+sbtk=$(cat $HOME/as/sbargotoken.log 2>/dev/null)
 if [ -n "$sbtk" ]; then
 nametn="当前Argo固定隧道token：$sbtk"
 fi
-jh_txt=$(cat ./as/jh.txt)
-cat > ./as/list.txt <<EOF
+jh_txt=$(cat $HOME/as/jh.txt)
+cat > $HOME/as/list.txt <<EOF
 ---------------------------------------------------------
 ---------------------------------------------------------
 ---------------------------------------------------------
@@ -253,4 +253,4 @@ Argo节点13个端口聚合节点配置输出：请查看as/jh.txt文件或者�
 卸载脚本：as或者脚本 del
 ---------------------------------------------------------
 EOF
-cat ./as/list.txt
+cat $HOME/as/list.txt
