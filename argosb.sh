@@ -42,8 +42,8 @@ warpcheck(){
 wgcfv6=$(curl -s6m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 wgcfv4=$(curl -s4m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 }
-if { ! ( find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'as/s' || pgrep -f 'as/s' &>/dev/null ) } || \
-   { ! ( find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'as/c' || pgrep -f 'as/c' &>/dev/null ) }; then
+if { ! ( find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'as/s' || pgrep -f 'as/s' >/dev/null 2>&1 ) } || \
+   { ! ( find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'as/c' || pgrep -f 'as/c' >/dev/null 2>&1 ) }; then
 pkill -x sing-box
 pkill -x cloudflared
 v4orv6(){
@@ -158,11 +158,11 @@ echo "Argo$name隧道申请成功，域名为：$argodomain"
 else
 echo "Argo$name隧道申请失败，请卸载重装，稍后再试" && exit
 fi
-if ( find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'as/s' || pgrep -f 'as/s' &>/dev/null ) && \
-   ( find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'as/c' || pgrep -f 'as/c' &>/dev/null ); then 
+if ( find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'as/s' || pgrep -f 'as/s' >/dev/null 2>&1 ) && \
+   ( find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'as/c' || pgrep -f 'as/c' >/dev/null 2>&1 ); then 
 [ -f ~/.bashrc ] || touch ~/.bashrc
 sed -i '/yonggekkk/d' ~/.bashrc
-echo "if { ! ( find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'as/s' || pgrep -f 'as/s' &>/dev/null ) } || { ! ( find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'as/c' || pgrep -f 'as/c' &>/dev/null ) }; then export uuid=\"${uuid}\" vmpt=\"${port_vm_ws}\" agn=\"${ARGO_DOMAIN}\" agk=\"${ARGO_AUTH}\"; bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh); fi" >> ~/.bashrc
+echo "if { ! ( find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'as/s' || pgrep -f 'as/s' >/dev/null 2>&1 ) } || { ! ( find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'as/c' || pgrep -f 'as/c' >/dev/null 2>&1 ) }; then export uuid=\"${uuid}\" vmpt=\"${port_vm_ws}\" agn=\"${ARGO_DOMAIN}\" agk=\"${ARGO_AUTH}\"; bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh); fi" >> ~/.bashrc
 COMMAND="as"
 SCRIPT_PATH="$HOME/bin/$COMMAND"
 mkdir -p "$HOME/bin"
