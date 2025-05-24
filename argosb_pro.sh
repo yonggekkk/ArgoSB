@@ -215,10 +215,10 @@ echo "Argo$name隧道申请失败，请稍后再试"
 fi
 fi
 
-if ( find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'aspro/s' ) || ( ps aux 2>/dev/null | grep -q '[a]spro/s' ); then
+if ( find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'aspro/s' ) || ( pgrep -f 'aspro/s' &>/dev/null ); then
 [ -f ~/.bashrc ] || touch ~/.bashrc
 sed -i '/yonggekkk/d' ~/.bashrc
-echo "if ! ( find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'aspro/s' ) && ! ( ps aux 2>/dev/null | grep -q '[a]spro/s' ); then export ip=\"${ipsw}\" argo=\"${argo}\" uuid=\"${uuid}\" vlpt=\"${port_vl_re}\" vmpt=\"${port_vm_ws}\" hypt=\"${port_hy2}\" tupt=\"${port_tu}\" reym=\"${ym_vl_re}\" agn=\"${ARGO_DOMAIN}\" agk=\"${ARGO_AUTH}\"; bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb_pro.sh); fi" >> ~/.bashrc
+echo "if ! ( find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'aspro/s' ) && ! ( pgrep -f 'aspro/s' &>/dev/null ); then export ip=\"${ipsw}\" argo=\"${argo}\" uuid=\"${uuid}\" vlpt=\"${port_vl_re}\" vmpt=\"${port_vm_ws}\" hypt=\"${port_hy2}\" tupt=\"${port_tu}\" reym=\"${ym_vl_re}\" agn=\"${ARGO_DOMAIN}\" agk=\"${ARGO_AUTH}\"; bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb_pro.sh); fi" >> ~/.bashrc
 COMMAND="asp"
 SCRIPT_PATH="$HOME/bin/$COMMAND"
 mkdir -p "$HOME/bin"
@@ -409,7 +409,7 @@ echo "配置切换完成"
 exit
 fi
 
-if ! ( find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'aspro/s' ) && ! ( ps aux 2>/dev/null | grep -q '[a]spro/s' ); then
+if ! ( find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'aspro/s' ) && ! ( pgrep -f 'aspro/s' &>/dev/null ); then
 pkill -x sing-box
 pkill -x cloudflared
 v4orv6(){
