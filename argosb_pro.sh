@@ -175,6 +175,23 @@ cat > $HOME/aspro/sb.json <<EOF
                 "key_path": "$HOME/aspro/private.key"
             }
         }
+  //      ,{
+   //         "type":"anytls",
+    //        "tag":"anytls-sb",
+     //       "listen":"::",
+     //       "listen_port":${port_an},
+      //      "users":[
+       //         {
+      //              "password":"${uuid}"
+        //        }
+        //    ],
+        //    "padding_scheme":[],
+         //   "tls":{
+         //       "enabled":true,
+         //       "certificate_path":"$HOME/aspro/cert.pem",
+          //      "key_path":"$HOME/aspro/private.key"
+           // }
+      //  }       
     ],
 "outbounds": [
 {
