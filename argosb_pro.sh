@@ -348,7 +348,7 @@ sbtk=$(cat $HOME/aspro/sbargotoken.log 2>/dev/null)
 if [ -n "$sbtk" ]; then
 nametn="当前Argo固定隧道token：$sbtk"
 fi
-argoshow=$(echo -e "Vmess主协议端口(Argo固定隧道端口)：$port_vm_ws\n当前Argo$name域名：$argodomain\n$nametn\n\n1、443端口的vmess-ws-tls-argo节点，默认优选IPV4：104.16.0.0\n$line5\n\n2、2096端口的vmess-ws-tls-argo节点，默认优选IPV6：[2606:4700::]（本地网络支持IPV6才可用）\n$line10\n\n3、80端口的vmess-ws-argo节点，默认优选IPV4：104.21.0.0\n$line11\n\n4、2095端口的vmess-ws-argo节点，默认优选IPV6：[2400:cb00:2049::]（本地网络支持IPV6才可用）\n$line17\n")
+argoshow=$(echo -e "Vmess主协议端口(Argo固定隧道端口)：$port_vm_ws\n当前Argo$name域名：$argodomain\n$nametn\n\n1、443端口的vmess-ws-tls-argo节点，默认优选IPV4：104.16.0.0\n$line5\n\n2、2096端口的vmess-ws-tls-argo节点，默认优选IPV6：[2606:4700::0]（本地网络支持IPV6才可用）\n$line10\n\n3、80端口的vmess-ws-argo节点，默认优选IPV4：104.21.0.0\n$line11\n\n4、2095端口的vmess-ws-argo节点，默认优选IPV6：[2400:cb00:2049::0]（本地网络支持IPV6才可用）\n$line17\n")
 fi
 jh_txt=$(cat $HOME/aspro/jh.txt)
 home=$HOME
