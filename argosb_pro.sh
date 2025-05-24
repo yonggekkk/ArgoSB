@@ -74,9 +74,6 @@ echo "Hysteria-2端口：$port_hy2"
 echo "Tuic-v5端口：$port_tu"
 echo "当前uuid密码：$uuid"
 echo "当前reality域名：$ym_vl_re"
-echo "当前reality pr key：$private_key"
-echo "当前reality pu key：$public_key"
-echo "当前reality id：$short_id"
 cat > $HOME/aspro/sb.json <<EOF
 {
 "log": {
