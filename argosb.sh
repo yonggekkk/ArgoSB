@@ -21,8 +21,7 @@ x86_64) cpu=amd64;;
 esac
 mkdir -p $HOME/as
 if [[ "$1" == "del" ]]; then
-pkill -x sing-box
-pkill -x cloudflared
+for P in /proc/[0-9]*; do if [ -L "$P/exe" ]; then TARGET=$(readlink -f "$P/exe" 2>/dev/null); if [[ "$TARGET" == *"/as/c"* || "$TARGET" == *"/as/s"* ]]; then PID=$(basename "$P"); kill "$PID" 2>/dev/null && echo "Killed $PID ($TARGET)" || echo "Could not kill $PID ($TARGET)"; fi; fi; done
 sed -i '/yonggekkk/d' ~/.bashrc
 sed -i '/export PATH="\$HOME\/bin:\$PATH"/d' ~/.bashrc
 source ~/.bashrc
@@ -44,8 +43,7 @@ wgcfv4=$(curl -s4m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cu
 }
 if { ! ( find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'as/s' || pgrep -f 'as/s' >/dev/null 2>&1 ) } || \
    { ! ( find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'as/c' || pgrep -f 'as/c' >/dev/null 2>&1 ) }; then
-pkill -x sing-box
-pkill -x cloudflared
+for P in /proc/[0-9]*; do if [ -L "$P/exe" ]; then TARGET=$(readlink -f "$P/exe" 2>/dev/null); if [[ "$TARGET" == *"/as/c"* || "$TARGET" == *"/as/s"* ]]; then PID=$(basename "$P"); kill "$PID" 2>/dev/null && echo "Killed $PID ($TARGET)" || echo "Could not kill $PID ($TARGET)"; fi; fi; done
 v4orv6(){
 if [ -z $(curl -s4m5 icanhazip.com -k) ]; then
 echo -e "nameserver 2a00:1098:2b::1\nnameserver 2a00:1098:2c::1\nnameserver 2a01:4f8:c2c:123f::1" > /etc/resolv.conf
