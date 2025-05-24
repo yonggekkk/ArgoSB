@@ -351,11 +351,12 @@ fi
 argoshow=$(echo -e "Vmess主协议端口(Argo固定隧道端口)：$port_vm_ws\n当前Argo$name域名：$argodomain\n$nametn\n\n1、443端口的vmess-ws-tls-argo节点，默认优选IPV4：104.16.0.0\n$line5\n\n2、2096端口的vmess-ws-tls-argo节点，默认优选IPV6：[2606:4700::]（本地网络支持IPV6才可用）\n$line10\n\n3、80端口的vmess-ws-argo节点，默认优选IPV4：104.21.0.0\n$line11\n\n4、2095端口的vmess-ws-argo节点，默认优选IPV6：[2400:cb00:2049::]（本地网络支持IPV6才可用）\n$line17\n")
 fi
 jh_txt=$(cat $HOME/aspro/jh.txt)
+home=$HOME
 cat > $HOME/aspro/list.txt <<EOF
 ---------------------------------------------------------
 ---------------------------------------------------------
 ---------------------------------------------------------
-以下节点信息内容，请查看aspro/list.txt文件或者运行cat aspro/jh.txt进行复制
+以下节点信息内容，请查看$home/aspro/list.txt文件或者运行cat $home/aspro/jh.txt进行复制
 ---------------------------------------------------------
 
 节点配置输出：
@@ -374,7 +375,7 @@ $tuic5_link
 ---------------------------------------------------------
 $argoshow
 ---------------------------------------------------------
-聚合节点信息，请查看aspro/jh.txt文件或者运行cat aspro/jh.txt进行复制
+聚合节点信息，请查看$home/aspro/jh.txt文件或者运行cat $home/aspro/jh.txt进行复制
 ---------------------------------------------------------
 相关快捷方式如下：
 显示节点信息：asp或者脚本 list
