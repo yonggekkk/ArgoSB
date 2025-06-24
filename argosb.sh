@@ -338,7 +338,7 @@ cat > "$HOME/agsb/xr.json" <<EOF
         "security": "reality",
         "realitySettings": {
           "fingerprint": "chrome",
-          "target": "${ym_vl_re}",
+          "target": "${ym_vl_re}:443",
           "serverNames": [
             "${ym_vl_re}"
           ],
