@@ -48,10 +48,12 @@ wgcfv6=$(curl -s6m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cu
 wgcfv4=$(curl -s4m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 }
 insuuid(){
+if [ -z "$uuid" ]; then
 if [ -e "$HOME/agsb/sing-box" ]; then
 uuid=$("$HOME/agsb/sing-box" generate uuid)
 else
 uuid=$("$HOME/agsb/xray" uuid)
+fi
 fi
 echo "$uuid" > "$HOME/agsb/uuid"
 echo "UUID密码：$uuid"
