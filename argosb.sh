@@ -47,6 +47,15 @@ warpcheck(){
 wgcfv6=$(curl -s6m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 wgcfv4=$(curl -s4m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 }
+insuuid(){
+if [ -e "$HOME/agsb/sing-box" ]; then
+uuid=$("$HOME/agsb/sing-box" generate uuid)
+else
+uuid=$("$HOME/agsb/xray" uuid)
+fi
+echo "$uuid" > "$HOME/agsb/uuid"
+echo "UUID密码：$uuid"
+}
 ins(){
 if [ "$vlp" = yes ] || [ "$vmp" = yes ] || [ "$hyp" = yes ] || [ "$tup" = yes ] || [ "$anp" = yes ]; then
 if [ ! -e "$HOME/agsb/sing-box" ]; then
@@ -64,11 +73,7 @@ cat > "$HOME/agsb/sb.json" <<EOF
   },
   "inbounds": [
 EOF
-if [ -z "$uuid" ]; then
-uuid=$("$HOME/agsb/sing-box" generate uuid)
-fi
-echo "$uuid" > "$HOME/agsb/uuid"
-echo "UUID密码：$uuid"
+insuuid
 command -v openssl >/dev/null 2>&1 && openssl ecparam -genkey -name prime256v1 -out "$HOME/agsb/private.key" >/dev/null 2>&1
 command -v openssl >/dev/null 2>&1 && openssl req -new -x509 -days 36500 -key "$HOME/agsb/private.key" -out "$HOME/agsb/cert.pem" -subj "/CN=www.bing.com" >/dev/null 2>&1
 if [ ! -f "$HOME/agsb/private.key" ]; then
@@ -282,6 +287,7 @@ chmod +x "$HOME/agsb/xray"
 sbcore=$("$HOME/agsb/xray" version 2>/dev/null | awk '/^Xray/{print $2}')
 echo "已安装Xray正式版内核：$sbcore"
 fi
+insuuid
 if [ -z "$port_xh" ]; then
 port_xh=$(shuf -i 10000-65535 -n 1)
 fi
