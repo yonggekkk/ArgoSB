@@ -236,7 +236,7 @@ if [ -z "$port_an" ]; then
 port_an=$(shuf -i 10000-65535 -n 1)
 fi
 echo "$port_an" > "$HOME/agsb/port_an"
-echo "Anytls端口：$port_tu"
+echo "Anytls端口：$port_an"
 cat >> "$HOME/agsb/sb.json" <<EOF
         {
             "type":"anytls",
@@ -395,7 +395,7 @@ fi
 if find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|x)' || pgrep -f 'agsb/(s|x)' >/dev/null 2>&1 ; then
 [ -f ~/.bashrc ] || touch ~/.bashrc
 sed -i '/yonggekkk/d' ~/.bashrc
-echo "if ! find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|x)' && ! pgrep -f 'agsb/(s|x)' >/dev/null 2>&1; then export ip=\"${ipsw}\" argo=\"${argo}\" uuid=\"${uuid}\" $xhp=\"${port_xh}\" $vlp=\"${port_vl_re}\" $vmp=\"${port_vm_ws}\" $hyp=\"${port_hy2}\" $tup=\"${port_tu}\" reym=\"${ym_vl_re}\" agn=\"${ARGO_DOMAIN}\" agk=\"${ARGO_AUTH}\"; sh <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh); fi" >> ~/.bashrc
+echo "if ! find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|x)' && ! pgrep -f 'agsb/(s|x)' >/dev/null 2>&1; then export ip=\"${ipsw}\" argo=\"${argo}\" uuid=\"${uuid}\" $xhp=\"${port_xh}\" $anp=\"${port_an}\" $vlp=\"${port_vl_re}\" $vmp=\"${port_vm_ws}\" $hyp=\"${port_hy2}\" $tup=\"${port_tu}\" reym=\"${ym_vl_re}\" agn=\"${ARGO_DOMAIN}\" agk=\"${ARGO_AUTH}\"; sh <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh); fi" >> ~/.bashrc
 COMMAND="agsb"
 SCRIPT_PATH="$HOME/bin/$COMMAND"
 mkdir -p "$HOME/bin"
@@ -496,6 +496,14 @@ short_id_x=$(cat "$HOME/agsb/xrk/short_id")
 vl_xh_link="vless://$uuid@$server_ip:$port_xh?encryption=none&security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key_x&sid=$short_id_x&type=xhttp&path=$uuid-xh&mode=auto#vl-xhttp-reality-$hostname"
 echo "$vl_xh_link" >> "$HOME/agsb/jh.txt"
 echo "$vl_xh_link"
+echo
+fi
+if [ -f "$HOME/agsb/port_an" ]; then
+echo "【 AnyTLS 】节点信息如下："
+port_an=$(cat "$HOME/agsb/port_an")
+an_link="anytls://$uuid@$server_ip:$port_an/?insecure=1#anytls-$hostname"
+echo "$an_link" >> "$HOME/agsb/jh.txt"
+echo "$an_link"
 echo
 fi
 if [ -f "$HOME/agsb/port_vl_re" ]; then
