@@ -1,6 +1,8 @@
 #!/bin/sh
 export LANG=en_US.UTF-8
-if ! find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'agsb/s' && ! pgrep -f 'agsb/s' >/dev/null 2>&1; then
+if ! find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|r)' && ! pgrep -f 'agsb/(s|r)' >/dev/null 2>&1; then
+if ! (find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|r)') && ! (command -v pgrep >/dev/null && pgrep -f 'agsb/(s|r)' >/dev/null || ps aux | grep '[a]gsb/[sr]' >/dev/null); then echo "✅ 未运行 agsb/s 或 agsb/r"; fi
+
 [ -z "${vlpt+x}" ] || vlp=yes
 [ -z "${vmpt+x}" ] || vmp=yes
 [ -z "${hypt+x}" ] || hyp=yes
