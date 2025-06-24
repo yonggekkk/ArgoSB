@@ -273,6 +273,11 @@ nohup "$HOME/agsb/sing-box" run -c "$HOME/agsb/sb.json" >/dev/null 2>&1 &
 
 
 {
+  "log": {
+    "access": "/dev/null",
+    "error": "/dev/null",
+    "loglevel": "none"
+  },
   "inbounds": [
     {
       "listen": "0.0.0.0",
@@ -299,7 +304,7 @@ nohup "$HOME/agsb/sing-box" run -c "$HOME/agsb/sb.json" >/dev/null 2>&1 &
           "shortIds": ["$(your_shortId)"]
         },
         "xhttpSettings": {
-          "host": "",
+          "host": ["a1.example.com"],
           "path": "/",
           "mode": "auto"
         }
@@ -310,8 +315,15 @@ nohup "$HOME/agsb/sing-box" run -c "$HOME/agsb/sb.json" >/dev/null 2>&1 &
         "metadataOnly": false
       }
     }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "tag": "direct"
+    }
   ]
 }
+
 
 
 nohup "$HOME/agsb/xray" run -c "$HOME/agsb/xr.json" >/dev/null 2>&1 &
