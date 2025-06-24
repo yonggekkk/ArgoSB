@@ -581,7 +581,7 @@ echo
 }
 
 if [ "$1" = "del" ]; then
-for P in /proc/[0-9]*; do if [ -L "$P/exe" ]; then TARGET=$(readlink -f "$P/exe" 2>/dev/null); if echo "$TARGET" | grep -qE '/agsb/c|/agsb/s'; then PID=$(basename "$P"); kill "$PID" 2>/dev/null && echo "Killed $PID ($TARGET)" || echo "Could not kill $PID ($TARGET)"; fi; fi; done
+for P in /proc/[0-9]*; do if [ -L "$P/exe" ]; then TARGET=$(readlink -f "$P/exe" 2>/dev/null); if echo "$TARGET" | grep -qE '/agsb/c|/agsb/s|/agsb/x'; then PID=$(basename "$P"); kill "$PID" 2>/dev/null && echo "Killed $PID ($TARGET)" || echo "Could not kill $PID ($TARGET)"; fi; fi; done
 kill -15 $(pgrep -f 'agsb/s' 2>/dev/null) $(pgrep -f 'agsb/c' 2>/dev/null) >/dev/null 2>&1
 sed -i '/yonggekkk/d' ~/.bashrc
 sed -i '/export PATH="\$HOME\/bin:\$PATH"/d' ~/.bashrc
@@ -592,20 +592,6 @@ sed -i '/agsb\/cloudflared/d' /tmp/crontab.tmp
 crontab /tmp/crontab.tmp 2>/dev/null
 rm /tmp/crontab.tmp
 rm -rf "$HOME/agsb" "$HOME/bin/agsb"
-
-kill -15 $(cat /etc/s-box-ag/sbargopid.log 2>/dev/null) >/dev/null 2>&1
-kill -15 $(cat /etc/s-box-ag/sbpid.log 2>/dev/null) >/dev/null 2>&1
-kill -15 $(cat nixag/sbargopid.log 2>/dev/null) >/dev/null 2>&1
-kill -15 $(cat nixag/sbpid.log 2>/dev/null) >/dev/null 2>&1
-crontab -l > /tmp/crontab.tmp 2>/dev/null
-sed -i '/sbargopid/d' /tmp/crontab.tmp
-sed -i '/sbpid/d' /tmp/crontab.tmp
-crontab /tmp/crontab.tmp 2>/dev/null
-rm /tmp/crontab.tmp
-rm -rf /etc/s-box-ag /usr/bin/agsb
-sed -i '/yonggekkk/d' ~/.bashrc
-. ~/.bashrc
-rm -rf nixag
 echo "卸载完成"
 exit
 elif [ "$1" = "list" ]; then
@@ -613,9 +599,9 @@ cip
 exit
 fi
 
-if ! find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'agsb/s' && ! pgrep -f 'agsb/s' >/dev/null 2>&1; then
-for P in /proc/[0-9]*; do if [ -L "$P/exe" ]; then TARGET=$(readlink -f "$P/exe" 2>/dev/null); if echo "$TARGET" | grep -qE '/agsb/c|/agsb/s'; then PID=$(basename "$P"); kill "$PID" 2>/dev/null && echo "Killed $PID ($TARGET)" || echo "Could not kill $PID ($TARGET)"; fi; fi; done
-kill -15 $(pgrep -f 'agsb/s' 2>/dev/null) $(pgrep -f 'agsb/c' 2>/dev/null) >/dev/null 2>&1
+if ! find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|x)' && ! pgrep -f 'agsb/(s|x)' >/dev/null 2>&1; then
+for P in /proc/[0-9]*; do if [ -L "$P/exe" ]; then TARGET=$(readlink -f "$P/exe" 2>/dev/null); if echo "$TARGET" | grep -qE '/agsb/c|/agsb/s|/agsb/x'; then PID=$(basename "$P"); kill "$PID" 2>/dev/null && echo "Killed $PID ($TARGET)" || echo "Could not kill $PID ($TARGET)"; fi; fi; done
+kill -15 $(pgrep -f 'agsb/s' 2>/dev/null) $(pgrep -f 'agsb/c' 2>/dev/null) $(pgrep -f 'agsb/x' 2>/dev/null) >/dev/null 2>&1
 v4orv6(){
 if [ -z "$(curl -s4m5 icanhazip.com -k)" ]; then
 echo -e "nameserver 2a00:1098:2b::1\nnameserver 2a00:1098:2c::1\nnameserver 2a01:4f8:c2c:123f::1" > /etc/resolv.conf
