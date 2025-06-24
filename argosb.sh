@@ -373,7 +373,7 @@ else
 xhp=xhptargo
 fi
 
-if [ -n "$argo" ]; then
+if [ -n "$argo" && -n "$vmp" ]; then
 if [ ! -e "$HOME/agsb/cloudflared" ]; then
 argocore=$(curl -Ls https://data.jsdelivr.com/v1/package/gh/cloudflare/cloudflared | grep -Eo '"[0-9.]+"' | sed -n 1p | tr -d '",')
 echo "下载cloudflared-argo最新正式版内核：$argocore"
