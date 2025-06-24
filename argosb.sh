@@ -5,13 +5,17 @@ if ! find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -
 [ -z "${vmpt+x}" ] || vmp=yes
 [ -z "${hypt+x}" ] || hyp=yes
 [ -z "${tupt+x}" ] || tup=yes
-[ "$vlp" = yes ] || [ "$vmp" = yes ] || [ "$hyp" = yes ] || [ "$tup" = yes ] || { echo "提示：使用此脚本时，请在脚本前至少设置一个协议变量哦，再见！"; exit; }
+[ -z "${xhpt+x}" ] || xhp=yes
+[ -z "${anpt+x}" ] || anp=yes
+[ "$vlp" = yes ] || [ "$vmp" = yes ] || [ "$hyp" = yes ] || [ "$tup" = yes ] || [ "$xhp" = yes ] || [ "$anp" = yes ] || { echo "提示：使用此脚本时，请在脚本前至少设置一个协议变量哦，再见！"; exit; }
 fi
 export uuid=${uuid:-''}
 export port_vl_re=${vlpt:-''}
 export port_vm_ws=${vmpt:-''}
 export port_hy2=${hypt:-''}
 export port_tu=${tupt:-''}
+export port_xh=${xhpt:-''}
+export port_an=${anpt:-''}
 export ym_vl_re=${reym:-''}
 export argo=${argo:-''}
 export ARGO_DOMAIN=${agn:-''}
@@ -266,6 +270,52 @@ cat >> "$HOME/agsb/sb.json" <<EOF
 }
 EOF
 nohup "$HOME/agsb/sing-box" run -c "$HOME/agsb/sb.json" >/dev/null 2>&1 &
+
+
+{
+  "inbounds": [
+    {
+      "listen": "0.0.0.0",
+      "port": 443,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "$(your_uuid)"
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "reality",
+        "realitySettings": {
+          "target": "a1.example.com",
+          "serverNames": [
+            "a1.example.com",
+            "a2.example.com"
+          ],
+          "privateKey": "$(your_privateKey)",
+          "shortIds": ["$(your_shortId)"]
+        },
+        "xhttpSettings": {
+          "host": "",
+          "path": "/",
+          "mode": "auto"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls", "quic"],
+        "metadataOnly": false
+      }
+    }
+  ]
+}
+
+
+nohup "$HOME/agsb/xray" run -c "$HOME/agsb/xr.json" >/dev/null 2>&1 &
+
 if [ -n "$argo" ]; then
 if [ ! -e "$HOME/agsb/cloudflared" ]; then
 argocore=$(curl -Ls https://data.jsdelivr.com/v1/package/gh/cloudflare/cloudflared | grep -Eo '"[0-9.]+"' | sed -n 1p | tr -d '",')
