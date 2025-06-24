@@ -85,6 +85,7 @@ if [ -z "$ym_vl_re" ]; then
 ym_vl_re=www.yahoo.com
 fi
 echo "$ym_vl_re" > "$HOME/agsb/ym_vl_re"
+mkdir -p "$HOME/agsb/sbk"
 if [ ! -e "$HOME/agsb/sbk/private_key" ]; then
 key_pair=$("$HOME/agsb/sing-box" generate reality-keypair)
 private_key=$(echo "$key_pair" | awk '/PrivateKey/ {print $2}' | tr -d '"')
@@ -289,6 +290,7 @@ if [ -z "$ym_vl_re" ]; then
 ym_vl_re=www.yahoo.com
 fi
 echo "$ym_vl_re" > "$HOME/agsb/ym_vl_re"
+mkdir -p "$HOME/agsb/xrk"
 if [ ! -e "$HOME/agsb/xrk/private_key" ]; then
 key_pair=$("$HOME/agsb/xray" x25519)
 private_key=$(echo "$key_pair" | head -1 | awk '{print $3}')
