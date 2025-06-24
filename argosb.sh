@@ -283,9 +283,8 @@ fi
 
 if [ -n "$xhp" ]; then
 xhp=xhpt
-if
 if [ "$vlp" != yes ] && [ "$vmp" != yes ] && [ "$hyp" != yes ] && [ "$tup" != yes ] && [ "$anp" != yes ]; then
-vlp="vlptargo"; vmp="vmptargo"; hyp="hyptargo"; tup="tuptargo"; anp="anptargo"; }
+vlp="vlptargo"; vmp="vmptargo"; hyp="hyptargo"; tup="tuptargo"; anp="anptargo"
 fi
 if [ ! -e "$HOME/agsb/xray" ]; then
 curl -Lo "$HOME/agsb/xray" -# --retry 2 https://github.com/yonggekkk/ArgoSB/releases/download/singbox/xray-$cpu
