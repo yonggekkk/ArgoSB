@@ -48,6 +48,9 @@ wgcfv6=$(curl -s6m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cu
 wgcfv4=$(curl -s4m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 }
 ins(){
+
+if [ "$vlp" = yes ] || [ "$vmp" = yes ] || [ "$hyp" = yes ] || [ "$tup" = yes ] || [ "$anp" = yes ]; then
+
 if [ ! -e "$HOME/agsb/sing-box" ]; then
 curl -Lo "$HOME/agsb/sing-box" -# --retry 2 https://github.com/yonggekkk/ArgoSB/releases/download/singbox/sing-box-$cpu
 chmod +x "$HOME/agsb/sing-box"
@@ -270,7 +273,9 @@ cat >> "$HOME/agsb/sb.json" <<EOF
 }
 EOF
 nohup "$HOME/agsb/sing-box" run -c "$HOME/agsb/sb.json" >/dev/null 2>&1 &
+fi
 
+if [ "$xhp" = yes ]; then
 
 {
   "log": {
@@ -281,12 +286,12 @@ nohup "$HOME/agsb/sing-box" run -c "$HOME/agsb/sb.json" >/dev/null 2>&1 &
   "inbounds": [
     {
       "listen": "0.0.0.0",
-      "port": 443,
+      "port": ${port_xh},
       "protocol": "vless",
       "settings": {
         "clients": [
           {
-            "id": "$(your_uuid)"
+            "id": "${uuid}"
           }
         ],
         "decryption": "none"
@@ -323,10 +328,8 @@ nohup "$HOME/agsb/sing-box" run -c "$HOME/agsb/sb.json" >/dev/null 2>&1 &
     }
   ]
 }
-
-
-
 nohup "$HOME/agsb/xray" run -c "$HOME/agsb/xr.json" >/dev/null 2>&1 &
+fi
 
 if [ -n "$argo" ]; then
 if [ ! -e "$HOME/agsb/cloudflared" ]; then
