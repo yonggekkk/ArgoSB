@@ -62,17 +62,65 @@ echo "$uuid" > "$HOME/agsb/uuid"
 echo "UUID密码：$uuid"
 }
 ins(){
-if [ -n "$xhp" ]; then
+if [ "$xhp" = yes ] || [ "$vmp" = yes ]; then
 echo
 echo "================================================="
-xhp=xhpt
 if [ ! -e "$HOME/agsb/xray" ]; then
 curl -Lo "$HOME/agsb/xray" -# --retry 2 https://github.com/yonggekkk/ArgoSB/releases/download/singbox/xray-$cpu
 chmod +x "$HOME/agsb/xray"
 sbcore=$("$HOME/agsb/xray" version 2>/dev/null | awk '/^Xray/{print $2}')
 echo "已安装Xray正式版内核：$sbcore"
 fi
+cat > "$HOME/agsb/xr.json" <<EOF
+{
+  "log": {
+    "access": "/dev/null",
+    "error": "/dev/null",
+    "loglevel": "none"
+  },
+  "inbounds": [
+EOF
 insuuid
+if [ -n "$vmp" ]; then
+vmp=vmpt
+if [ -z "$port_vm_ws" ]; then
+port_vm_ws=$(shuf -i 10000-65535 -n 1)
+fi
+echo "$port_vm_ws" > "$HOME/agsb/port_vm_ws"
+echo "Vmess-ws端口：$port_vm_ws"
+cat >> "$HOME/agsb/xr.json" <<EOF
+        {
+            "tag": "vmess-ws-xr",
+            "listen": "::",
+            "port": ${port_vm_ws},
+            "protocol": "vmess",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "${uuid}"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "ws",
+                "security": "none",
+                "wsSettings": {
+                  "path": "${uuid}-vm"
+            }
+        },
+            "sniffing": {
+            "enabled": true,
+            "destOverride": ["http", "tls", "quic"],
+            "metadataOnly": false
+            }
+         }, 
+EOF
+else
+vmp=vmptargo
+fi
+
+if [ -n "$xhp" ]; then
+xhp=xhpt
 if [ -z "$port_xh" ]; then
 port_xh=$(shuf -i 10000-65535 -n 1)
 fi
@@ -96,14 +144,7 @@ public_key_x=$(cat "$HOME/agsb/xrk/public_key")
 short_id_x=$(cat "$HOME/agsb/xrk/short_id")
 echo "Vless-xhttp-reality端口：$port_xh"
 echo "Reality域名：$ym_vl_re"
-cat > "$HOME/agsb/xr.json" <<EOF
-{
-  "log": {
-    "access": "/dev/null",
-    "error": "/dev/null",
-    "loglevel": "none"
-  },
-  "inbounds": [
+cat >> "$HOME/agsb/xr.json" <<EOF
     {
       "tag":"xhttp-reality",
       "listen": "::",
@@ -140,7 +181,13 @@ cat > "$HOME/agsb/xr.json" <<EOF
         "destOverride": ["http", "tls", "quic"],
         "metadataOnly": false
       }
-    }
+    },
+EOF
+else
+xhp=xhptargo
+fi
+sed -i '${s/,\s*$//}' "$HOME/agsb/xr.json"
+cat >> "$HOME/agsb/xr.json" <<EOF
   ],
   "outbounds": [
     {
@@ -152,9 +199,11 @@ cat > "$HOME/agsb/xr.json" <<EOF
 EOF
 echo "================================================="
 nohup "$HOME/agsb/xray" run -c "$HOME/agsb/xr.json" >/dev/null 2>&1 &
-else
-xhp=xhptargo
 fi
+
+
+
+
 
 if [ "$vlp" = yes ] || [ "$vmp" = yes ] || [ "$hyp" = yes ] || [ "$tup" = yes ] || [ "$anp" = yes ]; then
 echo
