@@ -106,7 +106,7 @@ cat > "$HOME/agsb/xr.json" <<EOF
   "inbounds": [
     {
       "tag":"xhttp-reality",
-      "listen": "0.0.0.0",
+      "listen": "::",
       "port": ${port_xh},
       "protocol": "vless",
       "settings": {
