@@ -423,11 +423,13 @@ nohup "$HOME/agsb/sing-box" run -c "$HOME/agsb/sb.json" >/dev/null 2>&1 &
 ins(){
 if [ "$vlp" != yes ] && [ "$hyp" != yes ] && [ "$tup" != yes ] && [ "$anp" != yes ]; then
 installxray
+vlp="vlptargo"; hyp="hyptargo"; tup="tuptargo"; anp="anptargo"
 elif [ "$xhp" != yes ]; then
 installsb
+xhp="xhptargo"
 else
-installxray
 installsb
+installxray
 fi
 }
 if [ -n "$argo" ] && [ -n "$vmp" ]; then
