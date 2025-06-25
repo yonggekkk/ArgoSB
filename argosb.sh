@@ -2,7 +2,7 @@
 export LANG=en_US.UTF-8
 if ! find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|x)' && ! pgrep -f 'agsb/(s|x)' >/dev/null 2>&1; then
 [ -z "${vlpt+x}" ] || vlp=yes
-[ -z "${vmpt+x}" ] || vmp=yes
+[ -z "${vmpt+x}" ] || { vmp=yes; vmag=yes; } 
 [ -z "${hypt+x}" ] || hyp=yes
 [ -z "${tupt+x}" ] || tup=yes
 [ -z "${xhpt+x}" ] || xhp=yes
@@ -77,43 +77,6 @@ cat > "$HOME/agsb/xr.json" <<EOF
   "inbounds": [
 EOF
 insuuid
-if [ -n "$vmp" ]; then
-vmp=vmpt
-if [ -z "$port_vm_ws" ]; then
-port_vm_ws=$(shuf -i 10000-65535 -n 1)
-fi
-echo "$port_vm_ws" > "$HOME/agsb/port_vm_ws"
-echo "Vmess-ws端口：$port_vm_ws"
-cat >> "$HOME/agsb/xr.json" <<EOF
-        {
-            "tag": "vmess-ws-xr",
-            "listen": "::",
-            "port": ${port_vm_ws},
-            "protocol": "vmess",
-            "settings": {
-                "clients": [
-                    {
-                        "id": "${uuid}"
-                    }
-                ]
-            },
-            "streamSettings": {
-                "network": "ws",
-                "security": "none",
-                "wsSettings": {
-                  "path": "${uuid}-vm"
-            }
-        },
-            "sniffing": {
-            "enabled": true,
-            "destOverride": ["http", "tls", "quic"],
-            "metadataOnly": false
-            }
-         }, 
-EOF
-else
-vmp=vmptargo
-fi
 if [ -n "$xhp" ]; then
 xhp=xhpt
 if [ -z "$port_xh" ]; then
@@ -181,19 +144,6 @@ EOF
 else
 xhp=xhptargo
 fi
-sed -i '${s/,\s*$//}' "$HOME/agsb/xr.json"
-cat >> "$HOME/agsb/xr.json" <<EOF
-  ],
-  "outbounds": [
-    {
-      "protocol": "freedom",
-      "tag": "direct"
-    }
-  ]
-}
-EOF
-echo "================================================="
-nohup "$HOME/agsb/xray" run -c "$HOME/agsb/xr.json" >/dev/null 2>&1 &
 }
 
 installsb(){
@@ -275,42 +225,6 @@ cat >> "$HOME/agsb/sb.json" <<EOF
 EOF
 else
 vlp=vlptargo
-fi
-if [ -n "$vmp" ]; then
-vmp=vmpt
-if [ -z "$port_vm_ws" ]; then
-port_vm_ws=$(shuf -i 10000-65535 -n 1)
-fi
-echo "$port_vm_ws" > "$HOME/agsb/port_vm_ws"
-echo "Vmess-ws端口：$port_vm_ws"
-cat >> "$HOME/agsb/sb.json" <<EOF
-{
-        "type": "vmess",
-        "tag": "vmess-sb",
-        "listen": "::",
-        "listen_port": ${port_vm_ws},
-        "users": [
-            {
-                "uuid": "${uuid}",
-                "alterId": 0
-            }
-        ],
-        "transport": {
-            "type": "ws",
-            "path": "${uuid}-vm",
-            "max_early_data":2048,
-            "early_data_header_name": "Sec-WebSocket-Protocol"
-        },
-        "tls":{
-                "enabled": false,
-                "server_name": "www.bing.com",
-                "certificate_path": "$HOME/agsb/cert.pem",
-                "key_path": "$HOME/agsb/private.key"
-            }
-    },
-EOF
-else
-vmp=vmptargo
 fi
 if [ -n "$hyp" ]; then
 hyp=hypt
@@ -406,6 +320,92 @@ EOF
 else
 anp=anptargo
 fi
+}
+
+xrsbvm(){
+if [ -n "$vmp" ]; then
+vmp=vmpt
+if [ -z "$port_vm_ws" ]; then
+port_vm_ws=$(shuf -i 10000-65535 -n 1)
+fi
+echo "$port_vm_ws" > "$HOME/agsb/port_vm_ws"
+echo "Vmess-ws端口：$port_vm_ws"
+if [ -e "$HOME/agsb/xray" ]; then
+cat >> "$HOME/agsb/xr.json" <<EOF
+        {
+            "tag": "vmess-xr",
+            "listen": "::",
+            "port": ${port_vm_ws},
+            "protocol": "vmess",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "${uuid}"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "ws",
+                "security": "none",
+                "wsSettings": {
+                  "path": "${uuid}-vm"
+            }
+        },
+            "sniffing": {
+            "enabled": true,
+            "destOverride": ["http", "tls", "quic"],
+            "metadataOnly": false
+            }
+         }, 
+EOF
+else
+cat >> "$HOME/agsb/sb.json" <<EOF
+{
+        "type": "vmess",
+        "tag": "vmess-sb",
+        "listen": "::",
+        "listen_port": ${port_vm_ws},
+        "users": [
+            {
+                "uuid": "${uuid}",
+                "alterId": 0
+            }
+        ],
+        "transport": {
+            "type": "ws",
+            "path": "${uuid}-vm",
+            "max_early_data":2048,
+            "early_data_header_name": "Sec-WebSocket-Protocol"
+        },
+        "tls":{
+                "enabled": false,
+                "server_name": "www.bing.com",
+                "certificate_path": "$HOME/agsb/cert.pem",
+                "key_path": "$HOME/agsb/private.key"
+            }
+    },
+EOF
+else
+vmp=vmptargo
+fi
+}
+
+xrsbout(){
+if [ -e "$HOME/agsb/xray" ]; then
+sed -i '${s/,\s*$//}' "$HOME/agsb/xr.json"
+cat >> "$HOME/agsb/xr.json" <<EOF
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "tag": "direct"
+    }
+  ]
+}
+EOF
+nohup "$HOME/agsb/xray" run -c "$HOME/agsb/xr.json" >/dev/null 2>&1 &
+fi
+if [ -e "$HOME/agsb/sing-box" ]; then
 sed -i '${s/,\s*$//}' "$HOME/agsb/sb.json"
 cat >> "$HOME/agsb/sb.json" <<EOF
 ],
@@ -417,22 +417,29 @@ cat >> "$HOME/agsb/sb.json" <<EOF
 ]
 }
 EOF
-echo "================================================="
 nohup "$HOME/agsb/sing-box" run -c "$HOME/agsb/sb.json" >/dev/null 2>&1 &
+fi
+echo "================================================="
 }
+
 ins(){
 if [ "$vlp" != yes ] && [ "$hyp" != yes ] && [ "$tup" != yes ] && [ "$anp" != yes ]; then
 installxray
+xrsbvm
+xrsbout
 vlp="vlptargo"; hyp="hyptargo"; tup="tuptargo"; anp="anptargo"
 elif [ "$xhp" != yes ]; then
 installsb
+xrsbvm
+xrsbout
 xhp="xhptargo"
 else
 installsb
 installxray
+xrsbvm
+xrsbout
 fi
-}
-if [ -n "$argo" ] && [ -n "$vmp" ]; then
+if [ -n "$argo" ] && [ -n "$vmap" ]; then
 echo
 echo "================================================="
 if [ ! -e "$HOME/agsb/cloudflared" ]; then
@@ -488,11 +495,15 @@ if find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r 
 echo '@reboot /bin/sh -c "nohup $HOME/agsb/xray run -c $HOME/agsb/xr.json >/dev/null 2>&1 &"' >> /tmp/crontab.tmp
 fi
 sed -i '/agsb\/cloudflared/d' /tmp/crontab.tmp
-if [ -n "$argo" ]; then
+if [ -n "$argo" ] && [ -n "$vmap" ]; then
 if [ -n "${ARGO_DOMAIN}" ] && [ -n "${ARGO_AUTH}" ]; then
 echo '@reboot /bin/sh -c "nohup $HOME/agsb/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token $(cat $HOME/agsb/sbargotoken.log 2>/dev/null) >/dev/null 2>&1 &"' >> /tmp/crontab.tmp
 else
+if [ -e "$HOME/agsb/xray" ]; then
+echo '@reboot /bin/sh -c "nohup $HOME/agsb/cloudflared tunnel --url http://localhost:$(grep -A2 vmess-xr $HOME/agsb/xr.json | tail -1 | tr -cd 0-9) --edge-ip-version auto --no-autoupdate --protocol http2 > $HOME/agsb/argo.log 2>&1 &"' >> /tmp/crontab.tmp
+else
 echo '@reboot /bin/sh -c "nohup $HOME/agsb/cloudflared tunnel --url http://localhost:$(grep -A2 vmess-sb $HOME/agsb/sb.json | tail -1 | tr -cd 0-9) --edge-ip-version auto --no-autoupdate --protocol http2 > $HOME/agsb/argo.log 2>&1 &"' >> /tmp/crontab.tmp
+fi
 fi
 fi
 crontab /tmp/crontab.tmp 2>/dev/null
