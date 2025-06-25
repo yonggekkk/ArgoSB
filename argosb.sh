@@ -58,28 +58,6 @@ fi
 echo "$uuid" > "$HOME/agsb/uuid"
 echo "UUID密码：$uuid"
 }
-ins(){
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 installxray(){
 echo
 echo "================================================="
@@ -217,10 +195,6 @@ EOF
 echo "================================================="
 nohup "$HOME/agsb/xray" run -c "$HOME/agsb/xr.json" >/dev/null 2>&1 &
 }
-
-
-
-
 
 installsb(){
 echo
@@ -446,7 +420,16 @@ EOF
 echo "================================================="
 nohup "$HOME/agsb/sing-box" run -c "$HOME/agsb/sb.json" >/dev/null 2>&1 &
 }
-
+ins(){
+if [ "$vlp" != yes ] && [ "$hyp" != yes ] && [ "$tup" != yes ] && [ "$anp" != yes ]; then
+installxray
+elif [ "$xhp" != yes ]; then
+installsb
+else
+installxray
+installsb
+fi
+}
 if [ -n "$argo" ] && [ -n "$vmp" ]; then
 echo
 echo "================================================="
