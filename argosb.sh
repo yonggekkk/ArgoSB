@@ -43,6 +43,9 @@ x86_64) cpu=amd64;;
 *) echo "目前脚本不支持$(uname -m)架构" && exit
 esac
 mkdir -p "$HOME/agsb"
+if [ "$vlp" != yes ] && [ "$vmp" != yes ] && [ "$hyp" != yes ] && [ "$tup" != yes ] && [ "$anp" != yes ]; then
+vlp="vlptargo"; vmp="vmptargo"; hyp="hyptargo"; tup="tuptargo"; anp="anptargo"
+fi
 warpcheck(){
 wgcfv6=$(curl -s6m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 wgcfv4=$(curl -s4m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
@@ -283,9 +286,6 @@ fi
 
 if [ -n "$xhp" ]; then
 xhp=xhpt
-if [ "$vlp" != yes ] && [ "$vmp" != yes ] && [ "$hyp" != yes ] && [ "$tup" != yes ] && [ "$anp" != yes ]; then
-vlp="vlptargo"; vmp="vmptargo"; hyp="hyptargo"; tup="tuptargo"; anp="anptargo"
-fi
 if [ ! -e "$HOME/agsb/xray" ]; then
 curl -Lo "$HOME/agsb/xray" -# --retry 2 https://github.com/yonggekkk/ArgoSB/releases/download/singbox/xray-$cpu
 chmod +x "$HOME/agsb/xray"
