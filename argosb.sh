@@ -62,7 +62,103 @@ echo "$uuid" > "$HOME/agsb/uuid"
 echo "UUID密码：$uuid"
 }
 ins(){
+if [ -n "$xhp" ]; then
+echo
+echo "================================================="
+xhp=xhpt
+if [ ! -e "$HOME/agsb/xray" ]; then
+curl -Lo "$HOME/agsb/xray" -# --retry 2 https://github.com/yonggekkk/ArgoSB/releases/download/singbox/xray-$cpu
+chmod +x "$HOME/agsb/xray"
+sbcore=$("$HOME/agsb/xray" version 2>/dev/null | awk '/^Xray/{print $2}')
+echo "已安装Xray正式版内核：$sbcore"
+fi
+insuuid
+if [ -z "$port_xh" ]; then
+port_xh=$(shuf -i 10000-65535 -n 1)
+fi
+echo "$port_xh" > "$HOME/agsb/port_xh"
+if [ -z "$ym_vl_re" ]; then
+ym_vl_re=www.yahoo.com
+fi
+echo "$ym_vl_re" > "$HOME/agsb/ym_vl_re"
+mkdir -p "$HOME/agsb/xrk"
+if [ ! -e "$HOME/agsb/xrk/private_key" ]; then
+key_pair=$("$HOME/agsb/xray" x25519)
+private_key=$(echo "$key_pair" | head -1 | awk '{print $3}')
+public_key=$(echo "$key_pair" | tail -n 1 | awk '{print $3}')
+short_id=$(date +%s%N | sha256sum | cut -c 1-8)
+echo "$private_key" > "$HOME/agsb/xrk/private_key"
+echo "$public_key" > "$HOME/agsb/xrk/public_key"
+echo "$short_id" > "$HOME/agsb/xrk/short_id"
+fi
+private_key_x=$(cat "$HOME/agsb/xrk/private_key")
+public_key_x=$(cat "$HOME/agsb/xrk/public_key")
+short_id_x=$(cat "$HOME/agsb/xrk/short_id")
+echo "Vless-xhttp-reality端口：$port_xh"
+echo "Reality域名：$ym_vl_re"
+cat > "$HOME/agsb/xr.json" <<EOF
+{
+  "log": {
+    "access": "/dev/null",
+    "error": "/dev/null",
+    "loglevel": "none"
+  },
+  "inbounds": [
+    {
+      "tag":"xhttp-reality",
+      "listen": "0.0.0.0",
+      "port": ${port_xh},
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "${uuid}"
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "reality",
+        "realitySettings": {
+          "fingerprint": "chrome",
+          "target": "${ym_vl_re}:443",
+          "serverNames": [
+            "${ym_vl_re}"
+          ],
+          "privateKey": "$private_key_x",
+          "shortIds": ["$short_id_x"]
+        },
+        "xhttpSettings": {
+          "host": "",
+          "path": "${uuid}-xh",
+          "mode": "auto"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls", "quic"],
+        "metadataOnly": false
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "tag": "direct"
+    }
+  ]
+}
+EOF
+echo "================================================="
+nohup "$HOME/agsb/xray" run -c "$HOME/agsb/xr.json" >/dev/null 2>&1 &
+else
+xhp=xhptargo
+fi
+
 if [ "$vlp" = yes ] || [ "$vmp" = yes ] || [ "$hyp" = yes ] || [ "$tup" = yes ] || [ "$anp" = yes ]; then
+echo
+echo "================================================="
 if [ ! -e "$HOME/agsb/sing-box" ]; then
 curl -Lo "$HOME/agsb/sing-box" -# --retry 2 https://github.com/yonggekkk/ArgoSB/releases/download/singbox/sing-box-$cpu
 chmod +x "$HOME/agsb/sing-box"
@@ -281,101 +377,13 @@ cat >> "$HOME/agsb/sb.json" <<EOF
 ]
 }
 EOF
+echo "================================================="
 nohup "$HOME/agsb/sing-box" run -c "$HOME/agsb/sb.json" >/dev/null 2>&1 &
 fi
 
-if [ -n "$xhp" ]; then
-xhp=xhpt
-if [ ! -e "$HOME/agsb/xray" ]; then
-curl -Lo "$HOME/agsb/xray" -# --retry 2 https://github.com/yonggekkk/ArgoSB/releases/download/singbox/xray-$cpu
-chmod +x "$HOME/agsb/xray"
-sbcore=$("$HOME/agsb/xray" version 2>/dev/null | awk '/^Xray/{print $2}')
-echo "已安装Xray正式版内核：$sbcore"
-fi
-insuuid
-if [ -z "$port_xh" ]; then
-port_xh=$(shuf -i 10000-65535 -n 1)
-fi
-echo "$port_xh" > "$HOME/agsb/port_xh"
-if [ -z "$ym_vl_re" ]; then
-ym_vl_re=www.yahoo.com
-fi
-echo "$ym_vl_re" > "$HOME/agsb/ym_vl_re"
-mkdir -p "$HOME/agsb/xrk"
-if [ ! -e "$HOME/agsb/xrk/private_key" ]; then
-key_pair=$("$HOME/agsb/xray" x25519)
-private_key=$(echo "$key_pair" | head -1 | awk '{print $3}')
-public_key=$(echo "$key_pair" | tail -n 1 | awk '{print $3}')
-short_id=$(date +%s%N | sha256sum | cut -c 1-8)
-echo "$private_key" > "$HOME/agsb/xrk/private_key"
-echo "$public_key" > "$HOME/agsb/xrk/public_key"
-echo "$short_id" > "$HOME/agsb/xrk/short_id"
-fi
-private_key_x=$(cat "$HOME/agsb/xrk/private_key")
-public_key_x=$(cat "$HOME/agsb/xrk/public_key")
-short_id_x=$(cat "$HOME/agsb/xrk/short_id")
-echo "Vless-xhttp-reality端口：$port_xh"
-echo "Reality域名：$ym_vl_re"
-cat > "$HOME/agsb/xr.json" <<EOF
-{
-  "log": {
-    "access": "/dev/null",
-    "error": "/dev/null",
-    "loglevel": "none"
-  },
-  "inbounds": [
-    {
-      "tag":"xhttp-reality",
-      "listen": "0.0.0.0",
-      "port": ${port_xh},
-      "protocol": "vless",
-      "settings": {
-        "clients": [
-          {
-            "id": "${uuid}"
-          }
-        ],
-        "decryption": "none"
-      },
-      "streamSettings": {
-        "network": "xhttp",
-        "security": "reality",
-        "realitySettings": {
-          "fingerprint": "chrome",
-          "target": "${ym_vl_re}:443",
-          "serverNames": [
-            "${ym_vl_re}"
-          ],
-          "privateKey": "$private_key_x",
-          "shortIds": ["$short_id_x"]
-        },
-        "xhttpSettings": {
-          "host": "",
-          "path": "${uuid}-xh",
-          "mode": "auto"
-        }
-      },
-      "sniffing": {
-        "enabled": true,
-        "destOverride": ["http", "tls", "quic"],
-        "metadataOnly": false
-      }
-    }
-  ],
-  "outbounds": [
-    {
-      "protocol": "freedom",
-      "tag": "direct"
-    }
-  ]
-}
-EOF
-nohup "$HOME/agsb/xray" run -c "$HOME/agsb/xr.json" >/dev/null 2>&1 &
-else
-xhp=xhptargo
-fi
-
 if [ -n "$argo" ] && [ -n "$vmp" ]; then
+echo
+echo "================================================="
 if [ ! -e "$HOME/agsb/cloudflared" ]; then
 argocore=$(curl -Ls https://data.jsdelivr.com/v1/package/gh/cloudflare/cloudflared | grep -Eo '"[0-9.]+"' | sed -n 1p | tr -d '",')
 echo "下载cloudflared-argo最新正式版内核：$argocore"
@@ -403,8 +411,9 @@ echo "Argo$name隧道申请成功，域名为：$argodomain"
 else
 echo "Argo$name隧道申请失败，请稍后再试"
 fi
+echo "================================================="
 fi
-
+echo
 if find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|x)' || pgrep -f 'agsb/(s|x)' >/dev/null 2>&1 ; then
 [ -f ~/.bashrc ] || touch ~/.bashrc
 sed -i '/yonggekkk/d' ~/.bashrc
@@ -466,8 +475,12 @@ else
 vps_ipv4="$v4"
 vps_ipv6='无IPV6'
 fi
+echo
+echo "================================================="
 echo "本地IPV4地址：$vps_ipv4"
 echo "本地IPV6地址：$vps_ipv6"
+echo "================================================="
+echo
 if [ "$ipsw" = "4" ]; then
 if [ -z "$v4" ]; then
 ipbest
@@ -601,7 +614,7 @@ echo -e "$argoshow"
 echo "---------------------------------------------------------"
 echo "聚合节点信息，请查看$HOME/agsb/jh.txt文件或者运行cat $HOME/agsb/jh.txt进行复制"
 echo "---------------------------------------------------------"
-echo "相关快捷方式如下：(首次重连SSH后，agsb快捷方式生效)"
+echo "相关快捷方式如下：(首次安装成功后需重连SSH，agsb快捷方式才可生效)"
 showmode
 echo "---------------------------------------------------------"
 echo
