@@ -43,9 +43,6 @@ x86_64) cpu=amd64;;
 *) echo "目前脚本不支持$(uname -m)架构" && exit
 esac
 mkdir -p "$HOME/agsb"
-if [ "$vlp" != yes ] && [ "$vmp" != yes ] && [ "$hyp" != yes ] && [ "$tup" != yes ] && [ "$anp" != yes ]; then
-vlp="vlptargo"; vmp="vmptargo"; hyp="hyptargo"; tup="tuptargo"; anp="anptargo"
-fi
 warpcheck(){
 wgcfv6=$(curl -s6m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
 wgcfv4=$(curl -s4m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
@@ -62,7 +59,28 @@ echo "$uuid" > "$HOME/agsb/uuid"
 echo "UUID密码：$uuid"
 }
 ins(){
-if [ "$xhp" = yes ] || [ "$vmp" = yes ]; then
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+installxray(){
 echo
 echo "================================================="
 if [ ! -e "$HOME/agsb/xray" ]; then
@@ -118,7 +136,6 @@ EOF
 else
 vmp=vmptargo
 fi
-
 if [ -n "$xhp" ]; then
 xhp=xhpt
 if [ -z "$port_xh" ]; then
@@ -199,13 +216,13 @@ cat >> "$HOME/agsb/xr.json" <<EOF
 EOF
 echo "================================================="
 nohup "$HOME/agsb/xray" run -c "$HOME/agsb/xr.json" >/dev/null 2>&1 &
-fi
+}
 
 
 
 
 
-if [ "$vlp" = yes ] || [ "$vmp" = yes ] || [ "$hyp" = yes ] || [ "$tup" = yes ] || [ "$anp" = yes ]; then
+installsb(){
 echo
 echo "================================================="
 if [ ! -e "$HOME/agsb/sing-box" ]; then
@@ -428,7 +445,7 @@ cat >> "$HOME/agsb/sb.json" <<EOF
 EOF
 echo "================================================="
 nohup "$HOME/agsb/sing-box" run -c "$HOME/agsb/sb.json" >/dev/null 2>&1 &
-fi
+}
 
 if [ -n "$argo" ] && [ -n "$vmp" ]; then
 echo
