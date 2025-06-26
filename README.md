@@ -35,7 +35,9 @@
 | 11、【仅docker】监听端口，网页查询 | PORT | 端口指定 | 3000 | 3000 | 可选 |
 | 12、【仅docker】启用vless-ws-tls | DOMAIN | 服务器域名 | 关闭vless-ws-tls | 关闭vless-ws-tls | 可选，vless-ws-tls可独立存在，uuid变量必须启用 |
 
-![fdb76495fab11507148086c94d06453](https://github.com/user-attachments/assets/368cfe37-e215-4149-b6dd-4b295672a965)
+
+![f776f1b3b1e0ebe9a537baf8660a387](https://github.com/user-attachments/assets/b9b357de-85b8-4270-aa87-2f50d63d672e)
+
 
 #### 使用```ygkkk/argosb```镜像注意：
 
