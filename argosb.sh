@@ -597,7 +597,7 @@ fi
 if [ -f "$HOME/agsb/port_an" ]; then
 echo "【 AnyTLS 】节点信息如下："
 port_an=$(cat "$HOME/agsb/port_an")
-an_link="anytls://$uuid@$server_ip:$port_an/?insecure=1#anytls-$hostname"
+an_link="anytls://$uuid@$server_ip:$port_an?insecure=1#anytls-$hostname"
 echo "$an_link" >> "$HOME/agsb/jh.txt"
 echo "$an_link"
 echo
