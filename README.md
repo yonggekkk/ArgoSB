@@ -37,7 +37,7 @@
 
 ![fdb76495fab11507148086c94d06453](https://github.com/user-attachments/assets/368cfe37-e215-4149-b6dd-4b295672a965)
 
-一、使用```ygkkk/argosb```镜像注意：
+#### 使用```ygkkk/argosb```镜像注意：
 
 1、uuid变量建议都加上，重启后uuid将保持不变
 
@@ -45,7 +45,7 @@
 
 3、argo临时隧道重启后，临时域名会变，需重新导出argo节点，固定隧道则不变
 
-二、使用VPS注意：
+#### 使用VPS注意：
 
 1、uuid留空随机生成后，重启后uuid将保持不变
 
