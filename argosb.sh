@@ -78,16 +78,12 @@ cat > "$HOME/agsb/xr.json" <<EOF
   "inbounds": [
 EOF
 insuuid
-if [ -n "$xhp" ]; then
-xhp=xhpt
-if [ -z "$port_xh" ]; then
-port_xh=$(shuf -i 10000-65535 -n 1)
-fi
-echo "$port_xh" > "$HOME/agsb/port_xh"
+if [ -n "$xhp" ] || [ -n "$vlp" ]; then
 if [ -z "$ym_vl_re" ]; then
 ym_vl_re=www.yahoo.com
 fi
 echo "$ym_vl_re" > "$HOME/agsb/ym_vl_re"
+echo "Reality域名：$ym_vl_re"
 mkdir -p "$HOME/agsb/xrk"
 if [ ! -e "$HOME/agsb/xrk/private_key" ]; then
 key_pair=$("$HOME/agsb/xray" x25519)
@@ -101,8 +97,14 @@ fi
 private_key_x=$(cat "$HOME/agsb/xrk/private_key")
 public_key_x=$(cat "$HOME/agsb/xrk/public_key")
 short_id_x=$(cat "$HOME/agsb/xrk/short_id")
+fi
+if [ -n "$xhp" ]; then
+xhp=xhpt
+if [ -z "$port_xh" ]; then
+port_xh=$(shuf -i 10000-65535 -n 1)
+fi
+echo "$port_xh" > "$HOME/agsb/port_xh"
 echo "Vless-xhttp-reality端口：$port_xh"
-echo "Reality域名：$ym_vl_re"
 cat >> "$HOME/agsb/xr.json" <<EOF
     {
       "tag":"xhttp-reality",
@@ -145,6 +147,51 @@ EOF
 else
 xhp=xhptargo
 fi
+if [ -n "$vlp" ]; then
+vlp=vlpt
+if [ -z "$port_vl_re" ]; then
+port_vl_re=$(shuf -i 10000-65535 -n 1)
+fi
+echo "$port_vl_re" > "$HOME/agsb/port_vl_re"
+echo "Vless-reality-vision端口：$port_vl_re"
+cat >> "$HOME/agsb/xr.json" <<EOF
+        {
+            "tag":"reality-vision",
+            "listen": "::",
+            "port": $port_vl_re,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "${uuid}",
+                        "flow": "xtls-rprx-vision"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "reality",
+                "realitySettings": {
+                    "fingerprint": "chrome",
+                    "dest": "${ym_vl_re}:443",
+                    "serverNames": [
+                      "${ym_vl_re}"
+                    ],
+                    "privateKey": "$private_key_x",
+                    "shortIds": ["$short_id_x"]
+                }
+            },
+          "sniffing": {
+          "enabled": true,
+          "destOverride": ["http", "tls", "quic"],
+          "metadataOnly": false
+      }
+    },  
+EOF
+else
+vlp=vlptargo
+fi
 }
 
 installsb(){
@@ -171,61 +218,6 @@ command -v openssl >/dev/null 2>&1 && openssl req -new -x509 -days 36500 -key "$
 if [ ! -f "$HOME/agsb/private.key" ]; then
 curl -Lso "$HOME/agsb/private.key" https://github.com/yonggekkk/ArgoSB/releases/download/singbox/private.key
 curl -Lso "$HOME/agsb/cert.pem" https://github.com/yonggekkk/ArgoSB/releases/download/singbox/cert.pem
-fi
-if [ -n "$vlp" ]; then
-vlp=vlpt
-if [ -z "$port_vl_re" ]; then
-port_vl_re=$(shuf -i 10000-65535 -n 1)
-fi
-echo "$port_vl_re" > "$HOME/agsb/port_vl_re"
-if [ -z "$ym_vl_re" ]; then
-ym_vl_re=www.yahoo.com
-fi
-echo "$ym_vl_re" > "$HOME/agsb/ym_vl_re"
-mkdir -p "$HOME/agsb/sbk"
-if [ ! -e "$HOME/agsb/sbk/private_key" ]; then
-key_pair=$("$HOME/agsb/sing-box" generate reality-keypair)
-private_key=$(echo "$key_pair" | awk '/PrivateKey/ {print $2}' | tr -d '"')
-public_key=$(echo "$key_pair" | awk '/PublicKey/ {print $2}' | tr -d '"')
-short_id=$("$HOME/agsb/sing-box" generate rand --hex 4)
-echo "$private_key" > "$HOME/agsb/sbk/private_key"
-echo "$public_key" > "$HOME/agsb/sbk/public_key"
-echo "$short_id" > "$HOME/agsb/sbk/short_id"
-fi
-private_key_s=$(cat "$HOME/agsb/sbk/private_key")
-public_key_s=$(cat "$HOME/agsb/sbk/public_key")
-short_id_s=$(cat "$HOME/agsb/sbk/short_id")
-echo "Vless-reality端口：$port_vl_re"
-echo "Reality域名：$ym_vl_re"
-cat >> "$HOME/agsb/sb.json" <<EOF
-    {
-      "type": "vless",
-      "tag": "vless-sb",
-      "listen": "::",
-      "listen_port": ${port_vl_re},
-      "users": [
-        {
-          "uuid": "${uuid}",
-          "flow": "xtls-rprx-vision"
-        }
-      ],
-      "tls": {
-        "enabled": true,
-        "server_name": "${ym_vl_re}",
-          "reality": {
-          "enabled": true,
-          "handshake": {
-            "server": "${ym_vl_re}",
-            "server_port": 443
-          },
-          "private_key": "$private_key",
-          "short_id": ["$short_id"]
-        }
-      }
-    },
-EOF
-else
-vlp=vlptargo
 fi
 if [ -n "$hyp" ]; then
 hyp=hypt
@@ -418,16 +410,16 @@ fi
 }
 
 ins(){
-if [ "$vlp" != yes ] && [ "$hyp" != yes ] && [ "$tup" != yes ] && [ "$anp" != yes ]; then
+if [ "$hyp" != yes ] && [ "$tup" != yes ] && [ "$anp" != yes ]; then
 installxray
 xrsbvm
 xrsbout
-vlp="vlptargo"; hyp="hyptargo"; tup="tuptargo"; anp="anptargo"
-elif [ "$xhp" != yes ]; then
+hyp="hyptargo"; tup="tuptargo"; anp="anptargo"
+elif [ "$xhp" != yes ] && [ "$vlp" != yes ]; then
 installsb
 xrsbvm
 xrsbout
-xhp="xhptargo"
+xhp="xhptargo"; vlp="vlptargo"
 else
 installsb
 installxray
@@ -573,34 +565,24 @@ echo "*********************************************************"
 echo "*********************************************************"
 echo "ArgoSB脚本输出节点配置如下："
 echo
-if [ -f "$HOME/agsb/port_xh" ]; then
-echo "【 vless-xhttp-reality 】节点信息如下："
-port_xh=$(cat "$HOME/agsb/port_xh")
+if [ -f "$HOME/agsb/port_xh" ] || [ -f "$HOME/agsb/port_vl_re" ]; then
 ym_vl_re=$(cat "$HOME/agsb/ym_vl_re")
 private_key_x=$(cat "$HOME/agsb/xrk/private_key")
 public_key_x=$(cat "$HOME/agsb/xrk/public_key")
 short_id_x=$(cat "$HOME/agsb/xrk/short_id")
+fi
+if [ -f "$HOME/agsb/port_xh" ]; then
+echo "【 vless-xhttp-reality 】节点信息如下："
+port_xh=$(cat "$HOME/agsb/port_xh")
 vl_xh_link="vless://$uuid@$server_ip:$port_xh?encryption=none&security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key_x&sid=$short_id_x&type=xhttp&path=$uuid-xh&mode=auto#vl-xhttp-reality-$hostname"
 echo "$vl_xh_link" >> "$HOME/agsb/jh.txt"
 echo "$vl_xh_link"
 echo
 fi
-if [ -f "$HOME/agsb/port_an" ]; then
-echo "【 AnyTLS 】节点信息如下："
-port_an=$(cat "$HOME/agsb/port_an")
-an_link="anytls://$uuid@$server_ip:$port_an/?insecure=1#anytls-$hostname"
-echo "$an_link" >> "$HOME/agsb/jh.txt"
-echo "$an_link"
-echo
-fi
 if [ -f "$HOME/agsb/port_vl_re" ]; then
 echo "【 vless-reality-vision 】节点信息如下："
 port_vl_re=$(cat "$HOME/agsb/port_vl_re")
-ym_vl_re=$(cat "$HOME/agsb/ym_vl_re")
-private_key_s=$(cat "$HOME/agsb/sbk/private_key")
-public_key_s=$(cat "$HOME/agsb/sbk/public_key")
-short_id_s=$(cat "$HOME/agsb/sbk/short_id")
-vl_link="vless://$uuid@$server_ip:$port_vl_re?encryption=none&flow=xtls-rprx-vision&security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key_s&sid=$short_id_s&type=tcp&headerType=none#vl-reality-$hostname"
+vl_link="vless://$uuid@$server_ip:$port_vl_re?encryption=none&flow=xtls-rprx-vision&security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key_x&sid=$short_id_x&type=tcp&headerType=none#vl-reality-$hostname"
 echo "$vl_link" >> "$HOME/agsb/jh.txt"
 echo "$vl_link"
 echo
@@ -611,6 +593,14 @@ port_vm_ws=$(cat "$HOME/agsb/port_vm_ws")
 vm_link="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"vm-ws-$hostname\", \"add\": \"$server_ip\", \"port\": \"$port_vm_ws\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"www.bing.com\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
 echo "$vm_link" >> "$HOME/agsb/jh.txt"
 echo "$vm_link"
+echo
+fi
+if [ -f "$HOME/agsb/port_an" ]; then
+echo "【 AnyTLS 】节点信息如下："
+port_an=$(cat "$HOME/agsb/port_an")
+an_link="anytls://$uuid@$server_ip:$port_an/?insecure=1#anytls-$hostname"
+echo "$an_link" >> "$HOME/agsb/jh.txt"
+echo "$an_link"
 echo
 fi
 if [ -f "$HOME/agsb/port_hy2" ]; then
