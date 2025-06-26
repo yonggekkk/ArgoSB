@@ -23,7 +23,7 @@
 | 1、启用vless-reality-vision | vlpt | 端口指定 | 关闭vless-reality-vision | 端口随机 | 必选之一 【xray内核：TCP】 |
 | 1、启用vless-xhttp-reality | xhpt | 端口指定 | 关闭vless-xhttp-reality | 端口随机 | 必选之一 【xray内核：TCP】 |
 | 1、启用anytls | anpt | 端口指定 | 关闭anytls | 端口随机 | 必选之一 【sinbgox内核：TCP】 |
-| 2、启用vmess | vmpt | 端口指定 | 关闭vmess | 端口随机 | 必选之一 【xray/sinbgox内核：TCP】 |
+| 2、启用vmess-ws | vmpt | 端口指定 | 关闭vmess-ws | 端口随机 | 必选之一 【xray/sinbgox内核：TCP】 |
 | 3、启用hy2 | hypt | 端口指定 | 关闭hy2 | 端口随机 | 必选之一 【sinbgox内核：UDP】 |
 | 4、启用tuic | tupt | 端口指定 | 关闭tuic | 端口随机 | 必选之一 【sinbgox内核：UDP】 |
 | 5、argo开关 | argo | 填写y | 关闭argo隧道 | 关闭argo隧道 | 可选，填写y时，vmess变量vmpt必须启用 |
