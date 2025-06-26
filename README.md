@@ -20,10 +20,12 @@
 
 | 变量意义 | 变量名称| 变量值""设置| 删除变量 | 变量值""留空 | 变量要求及说明 |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| 1、启用vless-reality（TCP） | vlpt | 端口指定 | 关闭vless | 端口随机 | 必选之一 |
-| 2、启用vmess（TCP） | vmpt | 端口指定 | 关闭vmess | 端口随机 | 必选之一 |
-| 3、启用hy2（UDP） | hypt | 端口指定 | 关闭hy2 | 端口随机 | 必选之一 |
-| 4、启用tuic（UDP） | tupt | 端口指定 | 关闭tuic | 端口随机 | 必选之一 |
+| 1、启用vless-reality-vision | vlpt | 端口指定 | 关闭vless-reality-vision | 端口随机 | 必选之一 【xray内核：TCP】 |
+| 1、启用vless-xhttp-reality | xhpt | 端口指定 | 关闭vless-xhttp-reality | 端口随机 | 必选之一 【xray内核：TCP】 |
+| 1、启用anytls | anpt | 端口指定 | 关闭anytls | 端口随机 | 必选之一 【sinbgox内核：TCP】 |
+| 2、启用vmess | vmpt | 端口指定 | 关闭vmess | 端口随机 | 必选之一 【xray/sinbgox内核：TCP】 |
+| 3、启用hy2 | hypt | 端口指定 | 关闭hy2 | 端口随机 | 必选之一 【sinbgox内核：UDP】 |
+| 4、启用tuic | tupt | 端口指定 | 关闭tuic | 端口随机 | 必选之一 【sinbgox内核：UDP】 |
 | 5、argo开关 | argo | 填写y | 关闭argo隧道 | 关闭argo隧道 | 可选，填写y时，vmess变量vmpt必须启用 |
 | 6、argo固定域名 | agn | 解析在CF上的域名 | 使用临时隧道 | 使用临时隧道 | 可选，argo填写y才可激活固定/临时隧道|
 | 7、argo token | agk | CF获取的ey开头的token | 使用临时隧道 | 使用临时隧道 | 可选，argo填写y才可激活固定/临时隧道 |
@@ -35,7 +37,21 @@
 
 ![fdb76495fab11507148086c94d06453](https://github.com/user-attachments/assets/368cfe37-e215-4149-b6dd-4b295672a965)
 
-#### 使用argosb镜像注意：1、uuid变量都加上，重启后uuid不变。2、点击restart重启，即可自动更新镜像
+一、使用```ygkkk/argosb```镜像注意：
+
+1、uuid变量建议都加上，重启后uuid将保持不变
+
+2、点击restart重启，即可自动更新镜像，但reality协议相关key会被重置，需重新导出reality节点
+
+3、argo临时隧道重启后，临时域名会变，需重新导出argo节点，固定隧道则不变
+
+二、使用VPS注意：
+
+1、uuid留空随机生成后，重启后uuid将保持不变
+
+2、更新脚本只能卸载重装，建议留存带变量的脚本，方便快速重装
+
+3、argo临时隧道重启后，临时域名会变，需重新导出argo节点，固定隧道则不变
 
 ----------------------------------------------------------
 
