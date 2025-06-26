@@ -440,7 +440,7 @@ installxray
 xrsbvm
 xrsbout
 fi
-if [ -n "$argo" ] && [ -n "$vmap" ]; then
+if [ -n "$argo" ] && [ -n "$vmag" ]; then
 echo
 echo "================================================="
 if [ ! -e "$HOME/agsb/cloudflared" ]; then
@@ -496,7 +496,7 @@ if find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r 
 echo '@reboot /bin/sh -c "nohup $HOME/agsb/xray run -c $HOME/agsb/xr.json >/dev/null 2>&1 &"' >> /tmp/crontab.tmp
 fi
 sed -i '/agsb\/cloudflared/d' /tmp/crontab.tmp
-if [ -n "$argo" ] && [ -n "$vmap" ]; then
+if [ -n "$argo" ] && [ -n "$vmag" ]; then
 if [ -n "${ARGO_DOMAIN}" ] && [ -n "${ARGO_AUTH}" ]; then
 echo '@reboot /bin/sh -c "nohup $HOME/agsb/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token $(cat $HOME/agsb/sbargotoken.log 2>/dev/null) >/dev/null 2>&1 &"' >> /tmp/crontab.tmp
 else
