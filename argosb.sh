@@ -256,7 +256,7 @@ if [ -z "$port_tu" ]; then
 port_tu=$(shuf -i 10000-65535 -n 1)
 fi
 echo "$port_tu" > "$HOME/agsb/port_tu"
-echo "Tuic-v5端口：$port_tu"
+echo "Tuic端口：$port_tu"
 cat >> "$HOME/agsb/sb.json" <<EOF
         {
             "type":"tuic",
