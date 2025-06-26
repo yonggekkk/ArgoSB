@@ -385,6 +385,7 @@ cat >> "$HOME/agsb/sb.json" <<EOF
             }
     },
 EOF
+fi
 else
 vmp=vmptargo
 fi
