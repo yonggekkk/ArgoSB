@@ -60,7 +60,7 @@ echo "UUID密码：$uuid"
 }
 installxray(){
 echo
-echo "================================================="
+echo "=========启用xray内核========="
 if [ ! -e "$HOME/agsb/xray" ]; then
 curl -Lo "$HOME/agsb/xray" -# --retry 2 https://github.com/yonggekkk/ArgoSB/releases/download/singbox/xray-$cpu
 chmod +x "$HOME/agsb/xray"
@@ -148,7 +148,7 @@ fi
 
 installsb(){
 echo
-echo "================================================="
+echo "=========启用Sing-box内核========="
 if [ ! -e "$HOME/agsb/sing-box" ]; then
 curl -Lo "$HOME/agsb/sing-box" -# --retry 2 https://github.com/yonggekkk/ArgoSB/releases/download/singbox/sing-box-$cpu
 chmod +x "$HOME/agsb/sing-box"
