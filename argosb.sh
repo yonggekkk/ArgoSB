@@ -376,13 +376,7 @@ cat >> "$HOME/agsb/sb.json" <<EOF
             "path": "${uuid}-vm",
             "max_early_data":2048,
             "early_data_header_name": "Sec-WebSocket-Protocol"
-        },
-        "tls":{
-                "enabled": false,
-                "server_name": "www.bing.com",
-                "certificate_path": "$HOME/agsb/cert.pem",
-                "key_path": "$HOME/agsb/private.key"
-            }
+        }
     },
 EOF
 fi
@@ -420,7 +414,6 @@ cat >> "$HOME/agsb/sb.json" <<EOF
 EOF
 nohup "$HOME/agsb/sing-box" run -c "$HOME/agsb/sb.json" >/dev/null 2>&1 &
 fi
-echo "================================================="
 }
 
 ins(){
@@ -442,10 +435,10 @@ xrsbout
 fi
 if [ -n "$argo" ] && [ -n "$vmag" ]; then
 echo
-echo "================================================="
+echo "=========启用Cloudflared-argo内核========="
 if [ ! -e "$HOME/agsb/cloudflared" ]; then
 argocore=$(curl -Ls https://data.jsdelivr.com/v1/package/gh/cloudflare/cloudflared | grep -Eo '"[0-9.]+"' | sed -n 1p | tr -d '",')
-echo "下载cloudflared-argo最新正式版内核：$argocore"
+echo "下载Cloudflared-argo最新正式版内核：$argocore"
 curl -Lo "$HOME/agsb/cloudflared" -# --retry 2 https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-$cpu
 chmod +x "$HOME/agsb/cloudflared"
 fi
@@ -470,7 +463,6 @@ echo "Argo$name隧道申请成功，域名为：$argodomain"
 else
 echo "Argo$name隧道申请失败，请稍后再试"
 fi
-echo "================================================="
 fi
 echo
 if find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|x)' || pgrep -f 'agsb/(s|x)' >/dev/null 2>&1 ; then
@@ -539,10 +531,9 @@ vps_ipv4="$v4"
 vps_ipv6='无IPV6'
 fi
 echo
-echo "================================================="
+echo "=========当前服务器出站IP情况========="
 echo "本地IPV4地址：$vps_ipv4"
 echo "本地IPV6地址：$vps_ipv6"
-echo "================================================="
 echo
 if [ "$ipsw" = "4" ]; then
 if [ -z "$v4" ]; then
