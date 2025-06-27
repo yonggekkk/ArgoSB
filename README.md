@@ -26,8 +26,8 @@
 | 3、启用hy2 | hypt | 端口指定 | 关闭hy2 | 端口随机 | 必选之一 【sinbgox内核：UDP】 |
 | 4、启用tuic | tupt | 端口指定 | 关闭tuic | 端口随机 | 必选之一 【sinbgox内核：UDP】 |
 | 5、argo开关 | argo | 填写y | 关闭argo隧道 | 关闭argo隧道 | 可选，填写y时，vmess变量vmpt必须启用 |
-| 6、argo固定域名 | agn | 解析在CF上的域名 | 使用临时隧道 | 使用临时隧道 | 可选，argo填写y才可激活固定/临时隧道|
-| 7、argo token | agk | CF获取的ey开头的token | 使用临时隧道 | 使用临时隧道 | 可选，argo填写y才可激活固定/临时隧道 |
+| 6、argo固定隧道域名 | agn | 解析在CF上的域名 | 使用临时隧道 | 使用临时隧道 | 可选，argo填写y才可激活固定隧道|
+| 7、argo固定隧道token | agk | CF获取的ey开头的token | 使用临时隧道 | 使用临时隧道 | 可选，argo填写y才可激活固定隧道 |
 | 8、uuid密码 | uuid | 符合uuid规定格式 | 随机生成 | 随机生成 | 可选 |
 | 9、reality域名 | reym | 符合reality域名规定 | yahoo | yahoo | 可选 |
 | 10、切换ipv4或ipv6配置 | ip | 填写4或者6 | 自动识别IP配置 | 自动识别IP配置 | 可选，4表示IPV4配置输出，6表示IPV6配置输出 |
