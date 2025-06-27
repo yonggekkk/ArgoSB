@@ -148,5 +148,6 @@ hypt="" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/
 [![Stargazers over time](https://starchart.cc/yonggekkk/ArgoSB.svg)](https://starchart.cc/yonggekkk/ArgoSB)
 
 ----------------------------------------------------------
+### 声明：所有代码来源于Github社区与ChatGPT的整合
 
 ### Thanks to [VTEXS](https://console.vtexs.com/?affid=1558) for the sponsorship support
