@@ -63,7 +63,7 @@
 注意：变量值填写在""之间，变量之间空一格
 
 ```
-vlpt="" vmpt="" hypt="" tupt="" uuid="" reym="" argo="" agn="" agk="" ip="" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)
+vlpt="" vmpt="" hypt="" tupt="" xhpt="" anpt="" uuid="" reym="" argo="" agn="" agk="" ip="" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)
 ```
 
 ----------------------------------------------------------
@@ -72,12 +72,12 @@ vlpt="" vmpt="" hypt="" tupt="" uuid="" reym="" argo="" agn="" agk="" ip="" bash
 
 1：全协议共存或者单协议 + Argo临时/固定隧道
 ```
-vlpt="" vmpt="" hypt="" tupt="" argo="y" agn="" agk="" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)
+vlpt="" vmpt="" hypt="" tupt="" xhpt="" anpt="" argo="y" agn="" agk="" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)
 ```
 
 2：仅argo临时隧道，固定隧道必须填写端口(vmpt)、域名(agn)、token(agk)
 
-类似无公网的【IDX Google VPS】容器推荐使用此脚本，快速一键内网穿透获取节点
+类似无公网的IDX-Google-VPS容器推荐使用此脚本，快速一键内网穿透获取节点
 
 ```
 vmpt="" argo="y" agn="" agk="" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)
