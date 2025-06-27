@@ -1,18 +1,17 @@
 ## ArgoSB一键无交互代理脚本【当前版本：25.6.18】
 
-#### 1、基于Sing-box主内核 + 可选Cloudflared-Argo内核
+#### 1、基于Sing-box内核 + xray内核 + Cloudflared-Argo内核相互自动分配
 
 #### 2、支持Docker Image镜像部署，公开镜像库：```ygkkk/argosb```
 
-#### 3、SSH脚本主打极简、轻便的体验，支持非root模式，兼容所有主流VPS系统
+#### 3、SSH脚本主打极简轻便，几乎无需依赖，支持非root，兼容所有主流VPS系统
 
 #### 4、支持NIX容器系统，特别推荐IDX-Google、Clawcloud爪云类的服务器
 
 #### 5、高自由度，支持单个或多个代理协议任意组合
+【目前支持：AnyTLS、Vless-xhttp-reality、Vless-reality-vision、Vmess-ws、Hy2、Tuic、Argo临时/固定隧道】
 
-#### 6、支持Vless-reality-vision、Vless-xhttp-reality、AnyTLS、Vmess-ws、Hy2、Tuic、Argo临时/固定隧道
-
-#### 7、如果需要多样的功能，推荐使用VPS专用四合一脚本[sing-box-yg](https://github.com/yonggekkk/sing-box-yg)
+#### 7、如果需要多样的功能，推荐使用VPS专用四合一脚本[Sing-box-yg](https://github.com/yonggekkk/sing-box-yg)
 
 ----------------------------------------------------------
 
