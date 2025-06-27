@@ -1,6 +1,6 @@
 ## ArgoSB一键无交互代理脚本【当前版本：25.6.18】
 
-#### 1、基于Sing-box + xray + Cloudflared-Argo 三内核自动分配
+#### 1、基于Sing-box + Xray + Cloudflared-Argo 三内核自动分配
 
 #### 2、支持Docker Image镜像部署，公开镜像库：```ygkkk/argosb```
 
