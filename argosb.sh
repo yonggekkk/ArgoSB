@@ -128,6 +128,11 @@ cat > "$HOME/agsb/xr.json" <<EOF
     "error": "/dev/null",
     "loglevel": "none"
   },
+"dns": {
+  "servers": [
+    "https+local://8.8.8.8/dns-query"
+  ]
+},
   "inbounds": [
 EOF
 insuuid
@@ -495,7 +500,7 @@ cat >> "$HOME/agsb/xr.json" <<EOF
     }
   ],
   "routing": {
-  "domainStrategy": "IPIfNonMatch",
+  "domainStrategy": "IPOnDemand",
     "rules": [
       {
         "type": "field",
