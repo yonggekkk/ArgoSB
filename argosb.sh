@@ -515,7 +515,17 @@ cat >> "$HOME/agsb/sb.json" <<EOF
     {
       "type": "direct",
       "tag": "direct"
-    }
+    },
+  {
+"type":"direct",
+"tag":"vps-outbound-v4", 
+"domain_strategy":"prefer_ipv4"
+},
+{
+"type":"direct",
+"tag":"vps-outbound-v6",
+"domain_strategy":"prefer_ipv6"
+}
   ],
   "endpoints": [
     {
@@ -541,10 +551,28 @@ cat >> "$HOME/agsb/sb.json" <<EOF
     }
   ],
   "route": {
+      "rule_set": [
+      {
+        "tag": "only-ipv4",
+        "type": "ip_cidr",
+        "rules": [
+          "0.0.0.0/0"
+        ]
+      },
+      {
+        "tag": "only-ipv6",
+        "type": "ip_cidr",
+        "rules": [
+          "::/0"
+        ]
+      }
+    ],
     "rules": [
       {
-        "outbound": "${souttag}"
-      }
+        "type": "rule_set",
+        "rule_set": "only-ipv6",
+        "outbound": "warp-out"
+      }      
     ]
   }
 }
