@@ -495,7 +495,7 @@ cat >> "$HOME/agsb/xr.json" <<EOF
     }
   ],
   "routing": {
-  "domainStrategy": "IPIfNonMatch"
+  "domainStrategy": "IPIfNonMatch",
     "rules": [
       {
         "type": "field",
