@@ -9,7 +9,7 @@ if ! find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -
 [ -z "${anpt+x}" ] || anp=yes
 [ -z "${sspt+x}" ] || ssp=yes
 [ -z "${warp+x}" ] || wap=yes
-[ "$ssp" = yes ] || [ "$vlp" = yes ] || [ "$vmp" = yes ] || [ "$hyp" = yes ] || [ "$tup" = yes ] || [ "$xhp" = yes ] || [ "$anp" = yes ] || { echo "提示：未安装argosb脚本！请在脚本前至少设置一个协议变量哦，再见！💣"; exit; }
+[ "$1" = "del" ] || [ "$ssp" = yes ] || [ "$vlp" = yes ] || [ "$vmp" = yes ] || [ "$hyp" = yes ] || [ "$tup" = yes ] || [ "$xhp" = yes ] || [ "$anp" = yes ] || { echo "提示：未安装argosb脚本！请在脚本前至少设置一个协议变量哦，再见！💣"; exit; }
 fi
 export uuid=${uuid:-''}
 export port_vl_re=${vlpt:-''}
