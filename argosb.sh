@@ -507,12 +507,6 @@ cat >> "$HOME/agsb/xr.json" <<EOF
         "ip": ["::/0"],
         "network": "tcp,udp",
         "outboundTag": "warp-out"
-      },
-      {
-        "type": "field",
-        "ip": ["0.0.0.0/0"],
-        "network": "tcp,udp",
-        "outboundTag": "direct"
       }
     ]
   }
