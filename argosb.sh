@@ -120,6 +120,7 @@ elif [ "$warp" = "x" ]; then
 xouttag=warp-out
 souttag=direct
 ipoutx='[ "0.0.0.0/0", "::/0" ]'
+ipouts='[ "0.0.0.0/0", "::/0" ]'
 wap=warp
 echo
 echo "xray内核协议添加全局warp"
@@ -127,6 +128,7 @@ elif [ "$warp" = "x4" ]; then
 xouttag=warp-out
 souttag=direct
 ipoutx='[ "0.0.0.0/0" ]'
+ipouts='[ "0.0.0.0/0", "::/0" ]'
 wap=warp
 echo
 echo "xray内核协议添加全局warp-ipv4"
@@ -134,12 +136,14 @@ elif [ "$warp" = "x6" ]; then
 xouttag=warp-out
 souttag=direct
 ipoutx='[ "::/0" ]'
+ipouts='[ "0.0.0.0/0", "::/0" ]'
 wap=warp
 echo
 echo "xray内核协议添加全局warp-ipv6"
 elif [ "$warp" = "s" ]; then
 xouttag=direct
 souttag=warp-out
+ipoutx='[ "0.0.0.0/0", "::/0" ]'
 ipouts='[ "0.0.0.0/0", "::/0" ]'
 wap=warp
 echo
@@ -148,6 +152,7 @@ elif [ "$warp" = "s4" ]; then
 xouttag=direct
 souttag=warp-out
 ipouts='[ "0.0.0.0/0" ]'
+ipoutx='[ "0.0.0.0/0", "::/0" ]'
 wap=warp
 echo
 echo "singbox内核协议添加全局warp-ipv4"
@@ -155,6 +160,7 @@ elif [ "$warp" = "s6" ]; then
 xouttag=direct
 souttag=warp-out
 ipouts='[ "::/0" ]'
+ipoutx='[ "0.0.0.0/0", "::/0" ]'
 wap=warp
 echo
 echo "singbox内核协议添加全局warp-ipv6"
