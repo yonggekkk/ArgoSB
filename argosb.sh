@@ -467,6 +467,10 @@ sed -i '${s/,\s*$//}' "$HOME/agsb/xr.json"
 cat >> "$HOME/agsb/xr.json" <<EOF
   ],
   "outbounds": [
+      {
+      "protocol": "freedom",
+      "tag": "direct"
+    },
     {
       "tag": "warp-out",
       "protocol": "wireguard",
@@ -488,10 +492,6 @@ cat >> "$HOME/agsb/xr.json" <<EOF
         ],
         "reserved": [134, 63, 85]
           }
-    },
-    {
-      "protocol": "freedom",
-      "tag": "direct"
     }
   ],
   "routing": {
@@ -500,7 +500,13 @@ cat >> "$HOME/agsb/xr.json" <<EOF
         "type": "field",
         "ip": ["::/0"],
         "network": "tcp,udp",
-        "outboundTag": "${xouttag}"
+        "outboundTag": "warp-out"
+      },
+      {
+        "type": "field",
+        "ip": ["0.0.0.0/0"],
+        "network": "tcp,udp",
+        "outboundTag": "direct"
       }
     ]
   }
