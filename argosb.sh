@@ -498,6 +498,7 @@ cat >> "$HOME/agsb/xr.json" <<EOF
     "rules": [
       {
         "type": "field",
+        "ip": ["::/0"],
         "network": "tcp,udp",
         "outboundTag": "${xouttag}"
       }
