@@ -144,7 +144,7 @@ echo
 fi
 }
 insuuid(){
-if [ -z "$uuid" ]; then
+if [ -z "$uuid" ] && [ ! -e "$HOME/agsb/uuid" ]; then
 if [ -e "$HOME/agsb/sing-box" ]; then
 uuid=$("$HOME/agsb/sing-box" generate uuid)
 else
@@ -509,7 +509,7 @@ echo "$port_vm_ws" > "$HOME/agsb/port_vm_ws"
 echo "Vmess-ws端口：$port_vm_ws"
 if [ -n "$cdnym" ]; then
 echo "$cdnym" > "$HOME/agsb/cdnym"
-echo "80系CDN或者回源CDN的host域名(已托管在CF)：$cdnym"
+echo "80系CDN或者回源CDN的host域名 (确保IP已解析在CF域名)：$cdnym"
 fi
 if [ -e "$HOME/agsb/xray" ]; then
 cat >> "$HOME/agsb/xr.json" <<EOF
@@ -1007,7 +1007,7 @@ showmode
 exit
 elif [ "$1" = "rep" ]; then
 cleandel
-#find "$HOME/agsb" -mindepth 1 \( -name sing-box -o -name xray -o -name cloudflared -o -name sskey -o -name xrk -o -name sbk \) -prune -o -exec rm -rf {} +
+rm -rf "$HOME/agsb"/{sbargoym.log,sbargotoken.log,argo.log,cdnym,name}
 echo "ArgoSB重置协议完成，开始更新相关协议变量……" && sleep 3
 echo
 elif [ "$1" = "list" ]; then
