@@ -1007,7 +1007,7 @@ showmode
 exit
 elif [ "$1" = "rep" ]; then
 cleandel
-find "$HOME/agsb" -mindepth 1 \( -name sing-box -o -name xray -o -name cloudflared -o -name sskey -o -name xrk -o -name sbk \) -prune -o -exec rm -rf {} +
+#find "$HOME/agsb" -mindepth 1 \( -name sing-box -o -name xray -o -name cloudflared -o -name sskey -o -name xrk -o -name sbk \) -prune -o -exec rm -rf {} +
 echo "ArgoSB重置协议完成，开始更新相关协议变量……" && sleep 3
 echo
 elif [ "$1" = "list" ]; then
