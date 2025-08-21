@@ -919,7 +919,7 @@ fi
 if [ -f "$HOME/agsb/port_ar" ]; then
 echo "💣【 Any-Reality 】节点信息如下："
 port_ar=$(cat "$HOME/agsb/port_ar")
-ar_link="anytls://$uuid@$server_ip:$port_ar?security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key_x&sid=$short_id_x&type=tcp&headerType=none#${sxname}any-reality-$hostname"
+ar_link="anytls://$uuid@$server_ip:$port_ar?security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key_s&sid=$short_id_s&type=tcp&headerType=none#${sxname}any-reality-$hostname"
 echo "$ar_link" >> "$HOME/agsb/jh.txt"
 echo "$ar_link"
 echo
