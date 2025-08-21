@@ -7,13 +7,14 @@ export LANG=en_US.UTF-8
 [ -z "${xhpt+x}" ] || xhp=yes
 [ -z "${anpt+x}" ] || anp=yes
 [ -z "${sspt+x}" ] || ssp=yes
+[ -z "${arpt+x}" ] || arp=yes
 [ -z "${warp+x}" ] || wap=yes
 if find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|x)' || pgrep -f 'agsb/(s|x)' >/dev/null 2>&1; then
 if [ "$1" = "rep" ]; then
-[ "$ssp" = yes ] || [ "$vlp" = yes ] || [ "$vmp" = yes ] || [ "$hyp" = yes ] || [ "$tup" = yes ] || [ "$xhp" = yes ] || [ "$anp" = yes ] || { echo "提示：重置协议参数有误，请自查！💣"; exit; }
+[ "$ssp" = yes ] || [ "$vlp" = yes ] || [ "$vmp" = yes ] || [ "$hyp" = yes ] || [ "$tup" = yes ] || [ "$xhp" = yes ] || [ "$anp" = yes ] || [ "$arp" = yes ] || { echo "提示：重置协议参数有误，请自查！💣"; exit; }
 fi
 else
-[ "$1" = "del" ] || [ "$ssp" = yes ] || [ "$vlp" = yes ] || [ "$vmp" = yes ] || [ "$hyp" = yes ] || [ "$tup" = yes ] || [ "$xhp" = yes ] || [ "$anp" = yes ] || { echo "提示：未安装ArgoSB脚本，请在脚本前至少设置一个协议变量哦，再见！💣"; exit; }
+[ "$1" = "del" ] || [ "$ssp" = yes ] || [ "$vlp" = yes ] || [ "$vmp" = yes ] || [ "$hyp" = yes ] || [ "$tup" = yes ] || [ "$xhp" = yes ] || [ "$anp" = yes ] || [ "$arp" = yes ] || { echo "提示：未安装ArgoSB脚本，请在脚本前至少设置一个协议变量哦，再见！💣"; exit; }
 fi
 export uuid=${uuid:-''}
 export port_vl_re=${vlpt:-''}
@@ -22,6 +23,7 @@ export port_hy2=${hypt:-''}
 export port_tu=${tupt:-''}
 export port_xh=${xhpt:-''}
 export port_an=${anpt:-''}
+export port_ar=${arpt:-''}
 export port_ss=${sspt:-''}
 export ym_vl_re=${reym:-''}
 export cdnym=${cdnym:-''}
@@ -438,6 +440,63 @@ EOF
 else
 anp=anptargo
 fi
+
+
+if [ -n "$arp" ]; then
+arp=arpt
+if [ -z "$ym_vl_re" ]; then
+ym_vl_re=www.yahoo.com
+fi
+echo "$ym_vl_re" > "$HOME/agsb/ym_vl_re"
+echo "Reality域名：$ym_vl_re"
+mkdir -p "$HOME/agsb/sbk"
+if [ ! -e "$HOME/agsb/sbk/private_key" ]; then
+key_pair=$("$HOME/agsb/sing-box" generate reality-keypair)
+private_key=$(echo "$key_pair" | awk '/PrivateKey/ {print $2}' | tr -d '"')
+public_key=$(echo "$key_pair" | awk '/PublicKey/ {print $2}' | tr -d '"')
+short_id=$("$HOME/agsb/sing-box" generate rand --hex 4)
+echo "$private_key" > "$HOME/agsb/sbk/private_key"
+echo "$public_key" > "$HOME/agsb/sbk/public_key"
+echo "$short_id" > "$HOME/agsb/sbk/short_id"
+fi
+private_key_s=$(cat "$HOME/agsb/sbk/private_key")
+public_key_s=$(cat "$HOME/agsb/sbk/public_key")
+short_id_s=$(cat "$HOME/agsb/sbk/short_id")
+if [ -z "$port_ar" ]; then
+port_ar=$(shuf -i 10000-65535 -n 1)
+fi
+echo "$port_ar" > "$HOME/agsb/port_ar"
+echo "Any-Reality端口：$port_ar"
+cat >> "$HOME/agsb/sb.json" <<EOF
+        {
+            "type":"anytls",
+            "tag":"anyreality-sb",
+            "listen":"::",
+            "listen_port":${port_ar},
+            "users":[
+                {
+                  "password":"${uuid}"
+                }
+            ],
+            "padding_scheme":[],
+            "tls": {
+            "enabled": true,
+            "server_name": "${ym_vl_re}",
+             "reality": {
+              "enabled": true,
+              "handshake": {
+              "server": "${ym_vl_re}",
+              "server_port": 443
+             },
+             "private_key": "$private_key_s",
+             "short_id": ["$short_id_s"]
+            }
+          }
+        },
+EOF
+else
+arp=arptargo
+fi
 }
 
 xrsbvm(){
@@ -626,12 +685,12 @@ fi
 sleep 6
 }
 ins(){
-if [ "$hyp" != yes ] && [ "$tup" != yes ] && [ "$anp" != yes ]; then
+if [ "$hyp" != yes ] && [ "$tup" != yes ] && [ "$anp" != yes ] && [ "$arp" != yes ]; then
 installxray
 xrsbvm
 warpsx
 xrsbout
-hyp="hyptargo"; tup="tuptargo"; anp="anptargo"
+hyp="hyptargo"; tup="tuptargo"; anp="anptargo"; arp="arptargo"
 elif [ "$xhp" != yes ] && [ "$vlp" != yes ] && [ "$ssp" != yes ]; then
 installsb
 xrsbvm
@@ -680,7 +739,7 @@ echo
 if find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|x)' || pgrep -f 'agsb/(s|x)' >/dev/null 2>&1 ; then
 [ -f ~/.bashrc ] || touch ~/.bashrc
 sed -i '/yonggekkk/d' ~/.bashrc
-echo "if ! find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|x)' && ! pgrep -f 'agsb/(s|x)' >/dev/null 2>&1; then echo '检测到系统可能中断过，建议在SSH对话框输入 reboot 重启下服务器。现在自动执行ArgoSB脚本的节点恢复操作，请稍等……'; sleep 6; export cdnym=\"${cdnym}\" name=\"${name}\" ipyx=\"${ipyx}\" ippz=\"${ippz}\" argo=\"${argo}\" uuid=\"${uuid}\" $wap=\"${warp}\" $xhp=\"${port_xh}\" $ssp=\"${port_ss}\" $anp=\"${port_an}\" $vlp=\"${port_vl_re}\" $vmp=\"${port_vm_ws}\" $hyp=\"${port_hy2}\" $tup=\"${port_tu}\" reym=\"${ym_vl_re}\" agn=\"${ARGO_DOMAIN}\" agk=\"${ARGO_AUTH}\"; bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh); fi" >> ~/.bashrc
+echo "if ! find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|x)' && ! pgrep -f 'agsb/(s|x)' >/dev/null 2>&1; then echo '检测到系统可能中断过，建议在SSH对话框输入 reboot 重启下服务器。现在自动执行ArgoSB脚本的节点恢复操作，请稍等……'; sleep 6; export cdnym=\"${cdnym}\" name=\"${name}\" ipyx=\"${ipyx}\" ippz=\"${ippz}\" argo=\"${argo}\" uuid=\"${uuid}\" $wap=\"${warp}\" $xhp=\"${port_xh}\" $ssp=\"${port_ss}\" $anp=\"${port_an}\" $arp=\"${port_ar}\" $vlp=\"${port_vl_re}\" $vmp=\"${port_vm_ws}\" $hyp=\"${port_hy2}\" $tup=\"${port_tu}\" reym=\"${ym_vl_re}\" agn=\"${ARGO_DOMAIN}\" agk=\"${ARGO_AUTH}\"; bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh); fi" >> ~/.bashrc
 COMMAND="agsb"
 SCRIPT_PATH="$HOME/bin/$COMMAND"
 mkdir -p "$HOME/bin"
@@ -803,6 +862,12 @@ public_key_x=$(cat "$HOME/agsb/xrk/public_key" 2>/dev/null)
 short_id_x=$(cat "$HOME/agsb/xrk/short_id" 2>/dev/null)
 sskey=$(cat "$HOME/agsb/sskey" 2>/dev/null)
 fi
+if [ -e "$HOME/agsb/sing-box" ]; then
+ym_vl_re=$(cat "$HOME/agsb/ym_vl_re" 2>/dev/null)
+private_key_s=$(cat "$HOME/agsb/sbk/private_key" 2>/dev/null)
+public_key_s=$(cat "$HOME/agsb/sbk/public_key" 2>/dev/null)
+short_id_s=$(cat "$HOME/agsb/sbk/short_id" 2>/dev/null)
+fi
 if [ -f "$HOME/agsb/port_xh" ]; then
 echo "💣【 vless-xhttp-reality 】节点信息如下："
 port_xh=$(cat "$HOME/agsb/port_xh")
@@ -849,6 +914,14 @@ port_an=$(cat "$HOME/agsb/port_an")
 an_link="anytls://$uuid@$server_ip:$port_an?insecure=1&allowInsecure=1#${sxname}anytls-$hostname"
 echo "$an_link" >> "$HOME/agsb/jh.txt"
 echo "$an_link"
+echo
+fi
+if [ -f "$HOME/agsb/port_ar" ]; then
+echo "💣【 Any-Reality 】节点信息如下："
+port_ar=$(cat "$HOME/agsb/port_ar")
+ar_link="anytls://$uuid@$server_ip:$port_ar?security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key_x&sid=$short_id_x&type=tcp&headerType=none#${sxname}any-reality-$hostname"
+echo "$ar_link" >> "$HOME/agsb/jh.txt"
+echo "$ar_link"
 echo
 fi
 if [ -f "$HOME/agsb/port_hy2" ]; then
@@ -934,7 +1007,7 @@ showmode
 exit
 elif [ "$1" = "rep" ]; then
 cleandel
-find "$HOME/agsb" -mindepth 1 \( -name sing-box -o -name xray -o -name cloudflared -o -name sskey -o -name xrk \) -prune -o -exec rm -rf {} +
+find "$HOME/agsb" -mindepth 1 \( -name sing-box -o -name xray -o -name cloudflared -o -name sskey -o -name xrk -o -name sbk \) -prune -o -exec rm -rf {} +
 echo "ArgoSB重置协议完成，开始更新相关协议变量……" && sleep 3
 echo
 elif [ "$1" = "list" ]; then
