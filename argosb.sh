@@ -875,7 +875,7 @@ private_key_s=$(cat "$HOME/agsb/sbk/private_key" 2>/dev/null)
 public_key_s=$(cat "$HOME/agsb/sbk/public_key" 2>/dev/null)
 short_id_s=$(cat "$HOME/agsb/sbk/short_id" 2>/dev/null)
 fi
-if grep -q xhttp-reality "$HOME/agsb/xr.json"; then
+if grep xhttp-reality "$HOME/agsb/xr.json" >/dev/null 2>&1; then
 echo "💣【 vless-xhttp-reality 】节点信息如下："
 port_xh=$(cat "$HOME/agsb/port_xh")
 vl_xh_link="vless://$uuid@$server_ip:$port_xh?encryption=none&security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key_x&sid=$short_id_x&type=xhttp&path=$uuid-xh&mode=auto#${sxname}vl-xhttp-reality-$hostname"
@@ -883,7 +883,7 @@ echo "$vl_xh_link" >> "$HOME/agsb/jh.txt"
 echo "$vl_xh_link"
 echo
 fi
-if grep -q reality-vision "$HOME/agsb/xr.json"; then
+if grep reality-vision "$HOME/agsb/xr.json" >/dev/null 2>&1; then
 echo "💣【 vless-reality-vision 】节点信息如下："
 port_vl_re=$(cat "$HOME/agsb/port_vl_re")
 vl_link="vless://$uuid@$server_ip:$port_vl_re?encryption=none&flow=xtls-rprx-vision&security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key_x&sid=$short_id_x&type=tcp&headerType=none#${sxname}vl-reality-vision-$hostname"
@@ -891,7 +891,7 @@ echo "$vl_link" >> "$HOME/agsb/jh.txt"
 echo "$vl_link"
 echo
 fi
-if grep -q ss-2022 "$HOME/agsb/xr.json"; then
+if grep ss-2022 "$HOME/agsb/xr.json" >/dev/null 2>&1; then
 echo "💣【 Shadowsocks-2022 】节点信息如下："
 port_ss=$(cat "$HOME/agsb/port_ss")
 ss_link="ss://$(echo -n "2022-blake3-aes-128-gcm:$sskey@$server_ip:$port_ss" | base64 -w0)#${sxname}Shadowsocks-2022-$hostname"
@@ -899,7 +899,7 @@ echo "$ss_link" >> "$HOME/agsb/jh.txt"
 echo "$ss_link"
 echo
 fi
-if grep -q vmess-xr "$HOME/agsb/xr.json" || grep -q vmess-sb "$HOME/agsb/sb.json"; then
+if grep vmess-xr "$HOME/agsb/xr.json" >/dev/null 2>&1 || grep vmess-sb "$HOME/agsb/sb.json" >/dev/null 2>&1; then
 echo "💣【 vmess-ws 】节点信息如下："
 port_vm_ws=$(cat "$HOME/agsb/port_vm_ws")
 vm_link="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"${sxname}vm-ws-$hostname\", \"add\": \"$server_ip\", \"port\": \"$port_vm_ws\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"www.bing.com\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
@@ -915,7 +915,7 @@ echo "$vm_cdn_link"
 echo
 fi
 fi
-if grep -q anytls-sb "$HOME/agsb/sb.json"; then
+if grep anytls-sb "$HOME/agsb/sb.json" >/dev/null 2>&1; then
 echo "💣【 AnyTLS 】节点信息如下："
 port_an=$(cat "$HOME/agsb/port_an")
 an_link="anytls://$uuid@$server_ip:$port_an?insecure=1&allowInsecure=1#${sxname}anytls-$hostname"
@@ -923,7 +923,7 @@ echo "$an_link" >> "$HOME/agsb/jh.txt"
 echo "$an_link"
 echo
 fi
-if grep -q anyreality-sb "$HOME/agsb/sb.json"; then
+if grep anyreality-sb "$HOME/agsb/sb.json" >/dev/null 2>&1; then
 echo "💣【 Any-Reality 】节点信息如下："
 port_ar=$(cat "$HOME/agsb/port_ar")
 ar_link="anytls://$uuid@$server_ip:$port_ar?security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key_s&sid=$short_id_s&type=tcp&headerType=none#${sxname}any-reality-$hostname"
@@ -931,7 +931,7 @@ echo "$ar_link" >> "$HOME/agsb/jh.txt"
 echo "$ar_link"
 echo
 fi
-if grep -q hy2-sb "$HOME/agsb/sb.json"; then
+if grep hy2-sb "$HOME/agsb/sb.json" >/dev/null 2>&1; then
 echo "💣【 Hysteria2 】节点信息如下："
 port_hy2=$(cat "$HOME/agsb/port_hy2")
 hy2_link="hysteria2://$uuid@$server_ip:$port_hy2?security=tls&alpn=h3&insecure=1&sni=www.bing.com#${sxname}hy2-$hostname"
@@ -939,7 +939,7 @@ echo "$hy2_link" >> "$HOME/agsb/jh.txt"
 echo "$hy2_link"
 echo
 fi
-if grep -q tuic5-sb "$HOME/agsb/sb.json"; then
+if grep tuic5-sb "$HOME/agsb/sb.json" >/dev/null 2>&1; then
 echo "💣【 Tuic 】节点信息如下："
 port_tu=$(cat "$HOME/agsb/port_tu")
 tuic5_link="tuic://$uuid:$uuid@$server_ip:$port_tu?congestion_control=bbr&udp_relay_mode=native&alpn=h3&sni=www.bing.com&allow_insecure=1&allowInsecure=1#${sxname}tuic-$hostname"
