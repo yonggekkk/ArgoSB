@@ -12,6 +12,7 @@ export LANG=en_US.UTF-8
 if find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|x)' || pgrep -f 'agsb/(s|x)' >/dev/null 2>&1; then
 if [ "$1" = "rep" ]; then
 [ "$ssp" = yes ] || [ "$vlp" = yes ] || [ "$vmp" = yes ] || [ "$hyp" = yes ] || [ "$tup" = yes ] || [ "$xhp" = yes ] || [ "$anp" = yes ] || [ "$arp" = yes ] || { echo "提示：重置协议参数有误，请自查！💣"; exit; }
+[ "$ssp" = yes ] && [ -z "$sspt" ] && rm -rf "$HOME/agsb/port_ss"; [ "$vlp" = yes ] && [ -z "$vlpt" ] && rm -rf "$HOME/agsb/port_vl_re"; [ "$vmp" = yes ] && [ -z "$vmpt" ] && rm -rf "$HOME/agsb/port_vm_ws"; [ "$hyp" = yes ] && [ -z "$hypt" ] && rm -rf "$HOME/agsb/port_hy2"; [ "$tup" = yes ] && [ -z "$tupt" ] && rm -rf "$HOME/agsb/port_tu"; [ "$xhp" = yes ] && [ -z "$xhpt" ] && rm -rf "$HOME/agsb/port_xh"; [ "$anp" = yes ] && [ -z "$anpt" ] && rm -rf "$HOME/agsb/port_an"; [ "$arp" = yes ] && [ -z "$arpt" ] && rm -rf "$HOME/agsb/port_ar"
 fi
 else
 [ "$1" = "del" ] || [ "$ssp" = yes ] || [ "$vlp" = yes ] || [ "$vmp" = yes ] || [ "$hyp" = yes ] || [ "$tup" = yes ] || [ "$xhp" = yes ] || [ "$anp" = yes ] || [ "$arp" = yes ] || { echo "提示：未安装ArgoSB脚本，请在脚本前至少设置一个协议变量哦，再见！💣"; exit; }
