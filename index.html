@@ -163,7 +163,7 @@
 <body>
   <div class="wrap">
     <header>
-      <h1>ArgoSB小钢炮💣一键bash命令生成器 V25.8.12</h1>
+      <h1>ArgoSB小钢炮💣一键bash命令生成器 V25.8.21</h1>
       <p>
         甬哥Github项目：
         <a href="https://github.com/yonggekkk" target="_blank">github.com/yonggekkk</a><br>
@@ -181,6 +181,7 @@
           <label><input type="checkbox" data-proto="vmpt"> Vmess-ws <span class="pill">vmpt</span></label><input type="text" placeholder="留空则随机端口（Argo固定隧道必须填写端口）" data-port="vmpt">
           <label><input type="checkbox" data-proto="vlpt"> Vless-Reality-Vision <span class="pill">vlpt</span></label><input type="text" placeholder="留空则随机端口" data-port="vlpt">
           <label><input type="checkbox" data-proto="xhpt"> Vless-Xhttp-Reality <span class="pill">xhpt</span></label><input type="text" placeholder="留空则随机端口" data-port="xhpt">
+          <label><input type="checkbox" data-proto="arpt"> Any-Reality <span class="pill">arpt</span></label><input type="text" placeholder="留空则随机端口" data-port="arpt">
           <label><input type="checkbox" data-proto="anpt"> AnyTLS <span class="pill">anpt</span></label><input type="text" placeholder="留空则随机端口" data-port="anpt">
           <label><input type="checkbox" data-proto="hypt"> Hysteria2 <span class="pill">hypt</span></label><input type="text" placeholder="留空则随机端口" data-port="hypt">
           <label><input type="checkbox" data-proto="tupt"> Tuic <span class="pill">tupt</span></label><input type="text" placeholder="留空则随机端口" data-port="tupt">
@@ -192,7 +193,7 @@
         <h2>配置参数： </h2>
         <div class="row"><label>UUID 密码 <span class="pill">uuid</span></label><input id="uuid" type="text" placeholder="留空则随机生成uuid密码"/></div>
         <div class="row"><label>Reality 域名 <span class="pill">reym</span></label><input id="reym" type="text" placeholder="留空则默认www.yahoo.com"/></div>
-        <div class="row"><label>客户端host地址<span class="pill">cdnym</span></label><input id="cdnym" type="text" placeholder="仅Vmess-ws套CDN时可用，CF域名已用IP解析" disabled/></div>
+        <div class="row"><label>客户端host地址<span class="pill">cdnym</span></label><input id="cdnym" type="text" placeholder="仅Vmess-ws套CDN时可用" disabled/></div>
         <div class="row"><label>WARP 全局出站 <span class="pill">warp</span></label>
           <select id="warp">
             <option value="">默认 服务器本地IP出站</option>
@@ -260,7 +261,7 @@
 <script>
 (function(){
   const CURL = 'bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)';
-  const protoKeys = ['vmpt','vlpt','xhpt','anpt','hypt','tupt','sspt'];
+  const protoKeys = ['vmpt','vlpt','xhpt','arpt','anpt','hypt','tupt','sspt'];
   const optIds = ['warp','ippz','ipyx','uuid','reym','cdnym','name'];
   const argoSwitch = document.getElementById('argoBtn');
   const agn = document.getElementById('agn');
@@ -456,5 +457,3 @@
 </script>
 </body>
 </html>
-
-
