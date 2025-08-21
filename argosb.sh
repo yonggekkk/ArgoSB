@@ -150,8 +150,9 @@ uuid=$("$HOME/agsb/sing-box" generate uuid)
 else
 uuid=$("$HOME/agsb/xray" uuid)
 fi
-fi
 echo "$uuid" > "$HOME/agsb/uuid"
+fi
+uuid=$(cat "$HOME/agsb/uuid")
 echo "UUID密码：$uuid"
 }
 installxray(){
@@ -197,8 +198,9 @@ if [ -n "$xhp" ]; then
 xhp=xhpt
 if [ -z "$port_xh" ] && [ ! -e "$HOME/agsb/port_xh" ]; then
 port_xh=$(shuf -i 10000-65535 -n 1)
-fi
 echo "$port_xh" > "$HOME/agsb/port_xh"
+fi
+port_xh=$(cat "$HOME/agsb/port_xh")
 echo "Vless-xhttp-reality端口：$port_xh"
 cat >> "$HOME/agsb/xr.json" <<EOF
     {
@@ -246,8 +248,9 @@ if [ -n "$vlp" ]; then
 vlp=vlpt
 if [ -z "$port_vl_re" ] && [ ! -e "$HOME/agsb/port_vl_re" ]; then
 port_vl_re=$(shuf -i 10000-65535 -n 1)
-fi
 echo "$port_vl_re" > "$HOME/agsb/port_vl_re"
+fi
+port_vl_re=$(cat "$HOME/agsb/port_vl_re")
 echo "Vless-reality-vision端口：$port_vl_re"
 cat >> "$HOME/agsb/xr.json" <<EOF
         {
@@ -295,8 +298,9 @@ echo "$sskey" > "$HOME/agsb/sskey"
 fi
 if [ -z "$port_ss" ] && [ ! -e "$HOME/agsb/port_ss" ]; then
 port_ss=$(shuf -i 10000-65535 -n 1)
-fi
 echo "$port_ss" > "$HOME/agsb/port_ss"
+fi
+port_ss=$(cat "$HOME/agsb/port_ss")
 echo "Shadowsocks-2022端口：$port_ss"
 cat >> "$HOME/agsb/xr.json" <<EOF
         {
@@ -350,8 +354,9 @@ if [ -n "$hyp" ]; then
 hyp=hypt
 if [ -z "$port_hy2" ] && [ ! -e "$HOME/agsb/port_hy2" ]; then
 port_hy2=$(shuf -i 10000-65535 -n 1)
-fi
 echo "$port_hy2" > "$HOME/agsb/port_hy2"
+fi
+port_hy2=$(cat "$HOME/agsb/port_hy2")
 echo "Hysteria2端口：$port_hy2"
 cat >> "$HOME/agsb/sb.json" <<EOF
     {
@@ -382,8 +387,9 @@ if [ -n "$tup" ]; then
 tup=tupt
 if [ -z "$port_tu" ] && [ ! -e "$HOME/agsb/port_tu" ]; then
 port_tu=$(shuf -i 10000-65535 -n 1)
-fi
 echo "$port_tu" > "$HOME/agsb/port_tu"
+fi
+port_tu=$(cat "$HOME/agsb/port_tu")
 echo "Tuic端口：$port_tu"
 cat >> "$HOME/agsb/sb.json" <<EOF
         {
@@ -415,8 +421,9 @@ if [ -n "$anp" ]; then
 anp=anpt
 if [ -z "$port_an" ] && [ ! -e "$HOME/agsb/port_an" ]; then
 port_an=$(shuf -i 10000-65535 -n 1)
-fi
 echo "$port_an" > "$HOME/agsb/port_an"
+fi
+port_an=$(cat "$HOME/agsb/port_an")
 echo "Anytls端口：$port_an"
 cat >> "$HOME/agsb/sb.json" <<EOF
         {
@@ -440,8 +447,6 @@ EOF
 else
 anp=anptargo
 fi
-
-
 if [ -n "$arp" ]; then
 arp=arpt
 if [ -z "$ym_vl_re" ]; then
@@ -464,8 +469,9 @@ public_key_s=$(cat "$HOME/agsb/sbk/public_key")
 short_id_s=$(cat "$HOME/agsb/sbk/short_id")
 if [ -z "$port_ar" ] && [ ! -e "$HOME/agsb/port_ar" ]; then
 port_ar=$(shuf -i 10000-65535 -n 1)
-fi
 echo "$port_ar" > "$HOME/agsb/port_ar"
+fi
+port_ar=$(cat "$HOME/agsb/port_ar")
 echo "Any-Reality端口：$port_ar"
 cat >> "$HOME/agsb/sb.json" <<EOF
         {
@@ -504,8 +510,9 @@ if [ -n "$vmp" ]; then
 vmp=vmpt
 if [ -z "$port_vm_ws" ] && [ ! -e "$HOME/agsb/port_vm_ws" ]; then
 port_vm_ws=$(shuf -i 10000-65535 -n 1)
-fi
 echo "$port_vm_ws" > "$HOME/agsb/port_vm_ws"
+fi
+port_vm_ws=$(cat "$HOME/agsb/port_vm_ws")
 echo "Vmess-ws端口：$port_vm_ws"
 if [ -n "$cdnym" ]; then
 echo "$cdnym" > "$HOME/agsb/cdnym"
