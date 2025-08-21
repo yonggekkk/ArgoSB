@@ -195,7 +195,7 @@ short_id_x=$(cat "$HOME/agsb/xrk/short_id")
 fi
 if [ -n "$xhp" ]; then
 xhp=xhpt
-if [ -z "$port_xh" ]; then
+if [ -z "$port_xh" ] && [ ! -e "$HOME/agsb/port_xh" ]; then
 port_xh=$(shuf -i 10000-65535 -n 1)
 fi
 echo "$port_xh" > "$HOME/agsb/port_xh"
@@ -244,7 +244,7 @@ xhp=xhptargo
 fi
 if [ -n "$vlp" ]; then
 vlp=vlpt
-if [ -z "$port_vl_re" ]; then
+if [ -z "$port_vl_re" ] && [ ! -e "$HOME/agsb/port_vl_re" ]; then
 port_vl_re=$(shuf -i 10000-65535 -n 1)
 fi
 echo "$port_vl_re" > "$HOME/agsb/port_vl_re"
@@ -293,7 +293,7 @@ if [ ! -e "$HOME/agsb/sskey" ]; then
 sskey=$(head -c 16 /dev/urandom | base64 -w0)
 echo "$sskey" > "$HOME/agsb/sskey"
 fi
-if [ -z "$port_ss" ]; then
+if [ -z "$port_ss" ] && [ ! -e "$HOME/agsb/port_ss" ]; then
 port_ss=$(shuf -i 10000-65535 -n 1)
 fi
 echo "$port_ss" > "$HOME/agsb/port_ss"
@@ -348,7 +348,7 @@ curl -Lso "$HOME/agsb/cert.pem" https://github.com/yonggekkk/ArgoSB/releases/dow
 fi
 if [ -n "$hyp" ]; then
 hyp=hypt
-if [ -z "$port_hy2" ]; then
+if [ -z "$port_hy2" ] && [ ! -e "$HOME/agsb/port_hy2" ]; then
 port_hy2=$(shuf -i 10000-65535 -n 1)
 fi
 echo "$port_hy2" > "$HOME/agsb/port_hy2"
@@ -380,7 +380,7 @@ hyp=hyptargo
 fi
 if [ -n "$tup" ]; then
 tup=tupt
-if [ -z "$port_tu" ]; then
+if [ -z "$port_tu" ] && [ ! -e "$HOME/agsb/port_tu" ]; then
 port_tu=$(shuf -i 10000-65535 -n 1)
 fi
 echo "$port_tu" > "$HOME/agsb/port_tu"
@@ -413,7 +413,7 @@ tup=tuptargo
 fi
 if [ -n "$anp" ]; then
 anp=anpt
-if [ -z "$port_an" ]; then
+if [ -z "$port_an" ] && [ ! -e "$HOME/agsb/port_an" ]; then
 port_an=$(shuf -i 10000-65535 -n 1)
 fi
 echo "$port_an" > "$HOME/agsb/port_an"
@@ -462,7 +462,7 @@ fi
 private_key_s=$(cat "$HOME/agsb/sbk/private_key")
 public_key_s=$(cat "$HOME/agsb/sbk/public_key")
 short_id_s=$(cat "$HOME/agsb/sbk/short_id")
-if [ -z "$port_ar" ]; then
+if [ -z "$port_ar" ] && [ ! -e "$HOME/agsb/port_ar" ]; then
 port_ar=$(shuf -i 10000-65535 -n 1)
 fi
 echo "$port_ar" > "$HOME/agsb/port_ar"
@@ -502,7 +502,7 @@ fi
 xrsbvm(){
 if [ -n "$vmp" ]; then
 vmp=vmpt
-if [ -z "$port_vm_ws" ]; then
+if [ -z "$port_vm_ws" ] && [ ! -e "$HOME/agsb/port_vm_ws" ]; then
 port_vm_ws=$(shuf -i 10000-65535 -n 1)
 fi
 echo "$port_vm_ws" > "$HOME/agsb/port_vm_ws"
