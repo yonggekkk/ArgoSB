@@ -1014,7 +1014,7 @@ showmode
 exit
 elif [ "$1" = "rep" ]; then
 cleandel
-rm -rf "$HOME/agsb"/{sbargoym.log,sbargotoken.log,argo.log,cdnym,name}
+rm -rf "$HOME/agsb"/{sb.json,xr.json,sbargoym.log,sbargotoken.log,argo.log,cdnym,name}
 echo "ArgoSB重置协议完成，开始更新相关协议变量……" && sleep 3
 echo
 elif [ "$1" = "list" ]; then
