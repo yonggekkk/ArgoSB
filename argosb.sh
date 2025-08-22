@@ -625,7 +625,7 @@ cat >> "$HOME/agsb/xr.json" <<EOF
           }
         ],
         "reserved": [134, 63, 85],
-        "domainStrategy":"${xrwyx}"
+        "domainStrategy":"${xryx}"
         }
     }
   ],
