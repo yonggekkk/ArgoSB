@@ -77,72 +77,127 @@ echo "$sxname" > "$HOME/agsb/name"
 echo
 echo "所有节点名称前缀：$name"
 fi
+
+
+
+
 v4v6
 if echo "$v6" | grep -q '^2a09' || echo "$v4" | grep -q '^104.28'; then
-xouttag=direct
-souttag=direct
+s1outtag=direct
+s2outtag=direct
+x1outtag=direct
+x2outtag=direct
 wap=warpargo
 echo
 echo "请注意：你已安装了warp"
 else
 if [ "$wap" != yes ]; then
-xouttag=direct
-souttag=direct
+s1outtag=direct
+s2outtag=direct
+x1outtag=direct
+x2outtag=direct
 wap=warpargo
 elif [ "$warp" = "" ]; then
-xouttag=warp-out
-souttag=warp-out
+s1outtag=warp-out
+s2outtag=warp-out
+x1outtag=warp-out
+x2outtag=warp-out
 wap=warp
-echo
-echo "所有内核协议添加warp全局出站"
-elif [ "$warp" = "x" ]; then
-xouttag=warp-out
-souttag=direct
-wap=warp
-echo
-echo "Xray内核的协议添加warp全局出站"
 elif [ "$warp" = "s" ]; then
-xouttag=direct
-souttag=warp-out
+s1outtag=warp-out
+s2outtag=warp-out
+x1outtag=warp-out
+x2outtag=warp-out
 wap=warp
-echo
-echo "Sing-box内核的协议添加warp全局出站"
+elif [ "$warp" = "s4" ]; then
+s1outtag=warp-out
+s2outtag=direct
+x1outtag=warp-out
+x2outtag=direct
+wap=warp
+elif [ "$warp" = "s6" ]; then
+s1outtag=warp-out
+s2outtag=direct
+x1outtag=warp-out
+x2outtag=direct
+wap=warp
+elif [ "$warp" = "x" ]; then
+s1outtag=warp-out
+s2outtag=warp-out
+x1outtag=warp-out
+x2outtag=warp-out
+wap=warp
+elif [ "$warp" = "x4" ]; then
+s1outtag=warp-out
+s2outtag=direct
+x1outtag=warp-out
+x2outtag=direct
+wap=warp
+elif [ "$warp" = "x6" ]; then
+s1outtag=warp-out
+s2outtag=direct
+x1outtag=warp-out
+x2outtag=direct
+wap=warp
 else
-xouttag=direct
-souttag=direct
+s1outtag=direct
+s2outtag=direct
+x1outtag=direct
+x2outtag=direct
 wap=warpargo
 fi
 fi
+
+
+
+
+
 if [ "$ipyx" = "" ]; then
-xrip='ForceIP'
-sbip='prefer_ipv6'
+xryx='ForceIP'
+sbyx='prefer_ipv6'
+xip='0.0.0.0'
+sip='0.0.0.0'
 echo
 elif [ "$ipyx" = "64" ]; then
-xrip='ForceIPv6v4'
-sbip='prefer_ipv6'
+xryx='ForceIPv6v4'
+sbyx='prefer_ipv6'
+xip='::'
+sip='::'
 echo
 echo "所有节点IPV6优先"
 elif [ "$ipyx" = "46" ]; then
-xrip='ForceIPv4v6'
-sbip='prefer_ipv4'
+xryx='ForceIPv4v6'
+sbyx='prefer_ipv4'
+xip='0.0.0.0'
+sip='0.0.0.0'
 echo
 echo "所有节点IPV4优先"
 elif [ "$ipyx" = "6" ]; then
-xrip='ForceIPv6'
-sbip='ipv6_only'
+xryx='ForceIPv6'
+sbyx='ipv6_only'
+xip='::'
+sip='::'
 echo
 echo "所有节点仅IPV6"
 elif [ "$ipyx" = "4" ]; then
-xrip='ForceIPv4'
-sbip='ipv4_only'
+xryx='ForceIPv4'
+sbyx='ipv4_only'
+xip='0.0.0.0'
+sip='0.0.0.0'
 echo
 echo "所有节点仅IPV4"
 else
-xrip='ForceIP'
-sbip='prefer_ipv6'
+xryx='ForceIP'
+sbyx='prefer_ipv6'
+xip='0.0.0.0'
+sip='0.0.0.0'
 echo
 fi
 }
+
+
+
+
 insuuid(){
 if [ -z "$uuid" ] && [ ! -e "$HOME/agsb/uuid" ]; then
 if [ -e "$HOME/agsb/sing-box" ]; then
