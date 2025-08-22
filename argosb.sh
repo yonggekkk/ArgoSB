@@ -602,7 +602,7 @@ cat >> "$HOME/agsb/xr.json" <<EOF
       "protocol": "freedom",
       "tag": "direct",
       "settings": {
-      "domainStrategy":"${xrip}"
+      "domainStrategy":"${xryx}"
      }
     },
     {
@@ -625,7 +625,7 @@ cat >> "$HOME/agsb/xr.json" <<EOF
           }
         ],
         "reserved": [134, 63, 85],
-        "domainStrategy":"${xrip}"
+        "domainStrategy":"${xrwyx}"
         }
     }
   ],
@@ -633,8 +633,14 @@ cat >> "$HOME/agsb/xr.json" <<EOF
     "rules": [
       {
         "type": "field",
+        "ip": [ "${xip}" ],
         "network": "tcp,udp",
-        "outboundTag": "${xouttag}"
+        "outboundTag": "${x1outtag}"
+      },
+      {
+        "type": "field",
+        "network": "tcp,udp",
+        "outboundTag": "${x2outtag}"
       }
     ]
   }
@@ -682,12 +688,14 @@ cat >> "$HOME/agsb/sb.json" <<EOF
         },
        {
         "action": "resolve",
-         "strategy": "${sbip}"
+         "strategy": "${sbyx}"
        },
       {
-        "outbound": "${souttag}"
+        "ip_cidr": [ "${sip}" ],         
+        "outbound": "${s1outtag}"
       }
-    ]
+    ],
+    "final": "${s2outtag}"
   }
 }
 EOF
