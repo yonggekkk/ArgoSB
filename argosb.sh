@@ -633,7 +633,7 @@ cat >> "$HOME/agsb/xr.json" <<EOF
     "rules": [
       {
         "type": "field",
-        "ip": [ "${xip}" ],
+        "ip": [ "${xip}/0" ],
         "network": "tcp,udp",
         "outboundTag": "${x1outtag}"
       },
@@ -691,7 +691,7 @@ cat >> "$HOME/agsb/sb.json" <<EOF
          "strategy": "${sbyx}"
        },
       {
-        "ip_cidr": [ "${sip}" ],         
+        "ip_cidr": [ "${sip}/0" ],         
         "outbound": "${s1outtag}"
       }
     ],
