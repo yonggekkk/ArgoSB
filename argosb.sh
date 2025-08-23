@@ -146,7 +146,6 @@ s1outtag=direct
 s2outtag=direct
 x1outtag=warp-out
 x2outtag=direct
-xryx='ForceIPv4'
 xip='"0.0.0.0/0"'
 sip='"::/0", "0.0.0.0/0"'
 wap=warp
@@ -155,7 +154,6 @@ s1outtag=direct
 s2outtag=direct
 x1outtag=warp-out
 x2outtag=direct
-xryx='ForceIPv6'
 xip='"::/0"'
 sip='"::/0", "0.0.0.0/0"'
 wap=warp
@@ -169,11 +167,7 @@ sip='"::/0", "0.0.0.0/0"'
 wap=warpargo
 fi
 fi
-
-
-
-
-
+[ "$warp" = x4 ] && wxryx='ForceIPv4' || [ "$warp" = x6 ] && wxryx='ForceIPv6' || [ "$warp" = x ] && wxryx='ForceIP'
 if [ "$ipyx" = "" ]; then
 xryx='ForceIP'
 if [ -z "$(curl -s4m5 icanhazip.com -k)" ]; then
@@ -203,6 +197,7 @@ sbyx='ipv4_only'
 echo
 echo "所有节点仅IPV4"
 else
+[ "$warp" = x4 ] && xryx='ForceIPv4' || [ "$warp" = x6 ] && xryx='ForceIPv6'
 xryx='ForceIP'
 if [ -z "$(curl -s4m5 icanhazip.com -k)" ]; then
 sbyx='prefer_ipv6'
@@ -698,7 +693,7 @@ cat >> "$HOME/agsb/xr.json" <<EOF
           }
         ],
         "reserved": [134, 63, 85],
-        "domainStrategy":"${xryx}"
+        "domainStrategy":"${wxryx}"
         }
     }
   ],
