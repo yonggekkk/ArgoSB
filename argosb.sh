@@ -87,6 +87,8 @@ s1outtag=direct
 s2outtag=direct
 x1outtag=direct
 x2outtag=direct
+xip='"::/0", "0.0.0.0/0"'
+sip='"::/0", "0.0.0.0/0"'
 wap=warpargo
 echo
 echo "请注意：你已安装了warp"
@@ -96,54 +98,72 @@ s1outtag=direct
 s2outtag=direct
 x1outtag=direct
 x2outtag=direct
+xip='"::/0", "0.0.0.0/0"'
+sip='"::/0", "0.0.0.0/0"'
 wap=warpargo
 elif [ "$warp" = "" ]; then
 s1outtag=warp-out
 s2outtag=warp-out
 x1outtag=warp-out
 x2outtag=warp-out
+xip='"::/0", "0.0.0.0/0"'
+sip='"::/0", "0.0.0.0/0"'
 wap=warp
 elif [ "$warp" = "s" ]; then
 s1outtag=warp-out
 s2outtag=warp-out
 x1outtag=direct
 x2outtag=direct
+xip='"::/0", "0.0.0.0/0"'
+sip='"::/0", "0.0.0.0/0"'
 wap=warp
 elif [ "$warp" = "s4" ]; then
 s1outtag=warp-out
 s2outtag=direct
 x1outtag=direct
 x2outtag=direct
+xip='"::/0", "0.0.0.0/0"'
+sip='"0.0.0.0"'
 wap=warp
 elif [ "$warp" = "s6" ]; then
 s1outtag=warp-out
 s2outtag=direct
 x1outtag=direct
 x2outtag=direct
+xip='"::/0", "0.0.0.0/0"'
+sip='"::"'
 wap=warp
 elif [ "$warp" = "x" ]; then
 s1outtag=direct
 s2outtag=direct
 x1outtag=warp-out
 x2outtag=warp-out
+xip='"::/0", "0.0.0.0/0"'
+sip='"::/0", "0.0.0.0/0"'
 wap=warp
 elif [ "$warp" = "x4" ]; then
 s1outtag=direct
 s2outtag=direct
 x1outtag=warp-out
 x2outtag=direct
+xip='"0.0.0.0/0"'
+sip='"::/0", "0.0.0.0/0"'
 wap=warp
 elif [ "$warp" = "x6" ]; then
 s1outtag=direct
 s2outtag=direct
 x1outtag=warp-out
 x2outtag=direct
+xip='"::/0"'
+sip='"::/0", "0.0.0.0/0"'
 wap=warp
 else
 s1outtag=direct
 s2outtag=direct
 x1outtag=direct
 x2outtag=direct
+xip='"::/0", "0.0.0.0/0"'
+sip='"::/0", "0.0.0.0/0"'
 wap=warpargo
 fi
 fi
@@ -155,42 +175,30 @@ fi
 if [ "$ipyx" = "" ]; then
 xryx='ForceIPv6v4'
 sbyx='prefer_ipv6'
-xip='"::/0", "0.0.0.0/0"'
-sip='"::/0", "0.0.0.0/0"'
 echo
 elif [ "$ipyx" = "64" ]; then
 xryx='ForceIPv6v4'
 sbyx='prefer_ipv6'
-xip='"::/0", "0.0.0.0/0"'
-sip='"::/0", "0.0.0.0/0"'
 echo
 echo "所有节点IPV6优先"
 elif [ "$ipyx" = "46" ]; then
 xryx='ForceIPv4v6'
 sbyx='prefer_ipv4'
-xip='"0.0.0.0/0", "::/0"'
-sip='"0.0.0.0/0", "::/0"'
 echo
 echo "所有节点IPV4优先"
 elif [ "$ipyx" = "6" ]; then
 xryx='ForceIPv6'
 sbyx='ipv6_only'
-xip='"::"'
-sip='"::"'
 echo
 echo "所有节点仅IPV6"
 elif [ "$ipyx" = "4" ]; then
 xryx='ForceIPv4'
 sbyx='ipv4_only'
-xip='"0.0.0.0"'
-sip='"0.0.0.0"'
 echo
 echo "所有节点仅IPV4"
 else
 xryx='ForceIPv6v4'
 sbyx='prefer_ipv6'
-xip='"::/0", "0.0.0.0/0"'
-sip='"::/0", "0.0.0.0/0"'
 echo
 fi
 }
