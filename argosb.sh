@@ -87,7 +87,6 @@ s1outtag=direct
 s2outtag=direct
 x1outtag=direct
 x2outtag=direct
-
 wap=warpargo
 echo
 echo "请注意：你已安装了warp"
@@ -154,16 +153,16 @@ fi
 
 
 if [ "$ipyx" = "" ]; then
-xryx='ForceIPv4v6'
-sbyx='prefer_ipv4'
-xip='"0.0.0.0/0", "::/0"'
-sip='"0.0.0.0/0", "::/0"'
+xryx='ForceIPv6v4'
+sbyx='prefer_ipv6'
+xip='"::/0", "0.0.0.0/0"'
+sip='"::/0", "0.0.0.0/0"'
 echo
 elif [ "$ipyx" = "64" ]; then
 xryx='ForceIPv6v4'
 sbyx='prefer_ipv6'
-xip='"0.0.0.0/0", "::/0"'
-sip='"0.0.0.0/0", "::/0"'
+xip='"::/0", "0.0.0.0/0"'
+sip='"::/0", "0.0.0.0/0"'
 echo
 echo "所有节点IPV6优先"
 elif [ "$ipyx" = "46" ]; then
@@ -188,10 +187,10 @@ sip='"0.0.0.0"'
 echo
 echo "所有节点仅IPV4"
 else
-xryx='ForceIPv4v6'
-sbyx='prefer_ipv4'
-xip='"0.0.0.0/0", "::/0"'
-sip='"0.0.0.0/0", "::/0"'
+xryx='ForceIPv6v4'
+sbyx='prefer_ipv6'
+xip='"::/0", "0.0.0.0/0"'
+sip='"::/0", "0.0.0.0/0"'
 echo
 fi
 }
