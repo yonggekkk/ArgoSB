@@ -167,7 +167,7 @@ sip='"::/0", "0.0.0.0/0"'
 wap=warpargo
 fi
 fi
-[ "$warp" = x4 ] && wxryx='ForceIPv4' || [ "$warp" = x6 ] && wxryx='ForceIPv6' || [ "$warp" = x ] && wxryx='ForceIP'
+case "$warp" in x4) wxryx='ForceIPv4' ;; x6) wxryx='ForceIPv6' ;; x) wxryx='ForceIP' ;; esac
 if [ "$ipyx" = "" ]; then
 xryx='ForceIP'
 if [ -z "$(curl -s4m5 icanhazip.com -k)" ]; then
