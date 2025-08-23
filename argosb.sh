@@ -173,7 +173,7 @@ fi
 
 
 if [ "$ipyx" = "" ]; then
-xryx='ForceIPv6v4'
+xryx='ForceIP'
 sbyx='prefer_ipv6'
 echo
 elif [ "$ipyx" = "64" ]; then
@@ -197,7 +197,7 @@ sbyx='ipv4_only'
 echo
 echo "所有节点仅IPV4"
 else
-xryx='ForceIPv6v4'
+xryx='ForceIP'
 sbyx='prefer_ipv6'
 echo
 fi
