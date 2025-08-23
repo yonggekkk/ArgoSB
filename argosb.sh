@@ -698,6 +698,7 @@ cat >> "$HOME/agsb/xr.json" <<EOF
     }
   ],
   "routing": {
+    "domainStrategy": "IPOnDemand",
     "rules": [
       {
         "type": "field",
