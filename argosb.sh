@@ -174,7 +174,11 @@ fi
 
 if [ "$ipyx" = "" ]; then
 xryx='ForceIP'
+if [ -z "$(curl -s4m5 icanhazip.com -k)" ]; then
 sbyx='prefer_ipv6'
+else
+sbyx='prefer_ipv4'
+fi
 echo
 elif [ "$ipyx" = "64" ]; then
 xryx='ForceIPv6v4'
@@ -198,7 +202,11 @@ echo
 echo "所有节点仅IPV4"
 else
 xryx='ForceIP'
+if [ -z "$(curl -s4m5 icanhazip.com -k)" ]; then
 sbyx='prefer_ipv6'
+else
+sbyx='prefer_ipv4'
+fi
 echo
 fi
 }
