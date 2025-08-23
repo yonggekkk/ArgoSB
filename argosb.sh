@@ -87,6 +87,7 @@ s1outtag=direct
 s2outtag=direct
 x1outtag=direct
 x2outtag=direct
+
 wap=warpargo
 echo
 echo "请注意：你已安装了warp"
@@ -155,42 +156,42 @@ fi
 if [ "$ipyx" = "" ]; then
 xryx='ForceIPv4v6'
 sbyx='prefer_ipv4'
-xip='0.0.0.0'
-sip='0.0.0.0'
+xip='"0.0.0.0/0", "::/0"'
+sip='"0.0.0.0/0", "::/0"'
 echo
 elif [ "$ipyx" = "64" ]; then
 xryx='ForceIPv6v4'
 sbyx='prefer_ipv6'
-xip='::'
-sip='::'
+xip='"0.0.0.0/0", "::/0"'
+sip='"0.0.0.0/0", "::/0"'
 echo
 echo "所有节点IPV6优先"
 elif [ "$ipyx" = "46" ]; then
 xryx='ForceIPv4v6'
 sbyx='prefer_ipv4'
-xip='0.0.0.0'
-sip='0.0.0.0'
+xip='"0.0.0.0/0", "::/0"'
+sip='"0.0.0.0/0", "::/0"'
 echo
 echo "所有节点IPV4优先"
 elif [ "$ipyx" = "6" ]; then
 xryx='ForceIPv6'
 sbyx='ipv6_only'
-xip='::'
-sip='::'
+xip='"::"'
+sip='"::"'
 echo
 echo "所有节点仅IPV6"
 elif [ "$ipyx" = "4" ]; then
 xryx='ForceIPv4'
 sbyx='ipv4_only'
-xip='0.0.0.0'
-sip='0.0.0.0'
+xip='"0.0.0.0"'
+sip='"0.0.0.0"'
 echo
 echo "所有节点仅IPV4"
 else
 xryx='ForceIPv4v6'
 sbyx='prefer_ipv4'
-xip='0.0.0.0'
-sip='0.0.0.0'
+xip='"0.0.0.0/0", "::/0"'
+sip='"0.0.0.0/0", "::/0"'
 echo
 fi
 }
@@ -688,7 +689,7 @@ cat >> "$HOME/agsb/xr.json" <<EOF
     "rules": [
       {
         "type": "field",
-        "ip": [ "${xip}/0" ],
+        "ip": [ ${xip} ],
         "network": "tcp,udp",
         "outboundTag": "${x1outtag}"
       },
@@ -746,7 +747,7 @@ cat >> "$HOME/agsb/sb.json" <<EOF
          "strategy": "${sbyx}"
        },
       {
-        "ip_cidr": [ "${sip}/0" ],         
+        "ip_cidr": [ ${sip} ],         
         "outbound": "${s1outtag}"
       }
     ],
