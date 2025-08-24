@@ -169,7 +169,7 @@ fi
 fi
 case "$warp" in x4) wxryx='ForceIPv4' ;; x6) wxryx='ForceIPv6' ;; *) wxryx='ForceIP' ;; esac
 if [ "$ipyx" = "" ]; then
-case "$warp" in x4) xryx='ForceIPv4' ;; x6) xryx='ForceIPv6' ;; *) xryx='ForceIP' ;; esac
+case "$warp" in x4) xryx=$(curl -s6m5 icanhazip.com -k >/dev/null && echo ForceIP || echo ForceIPv4) ;; x6) xryx=$(curl -s6m5 icanhazip.com -k >/dev/null && echo ForceIPv6 || echo ForceIP) ;; *) xryx=ForceIP ;; esac
 if [ -z "$(curl -s4m5 icanhazip.com -k)" ]; then
 sbyx='prefer_ipv6'
 else
@@ -197,7 +197,7 @@ sbyx='ipv4_only'
 echo
 echo "所有节点仅IPV4"
 else
-case "$warp" in x4) xryx='ForceIPv4' ;; x6) xryx='ForceIPv6' ;; *) xryx='ForceIP' ;; esac
+case "$warp" in x4) xryx=$(curl -s6m5 icanhazip.com -k >/dev/null && echo ForceIP || echo ForceIPv4) ;; x6) xryx=$(curl -s6m5 icanhazip.com -k >/dev/null && echo ForceIPv6 || echo ForceIP) ;; *) xryx=ForceIP ;; esac
 if [ -z "$(curl -s4m5 icanhazip.com -k)" ]; then
 sbyx='prefer_ipv6'
 else
