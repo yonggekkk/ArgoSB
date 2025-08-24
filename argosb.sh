@@ -167,9 +167,9 @@ sip='"::/0", "0.0.0.0/0"'
 wap=warpargo
 fi
 fi
-case "$warp" in x4) wxryx='ForceIPv4' ;; x6) wxryx='ForceIPv6' ;; x) wxryx='ForceIP' ;; esac
+case "$warp" in x4) wxryx='ForceIPv4' ;; x6) wxryx='ForceIPv6' ;; *) wxryx='ForceIP' ;; esac
 if [ "$ipyx" = "" ]; then
-xryx='ForceIP'
+case "$warp" in x4) xryx='ForceIPv4' ;; x6) xryx='ForceIPv6' ;; *) xryx='ForceIP' ;; esac
 if [ -z "$(curl -s4m5 icanhazip.com -k)" ]; then
 sbyx='prefer_ipv6'
 else
@@ -197,8 +197,7 @@ sbyx='ipv4_only'
 echo
 echo "所有节点仅IPV4"
 else
-[ "$warp" = x4 ] && xryx='ForceIPv4' || [ "$warp" = x6 ] && xryx='ForceIPv6'
-xryx='ForceIP'
+case "$warp" in x4) xryx='ForceIPv4' ;; x6) xryx='ForceIPv6' ;; *) xryx='ForceIP' ;; esac
 if [ -z "$(curl -s4m5 icanhazip.com -k)" ]; then
 sbyx='prefer_ipv6'
 else
@@ -674,7 +673,7 @@ cat >> "$HOME/agsb/xr.json" <<EOF
      }
     },
     {
-      "tag": "warp-out",
+      "tag": "x-warp-out",
       "protocol": "wireguard",
       "settings": {
         "secretKey": "COAYqKrAXaQIGL8+Wkmfe39r1tMMR80JWHVaF443XFQ=",
@@ -692,10 +691,19 @@ cat >> "$HOME/agsb/xr.json" <<EOF
             "endpoint": "${xendip}:2408"
           }
         ],
-        "reserved": [134, 63, 85],
-        "domainStrategy":"${wxryx}"
+        "reserved": [134, 63, 85]
         }
-    }
+    },
+    {
+      "tag":"warp-out",
+      "protocol":"freedom",
+        "settings":{
+        "domainStrategy":"${wxryx}"
+       },
+       "proxySettings":{
+       "tag":"x-warp-out"
+     }
+}
   ],
   "routing": {
     "domainStrategy": "IPOnDemand",
