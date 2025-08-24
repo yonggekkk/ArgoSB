@@ -31,7 +31,6 @@ export argo=${argo:-''}
 export ARGO_DOMAIN=${agn:-''}
 export ARGO_AUTH=${agk:-''}
 export ippz=${ippz:-''}
-export ipyx=${ipyx:-''}
 export warp=${warp:-''}
 export name=${name:-''}
 showmode(){
@@ -77,8 +76,6 @@ echo "$sxname" > "$HOME/agsb/name"
 echo
 echo "所有节点名称前缀：$name"
 fi
-
-
 
 
 v4v6
@@ -168,39 +165,9 @@ wap=warpargo
 fi
 fi
 case "$warp" in x4) wxryx='ForceIPv4' ;; x6) wxryx='ForceIPv6' ;; *) wxryx='ForceIPv4v6' ;; esac
-if [ "$ipyx" = "" ]; then
 case "$warp" in x4) xryx=$(curl -s6m5 icanhazip.com -k >/dev/null && echo ForceIP || echo ForceIPv4) ;; *) xryx=ForceIP ;; esac
 sbyx=$(curl -s4m5 icanhazip.com -k >/dev/null && echo prefer_ipv6 || echo prefer_ipv4)
-echo
-elif [ "$ipyx" = "64" ]; then
-xryx='ForceIPv6v4'
-sbyx='prefer_ipv6'
-echo
-echo "所有节点IPV6优先"
-elif [ "$ipyx" = "46" ]; then
-xryx='ForceIPv4v6'
-sbyx='prefer_ipv4'
-echo
-echo "所有节点IPV4优先"
-elif [ "$ipyx" = "6" ]; then
-xryx='ForceIPv6'
-sbyx='ipv6_only'
-echo
-echo "所有节点仅IPV6"
-elif [ "$ipyx" = "4" ]; then
-xryx='ForceIPv4'
-sbyx='ipv4_only'
-echo
-echo "所有节点仅IPV4"
-else
-case "$warp" in x4) xryx=$(curl -s6m5 icanhazip.com -k >/dev/null && echo ForceIP || echo ForceIPv4) ;; *) xryx=ForceIP ;; esac
-sbyx=$(curl -s4m5 icanhazip.com -k >/dev/null && echo prefer_ipv6 || echo prefer_ipv4)
-echo
-fi
 }
-
-
-
 
 insuuid(){
 if [ -z "$uuid" ] && [ ! -e "$HOME/agsb/uuid" ]; then
@@ -842,7 +809,7 @@ echo
 if find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|x)' || pgrep -f 'agsb/(s|x)' >/dev/null 2>&1 ; then
 [ -f ~/.bashrc ] || touch ~/.bashrc
 sed -i '/yonggekkk/d' ~/.bashrc
-echo "if ! find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|x)' && ! pgrep -f 'agsb/(s|x)' >/dev/null 2>&1; then echo '检测到系统可能中断过，建议在SSH对话框输入 reboot 重启下服务器。现在自动执行ArgoSB脚本的节点恢复操作，请稍等……'; sleep 6; export cdnym=\"${cdnym}\" name=\"${name}\" ipyx=\"${ipyx}\" ippz=\"${ippz}\" argo=\"${argo}\" uuid=\"${uuid}\" $wap=\"${warp}\" $xhp=\"${port_xh}\" $ssp=\"${port_ss}\" $anp=\"${port_an}\" $arp=\"${port_ar}\" $vlp=\"${port_vl_re}\" $vmp=\"${port_vm_ws}\" $hyp=\"${port_hy2}\" $tup=\"${port_tu}\" reym=\"${ym_vl_re}\" agn=\"${ARGO_DOMAIN}\" agk=\"${ARGO_AUTH}\"; bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh); fi" >> ~/.bashrc
+echo "if ! find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|x)' && ! pgrep -f 'agsb/(s|x)' >/dev/null 2>&1; then echo '检测到系统可能中断过，建议在SSH对话框输入 reboot 重启下服务器。现在自动执行ArgoSB脚本的节点恢复操作，请稍等……'; sleep 6; export cdnym=\"${cdnym}\" name=\"${name}\" ippz=\"${ippz}\" argo=\"${argo}\" uuid=\"${uuid}\" $wap=\"${warp}\" $xhp=\"${port_xh}\" $ssp=\"${port_ss}\" $anp=\"${port_an}\" $arp=\"${port_ar}\" $vlp=\"${port_vl_re}\" $vmp=\"${port_vm_ws}\" $hyp=\"${port_hy2}\" $tup=\"${port_tu}\" reym=\"${ym_vl_re}\" agn=\"${ARGO_DOMAIN}\" agk=\"${ARGO_AUTH}\"; bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh); fi" >> ~/.bashrc
 COMMAND="agsb"
 SCRIPT_PATH="$HOME/bin/$COMMAND"
 mkdir -p "$HOME/bin"
