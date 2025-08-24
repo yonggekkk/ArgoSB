@@ -76,92 +76,24 @@ echo "$sxname" > "$HOME/agsb/name"
 echo
 echo "所有节点名称前缀：$name"
 fi
-
-
 v4v6
 if echo "$v6" | grep -q '^2a09' || echo "$v4" | grep -q '^104.28'; then
-s1outtag=direct
-s2outtag=direct
-x1outtag=direct
-x2outtag=direct
-xip='"::/0", "0.0.0.0/0"'
-sip='"::/0", "0.0.0.0/0"'
-wap=warpargo
-echo
-echo "请注意：你已安装了warp"
+s1outtag=direct; s2outtag=direct; x1outtag=direct; x2outtag=direct; xip='"::/0", "0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warpargo
+echo; echo "请注意：你已安装了warp"
 else
 if [ "$wap" != yes ]; then
-s1outtag=direct
-s2outtag=direct
-x1outtag=direct
-x2outtag=direct
-xip='"::/0", "0.0.0.0/0"'
-sip='"::/0", "0.0.0.0/0"'
-wap=warpargo
-elif [ "$warp" = "" ]; then
-s1outtag=warp-out
-s2outtag=warp-out
-x1outtag=warp-out
-x2outtag=warp-out
-xip='"::/0", "0.0.0.0/0"'
-sip='"::/0", "0.0.0.0/0"'
-wap=warp
-elif [ "$warp" = "s" ]; then
-s1outtag=warp-out
-s2outtag=warp-out
-x1outtag=direct
-x2outtag=direct
-xip='"::/0", "0.0.0.0/0"'
-sip='"::/0", "0.0.0.0/0"'
-wap=warp
-elif [ "$warp" = "s4" ]; then
-s1outtag=warp-out
-s2outtag=direct
-x1outtag=direct
-x2outtag=direct
-xip='"::/0", "0.0.0.0/0"'
-sip='"0.0.0.0/0"'
-wap=warp
-elif [ "$warp" = "s6" ]; then
-s1outtag=warp-out
-s2outtag=direct
-x1outtag=direct
-x2outtag=direct
-xip='"::/0", "0.0.0.0/0"'
-sip='"::/0"'
-wap=warp
-elif [ "$warp" = "x" ]; then
-s1outtag=direct
-s2outtag=direct
-x1outtag=warp-out
-x2outtag=warp-out
-xip='"::/0", "0.0.0.0/0"'
-sip='"::/0", "0.0.0.0/0"'
-wap=warp
-elif [ "$warp" = "x4" ]; then
-s1outtag=direct
-s2outtag=direct
-x1outtag=warp-out
-x2outtag=direct
-xip='"0.0.0.0/0"'
-sip='"::/0", "0.0.0.0/0"'
-wap=warp
-elif [ "$warp" = "x6" ]; then
-s1outtag=direct
-s2outtag=direct
-x1outtag=warp-out
-x2outtag=direct
-xip='"::/0"'
-sip='"::/0", "0.0.0.0/0"'
-wap=warp
+s1outtag=direct; s2outtag=direct; x1outtag=direct; x2outtag=direct; xip='"::/0", "0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warpargo
 else
-s1outtag=direct
-s2outtag=direct
-x1outtag=direct
-x2outtag=direct
-xip='"::/0", "0.0.0.0/0"'
-sip='"::/0", "0.0.0.0/0"'
-wap=warpargo
+case "$warp" in
+""  ) s1outtag=warp-out; s2outtag=warp-out; x1outtag=warp-out; x2outtag=warp-out; xip='"::/0", "0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
+s   ) s1outtag=warp-out; s2outtag=warp-out; x1outtag=direct;  x2outtag=direct;  xip='"::/0", "0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
+s4  ) s1outtag=warp-out; s2outtag=direct;  x1outtag=direct;  x2outtag=direct;  xip='"::/0", "0.0.0.0/0"'; sip='"0.0.0.0/0"';         wap=warp ;;
+s6  ) s1outtag=warp-out; s2outtag=direct;  x1outtag=direct;  x2outtag=direct;  xip='"::/0", "0.0.0.0/0"'; sip='"::/0"';               wap=warp ;;
+x   ) s1outtag=direct;   s2outtag=direct;  x1outtag=warp-out; x2outtag=warp-out; xip='"::/0", "0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
+x4  ) s1outtag=direct;   s2outtag=direct;  x1outtag=warp-out; x2outtag=direct;  xip='"0.0.0.0/0"';           sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
+x6  ) s1outtag=direct;   s2outtag=direct;  x1outtag=warp-out; x2outtag=direct;  xip='"::/0"';                 sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
+*   ) s1outtag=direct;   s2outtag=direct;  x1outtag=direct;  x2outtag=direct;  xip='"::/0", "0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warpargo ;;
+esac
 fi
 fi
 case "$warp" in x4) wxryx='ForceIPv4' ;; x6) wxryx='ForceIPv6' ;; *) wxryx='ForceIPv4v6' ;; esac
