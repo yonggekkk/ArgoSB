@@ -85,20 +85,23 @@ if [ "$wap" != yes ]; then
 s1outtag=direct; s2outtag=direct; x1outtag=direct; x2outtag=direct; xip='"::/0", "0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warpargo
 else
 case "$warp" in
-""  ) s1outtag=warp-out; s2outtag=warp-out; x1outtag=warp-out; x2outtag=warp-out; xip='"::/0", "0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
-s   ) s1outtag=warp-out; s2outtag=warp-out; x1outtag=direct;  x2outtag=direct;  xip='"::/0", "0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
-s4  ) s1outtag=warp-out; s2outtag=direct;  x1outtag=direct;  x2outtag=direct;  xip='"::/0", "0.0.0.0/0"'; sip='"0.0.0.0/0"';         wap=warp ;;
-s6  ) s1outtag=warp-out; s2outtag=direct;  x1outtag=direct;  x2outtag=direct;  xip='"::/0", "0.0.0.0/0"'; sip='"::/0"';               wap=warp ;;
-x   ) s1outtag=direct;   s2outtag=direct;  x1outtag=warp-out; x2outtag=warp-out; xip='"::/0", "0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
-x4  ) s1outtag=direct;   s2outtag=direct;  x1outtag=warp-out; x2outtag=direct;  xip='"0.0.0.0/0"';           sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
-x6  ) s1outtag=direct;   s2outtag=direct;  x1outtag=warp-out; x2outtag=direct;  xip='"::/0"';                 sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
-*   ) s1outtag=direct;   s2outtag=direct;  x1outtag=direct;  x2outtag=direct;  xip='"::/0", "0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warpargo ;;
+"") s1outtag=warp-out; s2outtag=warp-out; x1outtag=warp-out; x2outtag=warp-out; xip='"::/0", "0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
+s ) s1outtag=warp-out; s2outtag=warp-out; x1outtag=direct; x2outtag=direct; xip='"::/0", "0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
+s4) s1outtag=warp-out; s2outtag=direct; x1outtag=direct; x2outtag=direct; xip='"::/0", "0.0.0.0/0"'; sip='"0.0.0.0/0"'; wap=warp ;;
+s6) s1outtag=warp-out; s2outtag=direct; x1outtag=direct; x2outtag=direct; xip='"::/0", "0.0.0.0/0"'; sip='"::/0"'; wap=warp ;;
+x ) s1outtag=direct; s2outtag=direct; x1outtag=warp-out; x2outtag=warp-out; xip='"::/0", "0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
+x4) s1outtag=direct; s2outtag=direct; x1outtag=warp-out; x2outtag=direct; xip='"0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
+x6) s1outtag=direct; s2outtag=direct; x1outtag=warp-out; x2outtag=direct; xip='"::/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
+s4x4|x4s4) s1outtag=warp-out; s2outtag=direct; x1outtag=warp-out; x2outtag=direct; xip='"0.0.0.0/0"'; sip='"0.0.0.0/0"'; wap=warp ;;
+s4x6|x6s4) s1outtag=warp-out; s2outtag=direct; x1outtag=warp-out; x2outtag=direct; xip='"::/0"'; sip='"0.0.0.0/0"'; wap=warp ;;
+s6x4|x4s6) s1outtag=warp-out; s2outtag=direct; x1outtag=warp-out; x2outtag=direct; xip='"0.0.0.0/0"'; sip='"::/0"'; wap=warp ;;
+s6x6|x6s6) s1outtag=warp-out; s2outtag=direct; x1outtag=warp-out; x2outtag=direct; xip='"::/0"'; sip='"::/0"'; wap=warp ;;
+* ) s1outtag=direct; s2outtag=direct; x1outtag=direct; x2outtag=direct; xip='"::/0", "0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warpargo ;;
 esac
 fi
 fi
 case "$warp" in x4) wxryx='ForceIPv4' ;; x6) wxryx='ForceIPv6' ;; *) wxryx='ForceIPv4v6' ;; esac
 case "$warp" in x4) xryx=$(curl -s6m5 icanhazip.com -k >/dev/null && echo ForceIP || echo ForceIPv4) ;; *) xryx=ForceIP ;; esac
-#sbyx=$(curl -s4m5 icanhazip.com -k >/dev/null && echo prefer_ipv6 || echo prefer_ipv4)
 sbyx=prefer_ipv4
 }
 
