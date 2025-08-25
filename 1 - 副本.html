@@ -9,23 +9,22 @@
     *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#0b1020 0%,#0e1530 100%);color:var(--ink);font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
     .wrap{max-width:1100px;margin:32px auto;padding:0 16px}
     header {
-      /* 移除 text-align: center，使内部文本左对齐 */
       margin-bottom:16px;
     }
     header h1 {
       font-size:36px;
       margin-bottom:6px;
-      text-align: center; /* 保持 h1 居中 */
+      text-align: center;
     }
     header p {
       margin:0;
       font-size:14px;
       color: var(--sub);
       line-height: 1.6;
-      max-width: 400px; /* 限制 p 标签的最大宽度，使其更容易居中 */
+      max-width: 400px;
       margin-left: auto;
       margin-right: auto;
-      text-align: left; /* 确保 p 标签内的文本左对齐 */
+      text-align: left;
     }
     a {
       color: var(--acc);
@@ -64,7 +63,6 @@
     }
     .card h2 { margin:0 0 12px; font-size:20px; color:#cbd5e1 }
 
-    /* 针对协议与端口模块的修改 */
     .protocol-port .row {
         display: flex;
         flex-wrap: wrap;
@@ -84,7 +82,6 @@
         background:#0d1430; color:var(--ink); outline:none;
     }
 
-    /* 原有的 .row 样式只保留给其他模块使用 */
     .row:not(.protocol-port .row) { display:grid; grid-template-columns:200px 1fr; gap:12px; align-items:center; margin:8px 0 }
 
     label { display:flex; align-items:center; gap:10px }
@@ -134,7 +131,6 @@
       border-color:#5a73c9; color:var(--ink); background:rgba(79,124,255,.15);
     }
     
-    /* 新增的快捷方式命令组的样式 */
     .shortcut-commands-content {
       display: flex;
       flex-wrap: wrap;
@@ -158,6 +154,25 @@
     .shortcut-commands-content .command-button:hover {
       background: #263255;
     }
+
+    /* 新增的flex容器 */
+    .input-with-button {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    /* 调整输入框在flex容器中的样式 */
+    .input-with-button input[type="text"] {
+      flex: 1;
+    }
+    /* 调整按钮样式，使其看起来更像一个小操作 */
+    .input-with-button button {
+      padding: 8px 12px;
+      font-size: 14px;
+      white-space: nowrap;
+      border-radius: 8px;
+    }
+
   </style>
 </head>
 <body>
@@ -191,7 +206,13 @@
 
       <section class="card outbound-warp">
         <h2>配置参数： </h2>
-        <div class="row"><label>UUID 密码 <span class="pill">uuid</span></label><input id="uuid" type="text" placeholder="留空则随机生成uuid密码"/></div>
+        <div class="row">
+          <label>UUID 密码 <span class="pill">uuid</span></label>
+          <div class="input-with-button">
+            <input id="uuid" type="text" placeholder="留空则随机生成uuid密码"/>
+            <button id="generateUuidBtn" type="button" class="primary">生成 UUID</button>
+          </div>
+        </div>
         <div class="row"><label>Reality 域名 <span class="pill">reym</span></label><input id="reym" type="text" placeholder="留空则默认www.yahoo.com"/></div>
         <div class="row"><label>客户端host地址<span class="pill">cdnym</span></label><input id="cdnym" type="text" placeholder="仅Vmess-ws套CDN时可用" disabled/></div>
         <div class="row"><label>WARP 全局出站 <span class="pill">warp</span></label>
@@ -264,9 +285,14 @@
 
 <script>
 (function(){
+  // Bash命令常量
   const CURL = 'bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)';
+  // 协议键名
   const protoKeys = ['vmpt','vlpt','xhpt','arpt','anpt','hypt','tupt','sspt'];
+  // 可选参数ID
   const optIds = ['warp','ippz','uuid','reym','cdnym','name'];
+
+  // DOM元素引用
   const argoSwitch = document.getElementById('argoBtn');
   const agn = document.getElementById('agn');
   const agk = document.getElementById('agk');
@@ -277,7 +303,13 @@
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
   const textInputs = document.querySelectorAll('input[type="text"]');
   const ippzSelect = document.getElementById('ippz');
+  const generateUuidBtn = document.getElementById('generateUuidBtn'); // 新增的UUID生成按钮
+  const uuidInput = document.getElementById('uuid'); // UUID输入框
 
+  /**
+   * 更新Argo隧道开关的状态和相关输入框的禁用状态。
+   * @param {boolean} isEnabled - 是否启用Argo隧道。
+   */
   function updateArgoState(isEnabled) {
     argoSwitch.classList.toggle('on', isEnabled);
     argoSwitch.setAttribute('aria-checked', isEnabled ? 'true' : 'false');
@@ -285,7 +317,10 @@
     render();
   }
 
-  // Modified function to reset all form inputs to their default state
+  /**
+   * 重置所有表单输入到默认状态。
+   * @param {boolean} preserveIppz - 是否保留ippz的值。
+   */
   function resetForm(preserveIppz = false) {
     checkboxes.forEach(cb => {
         cb.checked = false;
@@ -294,7 +329,7 @@
         inp.value = '';
     });
     document.getElementById('warp').value = '';
-    // Preserve ippz if the flag is true
+    // 如果不保留ippz，则重置其值
     if (!preserveIppz) {
         ippzSelect.value = '';
     }
@@ -302,9 +337,12 @@
     document.getElementById('reym').value = '';
     document.getElementById('name').value = '';
     updateArgoState(false);
-    updateCdnymState(); // Call updateCdnymState on reset
+    updateCdnymState();
   }
 
+  /**
+   * 根据Vmess-ws协议的选择状态更新cdnym输入框的禁用状态。
+   */
   function updateCdnymState() {
       const isVmessWsChecked = vmessWsCheckbox.checked;
       cdnymInput.disabled = !isVmessWsChecked;
@@ -314,6 +352,9 @@
       render();
   }
 
+  // --- 事件监听器 ---
+
+  // Argo开关事件监听
   argoSwitch.addEventListener('click', () => {
     const on = !argoSwitch.classList.contains('on');
     if (on) {
@@ -323,6 +364,7 @@
     updateCdnymState();
   });
 
+  // Vmess-ws复选框事件监听
   vmessWsCheckbox.addEventListener('change', () => {
     if (!vmessWsCheckbox.checked) {
       updateArgoState(false);
@@ -331,6 +373,7 @@
     render();
   });
 
+  // 端口输入框事件监听，如果输入了端口则自动选中对应协议
   document.querySelectorAll('[data-port]').forEach(inp => {
     inp.addEventListener('input', () => {
       const key = inp.getAttribute('data-port');
@@ -343,6 +386,7 @@
     });
   });
 
+  // 协议复选框事件监听，用于触发渲染
   document.querySelectorAll('[data-proto]').forEach(ck => {
     ck.addEventListener('change', () => {
       if (ck.getAttribute('data-proto') === 'vmpt') {
@@ -355,6 +399,18 @@
     });
   });
 
+  // 新增：UUID生成按钮事件监听
+  generateUuidBtn.addEventListener('click', () => {
+    uuidInput.value = crypto.randomUUID();
+    render();
+  });
+
+  // --- 核心功能函数 ---
+
+  /**
+   * 收集所有表单变量。
+   * @returns {Object} 包含所有已选择或填写的变量的对象。
+   */
   function collectVars(){
     const m = {};
     protoKeys.forEach(k => {
@@ -382,6 +438,11 @@
     return m;
   }
 
+  /**
+   * 将变量对象转换为bash命令字符串。
+   * @param {Object} m - 包含变量的对象。
+   * @returns {string} 格式化后的bash变量字符串。
+   */
   function toBashVars(m){
     const keys = Object.keys(m);
     const ordered = [];
@@ -401,20 +462,26 @@
     }).join(' ');
   }
 
+  /**
+   * 渲染并更新输出文本区域。
+   */
   function render(){
     const m = collectVars();
     const vars = toBashVars(m);
     output.value = (vars ? vars + ' ' : '') + CURL;
   }
 
+  // 初始化渲染
   updateCdnymState();
   render();
 
+  // 为所有输入元素添加事件监听器，实时更新命令
   allInputs.forEach(el => {
     el.addEventListener('input', render);
     el.addEventListener('change', render);
   });
   
+  // 快捷命令按钮事件监听
   document.querySelectorAll('.command-button').forEach(btn => {
     btn.addEventListener('click', () => {
       const command = btn.getAttribute('data-command');
@@ -440,14 +507,20 @@
     });
   });
 
+  // 复制按钮事件监听
   document.getElementById('copy').addEventListener('click', async () => {
     const t = document.getElementById('output');
     t.select(); t.setSelectionRange(0, 99999);
     try { await navigator.clipboard.writeText(t.value); showToast('已复制到剪贴板'); } catch (e) { document.execCommand('copy'); showToast('已复制'); }
   });
 
+  // 重置按钮事件监听
   document.getElementById('reset').addEventListener('click', () => { location.reload(); });
 
+  /**
+   * 显示一个短暂的提示消息。
+   * @param {string} msg - 要显示的文本消息。
+   */
   function showToast(msg) {
     const d = document.createElement('div');
     d.textContent = msg; d.style.position = 'fixed'; d.style.left = '50%'; d.style.top = '20px'; d.style.transform = 'translateX(-50%)';
