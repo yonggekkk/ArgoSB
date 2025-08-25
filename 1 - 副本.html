@@ -9,12 +9,13 @@
     *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#0b1020 0%,#0e1530 100%);color:var(--ink);font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
     .wrap{max-width:1100px;margin:32px auto;padding:0 16px}
     header {
+      /* 移除 text-align: center，使内部文本左对齐 */
       margin-bottom:16px;
     }
     header h1 {
       font-size:36px;
       margin-bottom:6px;
-      text-align: center;
+      text-align: center; /* 保持 h1 居中 */
     }
     header p {
       margin:0;
@@ -172,7 +173,14 @@
       white-space: nowrap;
       border-radius: 8px;
     }
-
+    /* 新增的分隔线样式 */
+    .protocol-group {
+      margin-bottom: 16px;
+    }
+    .protocol-group.separator {
+      border-bottom: 1px dotted var(--line);
+      padding-bottom: 16px;
+    }
   </style>
 </head>
 <body>
@@ -192,15 +200,38 @@
     <div class="grid">
       <section class="card protocol-port">
         <h2>选择的协议与端口：</h2>
-        <div class="row">
-          <label><input type="checkbox" data-proto="vmpt"> Vmess-ws <span class="pill">vmpt</span></label><input type="text" placeholder="留空则随机端口（Argo固定隧道必须填写端口）" data-port="vmpt">
-          <label><input type="checkbox" data-proto="vlpt"> Vless-Reality-Vision <span class="pill">vlpt</span></label><input type="text" placeholder="留空则随机端口" data-port="vlpt">
-          <label><input type="checkbox" data-proto="xhpt"> Vless-Xhttp-Reality <span class="pill">xhpt</span></label><input type="text" placeholder="留空则随机端口" data-port="xhpt">
-          <label><input type="checkbox" data-proto="arpt"> Any-Reality <span class="pill">arpt</span></label><input type="text" placeholder="留空则随机端口" data-port="arpt">
-          <label><input type="checkbox" data-proto="anpt"> AnyTLS <span class="pill">anpt</span></label><input type="text" placeholder="留空则随机端口" data-port="anpt">
-          <label><input type="checkbox" data-proto="hypt"> Hysteria2 <span class="pill">hypt</span></label><input type="text" placeholder="留空则随机端口" data-port="hypt">
-          <label><input type="checkbox" data-proto="tupt"> Tuic <span class="pill">tupt</span></label><input type="text" placeholder="留空则随机端口" data-port="tupt">
-          <label><input type="checkbox" data-proto="sspt"> Shadowsocks-2022 <span class="pill">sspt</span></label><input type="text" placeholder="留空则随机端口" data-port="sspt">
+        <div class="protocol-group separator">
+            <h3>xray内核</h3>
+            <div class="row">
+                <label><input type="checkbox" data-proto="vlpt"> Vless-Reality-Vision <span class="pill">vlpt</span></label><input type="text" placeholder="留空则随机端口" data-port="vlpt">
+            </div>
+            <div class="row">
+                <label><input type="checkbox" data-proto="xhpt"> Vless-Xhttp-Reality <span class="pill">xhpt</span></label><input type="text" placeholder="留空则随机端口" data-port="xhpt">
+            </div>
+            <div class="row">
+                <label><input type="checkbox" data-proto="sspt"> Shadowsocks-2022 <span class="pill">sspt</span></label><input type="text" placeholder="留空则随机端口" data-port="sspt">
+            </div>
+        </div>
+        <div class="protocol-group separator">
+            <h3>singbox内核</h3>
+            <div class="row">
+                <label><input type="checkbox" data-proto="arpt"> Any-Reality <span class="pill">arpt</span></label><input type="text" placeholder="留空则随机端口" data-port="arpt">
+            </div>
+            <div class="row">
+                <label><input type="checkbox" data-proto="anpt"> AnyTLS <span class="pill">anpt</span></label><input type="text" placeholder="留空则随机端口" data-port="anpt">
+            </div>
+            <div class="row">
+                <label><input type="checkbox" data-proto="hypt"> Hysteria2 <span class="pill">hypt</span></label><input type="text" placeholder="留空则随机端口" data-port="hypt">
+            </div>
+            <div class="row">
+                <label><input type="checkbox" data-proto="tupt"> Tuic <span class="pill">tupt</span></label><input type="text" placeholder="留空则随机端口" data-port="tupt">
+            </div>
+        </div>
+        <div class="protocol-group">
+            <h3>xray/singbox内核</h3>
+            <div class="row">
+                <label><input type="checkbox" data-proto="vmpt"> Vmess-ws <span class="pill">vmpt</span></label><input type="text" placeholder="留空则随机端口（Argo固定隧道必须填写端口）" data-port="vmpt">
+            </div>
         </div>
       </section>
 
