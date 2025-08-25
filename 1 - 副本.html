@@ -420,6 +420,16 @@
   // 协议复选框事件监听，用于触发渲染
   document.querySelectorAll('[data-proto]').forEach(ck => {
     ck.addEventListener('change', () => {
+      // 当取消勾选时，自动清空对应的端口输入框
+      if (!ck.checked) {
+        const key = ck.getAttribute('data-proto');
+        const pt = document.querySelector(`[data-port="${key}"]`);
+        if (pt) {
+          pt.value = '';
+        }
+      }
+
+      // Vmess-ws 协议的特殊处理
       if (ck.getAttribute('data-proto') === 'vmpt') {
         if (!ck.checked) {
           updateArgoState(false);
