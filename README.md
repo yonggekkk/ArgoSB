@@ -16,7 +16,7 @@
 
 #### 4、支持NIX容器系统，特别推荐IDX-Google、Clawcloud爪云、CloudCat的服务器
 
-#### 5、根据Sing-box与Xray不同内核，可选WARP出站模式，更换落地IP为WARP的IP，解锁流媒体
+#### 5、根据Sing-box与Xray不同内核，可选15种WARP出站模式，更换落地IP为WARP的IP，解锁流媒体
 
 #### 6、所有代理协议都无需域名（除了argo固定隧道），支持单个或多个代理协议任意组合并快速重置更换
 【 已支持：AnyTLS、Any-reality、Vless-xhttp-reality、Vless-reality-vision、Shadowsocks-2022、Vmess-ws、Hysteria2、Tuic、Argo临时/固定隧道 】
@@ -37,7 +37,7 @@
 | 6、启用vmess-ws | vmpt | 端口指定 | 关闭vmess-ws | 端口随机 | 必选之一 【xray/singbox内核：TCP】 |
 | 7、启用hysteria2 | hypt | 端口指定 | 关闭hy2 | 端口随机 | 必选之一 【singbox内核：UDP】 |
 | 8、启用tuic | tupt | 端口指定 | 关闭tuic | 端口随机 | 必选之一 【singbox内核：UDP】 |
-| 9、warp开关 | warp | 填写s、s4、s6、x、x4、x6 | 关闭warp | singbox与xray内核协议都启用warp全局V4+V6 | 可选，s表示仅singbox所有协议启用warp全局v4+v6，s4表示仅singbox所有协议启用warp-v4，s6表示仅singbox所有协议启用warp-v6，x表示仅xray所有协议启用warp全局v4+v6，x4表示仅xray所有协议启用warp-v4，x6表示仅xray所有协议启用warp-v6 |
+| 9、warp开关 | warp | 详见下方15种warp出站解析图 | 关闭warp | singbox与xray内核协议都启用warp全局V4+V6 | 可选，详见下方15种warp出站解析图 |
 | 10、argo开关 | argo | 填写y | 关闭argo隧道 | 关闭argo隧道 | 可选，填写y时，vmess变量vmpt必须启用，且固定隧道必须填写vmpt端口 |
 | 11、argo固定隧道域名 | agn | 托管在CF上的域名 | 使用临时隧道 | 使用临时隧道 | 可选，argo填写y才可激活固定隧道|
 | 12、argo固定隧道token | agk | CF获取的ey开头的token | 使用临时隧道 | 使用临时隧道 | 可选，argo填写y才可激活固定隧道 |
