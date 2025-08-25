@@ -16,7 +16,7 @@
 
 #### 4、支持NIX容器系统，特别推荐IDX-Google、Clawcloud爪云、CloudCat的服务器
 
-#### 5、可选Wireguard-WARP全局出站模式，更换落地IP为IPV4或IPV6的WARP的IP，解锁流媒体
+#### 5、根据Sing-box与Xray不同内核，可选WARP出站模式，更换落地IP为WARP的IP，解锁流媒体
 
 #### 6、所有代理协议都无需域名（除了argo固定隧道），支持单个或多个代理协议任意组合并快速重置更换
 【 已支持：AnyTLS、Any-reality、Vless-xhttp-reality、Vless-reality-vision、Shadowsocks-2022、Vmess-ws、Hysteria2、Tuic、Argo临时/固定隧道 】
