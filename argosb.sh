@@ -107,7 +107,7 @@ fi
 fi
 case "$warp" in x4) wxryx='ForceIPv4' ;; x6) wxryx='ForceIPv6' ;; *) wxryx='ForceIPv4v6' ;; esac
 case "$warp" in x4) xryx=$(curl -s6m5 icanhazip.com -k >/dev/null && echo ForceIP || echo ForceIPv4) ;; *) xryx=ForceIP ;; esac
-sbyx=prefer_ipv4
+case "$warp" in x6) sbyx=$(curl -s4m5 icanhazip.com -k >/dev/null && echo prefer_ipv6 || echo prefer_ipv4) ;; *) sbyx=prefer_ipv4 ;; esac
 }
 
 insuuid(){
