@@ -5,21 +5,67 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ArgoSB一键bash命令生成器</title>
   <style>
-    :root{--bg:#0b1020;--card:#121831;--ink:#e9edf7;--sub:#b7c1d9;--line:#263255;--acc:#4f7cff;--ok:#22c55e;--warn:#f59e0b;--err:#ef4444}
-    *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#0b1020 0%,#0e1530 100%);color:var(--ink);font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
-    .wrap{max-width:1100px;margin:32px auto;padding:0 16px}
+    :root {
+      --bg:#0b1020;
+      --card:#121831;
+      --ink:#e9edf7;
+      --sub:#b7c1d9;
+      --line:#263255;
+      --acc:#4f7cff;
+      --ok:#22c55e;
+      --warn:#f59e0b;
+      --err:#ef4444;
+      --input-bg:#0d1430;
+      --button-bg-dark:#1a2346;
+      --button-bg-light:#121a39;
+      --body-bg: linear-gradient(180deg, var(--bg) 0%, #0e1530 100%);
+    }
+    .light-mode {
+      --bg:#ffffff;
+      --card:#ffffff;
+      --ink:#1a202c;
+      --sub:#4a5568;
+      --line:#e2e8f0;
+      --acc:#4f7cff;
+      --ok:#22c55e;
+      --warn:#f59e0b;
+      --err:#ef4444;
+      --input-bg:#ffffff;
+      --button-bg-dark:#e2e8f0;
+      --button-bg-light:#f0f4f9;
+      --body-bg: var(--bg);
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: var(--body-bg);
+      color: var(--ink);
+      font: 16px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .wrap {
+      max-width: 1100px;
+      margin: 32px auto;
+      padding: 0 16px;
+    }
     header {
-      /* 移除 text-align: center，使内部文本左对齐 */
-      margin-bottom:16px;
+      position: relative;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
     }
     header h1 {
-      font-size:36px;
-      margin-bottom:6px;
-      text-align: center; /* 保持 h1 居中 */
+      font-size: 36px;
+      margin-bottom: 6px;
+      text-align: center;
     }
     header p {
-      margin:0;
-      font-size:14px;
+      margin: 0;
+      font-size: 14px;
       color: var(--sub);
       line-height: 1.6;
       max-width: 400px;
@@ -34,104 +80,212 @@
     a:hover {
       text-decoration: underline;
     }
-
     .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: auto auto auto;
       gap: 16px;
     }
-
     @media (max-width: 980px) {
       .grid {
         grid-template-columns: 1fr;
         grid-template-rows: auto auto auto;
       }
     }
-
-    .protocol-port { grid-column: 1; grid-row: 1 / 3; }
-    .outbound-warp { grid-column: 2; grid-row: 1; }
-    .argo-tunnel { grid-column: 2; grid-row: 2; }
-    .shortcut-commands-card { grid-column: 1 / 3; grid-row: 3; }
-    .out { grid-column: 1 / 3; grid-row: 4; }
-
+    .protocol-port {
+      grid-column: 1;
+      grid-row: 1 / 3;
+    }
+    .outbound-warp {
+      grid-column: 2;
+      grid-row: 1;
+    }
+    .argo-tunnel {
+      grid-column: 2;
+      grid-row: 2;
+    }
+    .shortcut-commands-card {
+      grid-column: 1 / 3;
+      grid-row: 3;
+    }
+    .out {
+      grid-column: 1 / 3;
+      grid-row: 4;
+    }
     .card {
-      background: rgba(255,255,255,.04);
+      background: rgba(255, 255, 255, .04);
       backdrop-filter: blur(6px);
       border: 1px solid var(--line);
       border-radius: 16px;
       padding: 16px;
+      transition: background-color 0.3s, border-color 0.3s;
     }
-    .card h2 { margin:0 0 12px; font-size:20px; color:#cbd5e1 }
-
+    .light-mode .card {
+      background: var(--card);
+      border-color: var(--line);
+    }
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 20px;
+      color: var(--ink);
+    }
+    .card h3 {
+      margin: 0 0 12px;
+      font-size: 16px;
+      color: var(--ink);
+    }
     .protocol-port .row {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
     }
     .protocol-port .row label {
-        white-space: nowrap;
-        display: flex;
-        align-items: center;
-        gap: 10px;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
     .protocol-port .row input[type="text"] {
-        flex: 1 1 150px;
-        width:auto;
-        padding:10px 12px; border:1px solid var(--line); border-radius:10px;
-        background:#0d1430; color:var(--ink); outline:none;
+      flex: 1 1 150px;
+      width: auto;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--input-bg);
+      color: var(--ink);
+      outline: none;
+      transition: background-color 0.3s, border-color 0.3s, color 0.3s;
     }
-
-    .row:not(.protocol-port .row) { display:grid; grid-template-columns:200px 1fr; gap:12px; align-items:center; margin:8px 0 }
-
-    label { display:flex; align-items:center; gap:10px }
+    .row:not(.protocol-port .row) {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 12px;
+      align-items: center;
+      margin: 8px 0;
+    }
+    @media (max-width: 600px) {
+      .row:not(.protocol-port .row) {
+        grid-template-columns: 1fr;
+      }
+    }
+    label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
     input[type="text"], input[type="number"], select {
-      width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:10px;
-      background:#0d1430; color:var(--ink); outline:none;
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--input-bg);
+      color: var(--ink);
+      outline: none;
+      transition: background-color 0.3s, border-color 0.3s, color 0.3s;
     }
-    input[disabled]{opacity:.5}
+    input[disabled] {
+      opacity: .5;
+    }
     .switch {
-      position:relative; width:48px; height:28px; background:#263255; border-radius:99px; cursor:pointer; transition:.2s;
+      position: relative;
+      width: 48px;
+      height: 28px;
+      background: #263255;
+      border-radius: 99px;
+      cursor: pointer;
+      transition: .2s;
+    }
+    .light-mode .switch {
+      background: var(--sub);
     }
     .switch::after {
-      content:""; position:absolute; inset:3px auto 3px 3px; width:22px; border-radius:50%; background:white; transition:.2s;
+      content: "";
+      position: absolute;
+      inset: 3px auto 3px 3px;
+      width: 22px;
+      border-radius: 50%;
+      background: white;
+      transition: .2s;
     }
-    .switch.on { background:var(--acc) }
-    .switch.on::after { left:auto; right:3px }
+    .switch.on {
+      background: var(--acc);
+    }
+    .switch.on::after {
+      left: auto;
+      right: 3px;
+    }
     .pill {
-      display:inline-block; font-size:12px; padding:2px 8px; border:1px solid var(--line);
-      border-radius:999px; color:#cbd5e1; margin-left:6px;
+      display: inline-block;
+      font-size: 12px;
+      padding: 2px 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--sub);
+      margin-left: 6px;
+      transition: border-color 0.3s, color 0.3s;
     }
     .actions {
-      display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
     }
     button {
-      cursor:pointer; border:1px solid var(--line);
-      background:linear-gradient(180deg,#1a2346,#121a39);
-      color:var(--ink); padding:10px 14px; border-radius:12px;
+      cursor: pointer;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, var(--button-bg-dark), var(--button-bg-light));
+      color: var(--ink);
+      padding: 10px 14px;
+      border-radius: 12px;
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
     }
     button.primary {
-      background:linear-gradient(180deg,#4f7cff,#385fdf);
-      border-color:#476de2;
+      background: linear-gradient(180deg, #4f7cff, #385fdf);
+      border-color: #476de2;
+      color: #fff;
     }
-    button.ghost { background:transparent }
-    .out { position:relative }
+    button.ghost {
+      background: transparent;
+    }
+    .out {
+      position: relative;
+    }
     textarea {
-      width:100%; min-height:130px; background:#0a1128; color:#dbeafe;
-      border:1px dashed #3752a6; border-radius:12px; padding:12px; white-space:pre; resize:vertical;
+      width: 100%;
+      min-height: 130px;
+      background: #0a1128;
+      color: #dbeafe;
+      border: 1px dashed #3752a6;
+      border-radius: 12px;
+      padding: 12px;
+      white-space: pre;
+      resize: vertical;
+      transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+    }
+    .light-mode textarea {
+      background: #f0f4f9;
+      color: #1a202c;
+      border-color: #929faf;
     }
     .tabs {
-      display:flex; gap:8px; margin:0 0 12px;
+      display: flex;
+      gap: 8px;
+      margin: 0 0 12px;
     }
     .tab {
-      padding:8px 10px; border-radius:10px; border:1px solid var(--line);
-      color:var(--sub); cursor:pointer;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      color: var(--sub);
+      cursor: pointer;
+      transition: background-color 0.3s, border-color 0.3s, color 0.3s;
     }
     .tab.active {
-      border-color:#5a73c9; color:var(--ink); background:rgba(79,124,255,.15);
+      border-color: #5a73c9;
+      color: var(--ink);
+      background: rgba(79, 124, 255, .15);
     }
-    
     .shortcut-commands-content {
       display: flex;
       flex-wrap: wrap;
@@ -140,40 +294,36 @@
       margin-top: 10px;
     }
     .shortcut-commands-content p {
-        margin: 0;
-        white-space: nowrap;
+      margin: 0;
+      white-space: nowrap;
     }
     .shortcut-commands-content .command-button {
-      background: #1a2346;
+      background: var(--button-bg-dark);
       color: var(--ink);
       padding: 8px 12px;
       border: 1px solid var(--line);
       border-radius: 8px;
       cursor: pointer;
       font-size: 14px;
+      transition: background-color 0.3s, border-color 0.3s, color 0.3s;
     }
     .shortcut-commands-content .command-button:hover {
-      background: #263255;
+      background: var(--line);
     }
-
-    /* 新增的flex容器 */
     .input-with-button {
       display: flex;
       gap: 8px;
       align-items: center;
     }
-    /* 调整输入框在flex容器中的样式 */
     .input-with-button input[type="text"] {
       flex: 1;
     }
-    /* 调整按钮样式，使其看起来更像一个小操作 */
     .input-with-button button {
       padding: 8px 12px;
       font-size: 14px;
       white-space: nowrap;
       border-radius: 8px;
     }
-    /* 新增的分隔线样式 */
     .protocol-group {
       margin-bottom: 16px;
     }
@@ -181,11 +331,39 @@
       border-bottom: 1px dotted var(--line);
       padding-bottom: 16px;
     }
+    .theme-switch {
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 10;
+      padding: 10px;
+    }
+    .theme-switch-icon {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      color: var(--ink);
+      transition: color 0.3s;
+    }
+    .theme-switch-checkbox {
+      display: none;
+    }
+    .theme-switch-label {
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
+      <div class="theme-switch">
+        <input type="checkbox" id="theme-switch-checkbox" class="theme-switch-checkbox">
+        <label for="theme-switch-checkbox" class="theme-switch-label">
+          <svg class="theme-switch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </label>
+      </div>
       <h1>ArgoSB小钢炮💣一键bash命令生成器 V25.8.21</h1>
       <p>
         甬哥Github项目：
@@ -199,44 +377,44 @@
 
     <div class="grid">
       <section class="card protocol-port">
-        <h2>必选的协议与端口：</h2>
+        <h2>必选协议端口：</h2>
         <div class="protocol-group separator">
-            <h3>Xray内核协议</h3>
-            <div class="row">
-                <label><input type="checkbox" data-proto="vlpt"> Vless-Reality-Vision <span class="pill">vlpt</span></label><input type="text" placeholder="留空则随机端口" data-port="vlpt">
-            </div>
-            <div class="row">
-                <label><input type="checkbox" data-proto="xhpt"> Vless-Xhttp-Reality <span class="pill">xhpt</span></label><input type="text" placeholder="留空则随机端口" data-port="xhpt">
-            </div>
-            <div class="row">
-                <label><input type="checkbox" data-proto="sspt"> Shadowsocks-2022 <span class="pill">sspt</span></label><input type="text" placeholder="留空则随机端口" data-port="sspt">
-            </div>
+          <h3>Xray可选协议如下：</h3>
+          <div class="row">
+            <label><input type="checkbox" data-proto="vlpt"> Vless-Reality-Vision <span class="pill">vlpt</span></label><input type="text" placeholder="留空则随机端口" data-port="vlpt">
+          </div>
+          <div class="row">
+            <label><input type="checkbox" data-proto="xhpt"> Vless-Xhttp-Reality <span class="pill">xhpt</span></label><input type="text" placeholder="留空则随机端口" data-port="xhpt">
+          </div>
+          <div class="row">
+            <label><input type="checkbox" data-proto="sspt"> Shadowsocks-2022 <span class="pill">sspt</span></label><input type="text" placeholder="留空则随机端口" data-port="sspt">
+          </div>
         </div>
         <div class="protocol-group separator">
-            <h3>Singbox内核协议</h3>
-            <div class="row">
-                <label><input type="checkbox" data-proto="arpt"> Any-Reality <span class="pill">arpt</span></label><input type="text" placeholder="留空则随机端口" data-port="arpt">
-            </div>
-            <div class="row">
-                <label><input type="checkbox" data-proto="anpt"> AnyTLS <span class="pill">anpt</span></label><input type="text" placeholder="留空则随机端口" data-port="anpt">
-            </div>
-            <div class="row">
-                <label><input type="checkbox" data-proto="hypt"> Hysteria2 <span class="pill">hypt</span></label><input type="text" placeholder="留空则随机端口" data-port="hypt">
-            </div>
-            <div class="row">
-                <label><input type="checkbox" data-proto="tupt"> Tuic <span class="pill">tupt</span></label><input type="text" placeholder="留空则随机端口" data-port="tupt">
-            </div>
+          <h3>Singbox可选协议如下：</h3>
+          <div class="row">
+            <label><input type="checkbox" data-proto="arpt"> Any-Reality <span class="pill">arpt</span></label><input type="text" placeholder="留空则随机端口" data-port="arpt">
+          </div>
+          <div class="row">
+            <label><input type="checkbox" data-proto="anpt"> AnyTLS <span class="pill">anpt</span></label><input type="text" placeholder="留空则随机端口" data-port="anpt">
+          </div>
+          <div class="row">
+            <label><input type="checkbox" data-proto="hypt"> Hysteria2 <span class="pill">hypt</span></label><input type="text" placeholder="留空则随机端口" data-port="hypt">
+          </div>
+          <div class="row">
+            <label><input type="checkbox" data-proto="tupt"> Tuic <span class="pill">tupt</span></label><input type="text" placeholder="留空则随机端口" data-port="tupt">
+          </div>
         </div>
         <div class="protocol-group">
-            <h3>Xray/Singbox内核协议</h3>
-            <div class="row">
-                <label><input type="checkbox" data-proto="vmpt"> Vmess-ws <span class="pill">vmpt</span></label><input type="text" placeholder="留空则随机端口（Argo固定隧道必须填写端口）" data-port="vmpt">
-            </div>
+          <h3>Xray/Singbox自动分配协议如下：</h3>
+          <div class="row">
+            <label><input type="checkbox" data-proto="vmpt"> Vmess-ws <span class="pill">vmpt</span></label><input type="text" placeholder="留空则随机端口（Argo固定隧道必须填写端口）" data-port="vmpt">
+          </div>
         </div>
       </section>
 
       <section class="card outbound-warp">
-        <h2>配置参数： </h2>
+        <h2>相关配置参数： </h2>
         <div class="row">
           <label>UUID 密码 <span class="pill">uuid</span></label>
           <div class="input-with-button">
@@ -278,7 +456,7 @@
       </section>
 
       <section class="card argo-tunnel">
-        <h2>Argo隧道（Vmess-ws协议自动激活）：</h2>
+        <h2>Argo临时/固定隧道（Vmess-ws自动启用）：</h2>
         <div class="row">
           <label>启用Argo <span class="pill">argo</span></label>
           <div id="argoBtn" class="switch" role="switch" aria-checked="false"></div>
@@ -306,13 +484,10 @@
           <button id="reset">重置</button>
           <button id="copy">复制</button>
         </div>
-        <p style="margin-top: 10px;">相关操作及视频教程说明，请参考ArgoSB脚本项目：<a href="https://github.com/yonggekkk/ArgoSB" target="_blank">github.com/yonggekkk/ArgoSB</a></p>
+        <p style="margin-top: 10px;">相关操作及视频教程说明，请参考ArgoSB小钢炮脚本项目💣：<a href="https://github.com/yonggekkk/ArgoSB" target="_blank">github.com/yonggekkk/ArgoSB</a></p>
       </section>
     </div>
   </div>
-
-
-
 
 <script>
 (function(){
@@ -334,8 +509,28 @@
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
   const textInputs = document.querySelectorAll('input[type="text"]');
   const ippzSelect = document.getElementById('ippz');
-  const generateUuidBtn = document.getElementById('generateUuidBtn'); // 新增的UUID生成按钮
-  const uuidInput = document.getElementById('uuid'); // UUID输入框
+  const generateUuidBtn = document.getElementById('generateUuidBtn');
+  const uuidInput = document.getElementById('uuid');
+  const themeSwitchCheckbox = document.getElementById('theme-switch-checkbox');
+
+  // 初始化主题
+  function initTheme() {
+    const isLightMode = localStorage.getItem('theme') === 'light';
+    if (isLightMode) {
+      document.body.classList.add('light-mode');
+      themeSwitchCheckbox.checked = true;
+    }
+  }
+
+  // 切换主题
+  function toggleTheme() {
+    document.body.classList.toggle('light-mode');
+    const isLightMode = document.body.classList.contains('light-mode');
+    localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+  }
+
+  // 为主题切换复选框添加事件监听器
+  themeSwitchCheckbox.addEventListener('change', toggleTheme);
 
   /**
    * 更新Argo隧道开关的状态和相关输入框的禁用状态。
@@ -440,7 +635,7 @@
     });
   });
 
-  // 新增：UUID生成按钮事件监听
+  // UUID生成按钮事件监听
   generateUuidBtn.addEventListener('click', () => {
     uuidInput.value = crypto.randomUUID();
     render();
@@ -513,6 +708,7 @@
   }
 
   // 初始化渲染
+  initTheme();
   updateCdnymState();
   render();
 
@@ -572,4 +768,3 @@
 </script>
 </body>
 </html>
-
