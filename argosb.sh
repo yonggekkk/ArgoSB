@@ -1033,7 +1033,6 @@ for P in /proc/[0-9]*; do if [ -L "$P/exe" ]; then TARGET=$(readlink -f "$P/exe"
 kill -15 $(pgrep -f 'agsb/s' 2>/dev/null) $(pgrep -f 'agsb/c' 2>/dev/null) $(pgrep -f 'agsb/x' 2>/dev/null) >/dev/null 2>&1
 v4orv6(){
 if [ -z "$(curl -s4m5 icanhazip.com -k)" ]; then
-echo "检测到 纯IPV6 VPS，添加NAT64"
 echo -e "nameserver 2a00:1098:2b::1\nnameserver 2a00:1098:2c::1" > /etc/resolv.conf
 fi
 if [ -n "$(curl -s6m5 icanhazip.com -k)" ]; then
