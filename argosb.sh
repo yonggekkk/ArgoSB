@@ -1065,7 +1065,6 @@ iptables -P OUTPUT ACCEPT >/dev/null 2>&1
 iptables -F >/dev/null 2>&1
 netfilter-persistent save >/dev/null 2>&1
 ins
-killstart && sleep 3
 cip
 echo
 else
