@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ArgoSB一键bash命令生成器</title>
+  <title>ArgoSB一键Bash命令生成器</title>
   <style>
     :root {
       --bg:#0b1020;
@@ -134,21 +134,21 @@
       font-size: 16px;
       color: var(--ink);
     }
-    .protocol-port .row {
+    .protocol-item {
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
       gap: 12px;
+      margin-bottom: 8px; /* 为每个协议项添加一些垂直间距 */
     }
-    .protocol-port .row label {
+    .protocol-item label {
       white-space: nowrap;
       display: flex;
       align-items: center;
       gap: 10px;
     }
-    .protocol-port .row input[type="text"] {
-      flex: 1 1 150px;
-      width: auto;
+    .protocol-item input[type="text"] {
+      flex-grow: 1; /* 让输入框填充剩余空间 */
+      min-width: 100px; /* 确保在小屏幕下也有足够的宽度 */
       padding: 10px 12px;
       border: 1px solid var(--line);
       border-radius: 10px;
@@ -157,6 +157,17 @@
       outline: none;
       transition: background-color 0.3s, border-color 0.3s, color 0.3s;
     }
+    /* 新增的网格布局，用于完美对齐 */
+    .protocol-grid {
+      display: grid;
+      grid-template-columns: auto 1fr; /* 第一列自动宽度，第二列填充剩余空间 */
+      gap: 8px 12px; /* 行间距8px，列间距12px */
+      align-items: center;
+    }
+    .protocol-grid .protocol-item {
+      margin: 0; /* 在网格布局中，移除protocol-item的外部间距 */
+    }
+
     .row:not(.protocol-port .row) {
       display: grid;
       grid-template-columns: 200px 1fr;
@@ -364,7 +375,7 @@
           </svg>
         </label>
       </div>
-      <h1>ArgoSB小钢炮💣一键bash命令生成器 V25.8.21</h1>
+      <h1>ArgoSB小钢炮💣一键Bash命令生成器 V25.8.28</h1>
       <p>
         甬哥Github项目：
         <a href="https://github.com/yonggekkk" target="_blank">github.com/yonggekkk</a><br>
@@ -377,38 +388,32 @@
 
     <div class="grid">
       <section class="card protocol-port">
-        <h2>必选协议端口：</h2>
+        <h2>必选内核协议端口：</h2>
         <div class="protocol-group separator">
-          <h3>Xray可选协议如下：</h3>
-          <div class="row">
-            <label><input type="checkbox" data-proto="vlpt"> Vless-Reality-Vision <span class="pill">vlpt</span></label><input type="text" placeholder="留空则随机端口" data-port="vlpt">
+          <h3>Xray可选协议：</h3>
+          <div class="protocol-item">
+            <label><input type="checkbox" data-proto="vlpt"> Vless-Reality-Vision【TCP】 <span class="pill">vlpt</span></label><input type="text" placeholder="留空则随机端口" data-port="vlpt">
           </div>
-          <div class="row">
-            <label><input type="checkbox" data-proto="xhpt"> Vless-Xhttp-Reality <span class="pill">xhpt</span></label><input type="text" placeholder="留空则随机端口" data-port="xhpt">
+          <div class="protocol-item">
+            <label><input type="checkbox" data-proto="xhpt"> Vless-Xhttp-Reality【TCP】 <span class="pill">xhpt</span></label><input type="text" placeholder="留空则随机端口" data-port="xhpt">
           </div>
-          <div class="row">
-            <label><input type="checkbox" data-proto="sspt"> Shadowsocks-2022 <span class="pill">sspt</span></label><input type="text" placeholder="留空则随机端口" data-port="sspt">
+          <div class="protocol-item">
+            <label><input type="checkbox" data-proto="sspt"> Shadowsocks-2022【TCP】 <span class="pill">sspt</span></label><input type="text" placeholder="留空则随机端口" data-port="sspt">
           </div>
         </div>
         <div class="protocol-group separator">
-          <h3>Singbox可选协议如下：</h3>
-          <div class="row">
-            <label><input type="checkbox" data-proto="arpt"> Any-Reality <span class="pill">arpt</span></label><input type="text" placeholder="留空则随机端口" data-port="arpt">
-          </div>
-          <div class="row">
-            <label><input type="checkbox" data-proto="anpt"> AnyTLS <span class="pill">anpt</span></label><input type="text" placeholder="留空则随机端口" data-port="anpt">
-          </div>
-          <div class="row">
-            <label><input type="checkbox" data-proto="hypt"> Hysteria2 <span class="pill">hypt</span></label><input type="text" placeholder="留空则随机端口" data-port="hypt">
-          </div>
-          <div class="row">
-            <label><input type="checkbox" data-proto="tupt"> Tuic <span class="pill">tupt</span></label><input type="text" placeholder="留空则随机端口" data-port="tupt">
+          <h3>Singbox可选协议：</h3>
+          <div class="protocol-grid">
+            <label><input type="checkbox" data-proto="arpt"> Any-Reality【TCP】 <span class="pill">arpt</span></label><input type="text" placeholder="留空则随机端口" data-port="arpt">
+            <label><input type="checkbox" data-proto="anpt"> AnyTLS【TCP】 <span class="pill">anpt</span></label><input type="text" placeholder="留空则随机端口" data-port="anpt">
+            <label><input type="checkbox" data-proto="hypt"> Hysteria2【UDP】 <span class="pill">hypt</span></label><input type="text" placeholder="留空则随机端口" data-port="hypt">
+            <label><input type="checkbox" data-proto="tupt"> Tuic【UDP】 <span class="pill">tupt</span></label><input type="text" placeholder="留空则随机端口" data-port="tupt">
           </div>
         </div>
         <div class="protocol-group">
-          <h3>Xray/Singbox自动分配协议如下：</h3>
-          <div class="row">
-            <label><input type="checkbox" data-proto="vmpt"> Vmess-ws <span class="pill">vmpt</span></label><input type="text" placeholder="留空则随机端口（Argo固定隧道必须填写端口）" data-port="vmpt">
+          <h3>Xray/Singbox自动分配协议：</h3>
+          <div class="protocol-item">
+            <label><input type="checkbox" data-proto="vmpt"> Vmess-ws【TCP】 <span class="pill">vmpt</span></label><input type="text" placeholder="留空则随机端口（Argo固定隧道必须填写端口）" data-port="vmpt">
           </div>
         </div>
       </section>
@@ -424,24 +429,24 @@
         </div>
         <div class="row"><label>Reality 域名 <span class="pill">reym</span></label><input id="reym" type="text" placeholder="留空则默认www.yahoo.com"/></div>
         <div class="row"><label>客户端host地址<span class="pill">cdnym</span></label><input id="cdnym" type="text" placeholder="仅Vmess-ws套CDN时可用" disabled/></div>
-        <div class="row"><label>WARP 全局出站 <span class="pill">warp</span></label>
+        <div class="row"><label>套WARP-IP出站 <span class="pill">warp</span></label>
           <select id="warp">
             <option value="">默认 服务器本地IP出站</option>
-            <option value="sx">1、Singbox+Xray同时套WARP IPv4+IPv6</option>
-            <option value="s">2、Xray本地IP、Singbox套WARP IPv4+IPv6</option>
-            <option value="s4">3、Xray本地IP、Singbox套WARP IPv4</option>
-            <option value="s6">4、Xray本地IP、Singbox套WARP IPv6</option>
-            <option value="x">5、Singbox本地IP、Xray套WARP IPv4+IPv6</option>
-            <option value="x4">6、Singbox本地IP、Xray套WARP IPv4</option>
-            <option value="x6">7、Singbox本地IP、Xray套WARP IPv6</option>
-            <option value="s4x4">8、Xray+Singbox同时套WARP IPv4</option>
-            <option value="s6x6">9、Xray+Singbox同时套WARP IPv6</option>
-            <option value="s4x6">10、Singbox套WARP IPv4、Xray套WARP IPv6</option>
-            <option value="s6x4">11、Singbox套WARP IPv6、Xray套WARP IPv4</option>
-            <option value="sx4">12、Singbox套WARP IPv4+IPv6、Xray套WARP IPv4</option>
-            <option value="sx6">13、Singbox套WARP IPv4+IPv6、Xray套WARP IPv6</option>
-            <option value="xs4">14、Xray套WARP IPv4+IPv6、Singbox套WARP IPv4</option>
-            <option value="xs6">15、Xray套WARP IPv4+IPv6、Singbox套WARP IPv6</option>
+            <option value="s">1、Singbox套WARP IPv4+IPv6、Xray本地IP</option>
+            <option value="s4">2、Singbox套WARP IPv4、Xray本地IP</option>
+            <option value="s6">3、Singbox套WARP IPv6、Xray本地IP</option>
+            <option value="x">4、Singbox本地IP、Xray套WARP IPv4+IPv6</option>
+            <option value="x4">5、Singbox本地IP、Xray套WARP IPv4</option>
+            <option value="x6">6、Singbox本地IP、Xray套WARP IPv6</option>
+            <option value="s4x4">7、Singbox+Xray同时套WARP IPv4</option>
+            <option value="s4x6">8、Singbox套WARP IPv4、Xray套WARP IPv6</option>
+            <option value="s6x4">9、Singbox套WARP IPv6、Xray套WARP IPv4</option>
+            <option value="s6x6">10、Singbox+Xray同时套WARP IPv6</option>
+            <option value="sx4">11、Singbox套WARP IPv4+IPv6、Xray套WARP IPv4</option>
+            <option value="sx6">12、Singbox套WARP IPv4+IPv6、Xray套WARP IPv6</option>
+            <option value="s4x">13、Singbox套WARP IPv4、Xray套WARP IPv4+IPv6</option>
+            <option value="s6x">14、Singbox套WARP IPv6、Xray套WARP IPv4+IPv6</option>
+            <option value="sx">15、Singbox+Xray同时套WARP IPv4+IPv6</option>
           </select>
         </div>
         
