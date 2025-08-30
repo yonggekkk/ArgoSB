@@ -1027,8 +1027,8 @@ elif [ "$1" = "list" ]; then
 cip
 exit
 elif [ "$1" = "res" ]; then
-killstart
-sleep 5 && echo "重启完成"
+killstart && sleep 5
+echo "重启完成"
 exit
 fi
 if ! find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|x)' && ! pgrep -f 'agsb/(s|x)' >/dev/null 2>&1; then
