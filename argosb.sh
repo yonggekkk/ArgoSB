@@ -792,7 +792,7 @@ fi
 }
 cip(){
 ipbest(){
-serip=$((command -v curl >/dev/null 2>&1 && (curl -s4m5 -k "$v46url" || curl -s6m5 -k "$v46url")) || (command -v wget >/dev/null 2>&1 && (wget -4 -qO- --tries=2 "$v46url" || wget -6 -qO- --tries=2 "$v46url")))
+serip=$( (command -v curl >/dev/null 2>&1 && (curl -s4m5 -k "$v46url" || curl -s6m5 -k "$v46url") ) || (command -v wget >/dev/null 2>&1 && (wget -4 -qO- --tries=2 "$v46url" || wget -6 -qO- --tries=2 "$v46url") ) )
 if echo "$serip" | grep -q ':'; then
 server_ip="[$serip]"
 echo "$server_ip" > "$HOME/agsb/server_ip.log"
