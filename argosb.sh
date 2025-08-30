@@ -66,12 +66,12 @@ esac
 mkdir -p "$HOME/agsb"
 warpcheck(){
 url="https://www.cloudflare.com/cdn-cgi/trace"
-wgcfv6=$((command -v curl >/dev/null 2>&1 && curl -s6m5 "$url" || command -v wget >/dev/null 2>&1 && wget -6 --timeout=5 -qO- "$url") | grep warp | cut -d= -f2)
-wgcfv4=$((command -v curl >/dev/null 2>&1 && curl -s4m5 "$url" || command -v wget >/dev/null 2>&1 && wget -4 --timeout=5 -qO- "$url") | grep warp | cut -d= -f2)
+wgcfv6=$( (command -v curl >/dev/null 2>&1 && curl -s6m5 "$url") || (command -v wget >/dev/null 2>&1 && wget -6 --timeout=5 -qO- "$url") | grep warp | cut -d= -f2 )
+wgcfv4=$( (command -v curl >/dev/null 2>&1 && curl -s4m5 "$url") || (command -v wget >/dev/null 2>&1 && wget -4 --timeout=5 -qO- "$url") | grep warp | cut -d= -f2 )
 }
 v4v6(){
-v4=$((command -v curl >/dev/null 2>&1 && curl -s4m5 -k "$v46url") || (command -v wget >/dev/null 2>&1 && wget -4 --timeout=5 -qO- "$v46url"))
-v6=$((command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url") || (command -v wget >/dev/null 2>&1 && wget -6 --timeout=5 -qO- "$v46url"))
+v4=$( (command -v curl >/dev/null 2>&1 && curl -s4m5 -k "$v46url") || (command -v wget >/dev/null 2>&1 && wget -4 --timeout=5 -qO- "$v46url") )
+v6=$( (command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url") || (command -v wget >/dev/null 2>&1 && wget -6 --timeout=5 -qO- "$v46url") )
 }
 warpsx(){
 if [ -n "$name" ]; then
