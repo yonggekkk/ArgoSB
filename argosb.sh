@@ -751,11 +751,11 @@ echo
 if find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|x)' || pgrep -f 'agsb/(s|x)' >/dev/null 2>&1 ; then
 [ -f ~/.bashrc ] || touch ~/.bashrc
 sed -i '/yonggekkk/d' ~/.bashrc
-echo "if ! find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|x)' && ! pgrep -f 'agsb/(s|x)' >/dev/null 2>&1; then echo '检测到系统可能中断过，或者变量格式错误？建议在SSH对话框输入 reboot 重启下服务器。现在自动执行ArgoSB脚本的节点恢复操作，请稍等……'; sleep 6; export cdnym=\"${cdnym}\" name=\"${name}\" ippz=\"${ippz}\" argo=\"${argo}\" uuid=\"${uuid}\" $wap=\"${warp}\" $xhp=\"${port_xh}\" $ssp=\"${port_ss}\" $anp=\"${port_an}\" $arp=\"${port_ar}\" $vlp=\"${port_vl_re}\" $vmp=\"${port_vm_ws}\" $hyp=\"${port_hy2}\" $tup=\"${port_tu}\" reym=\"${ym_vl_re}\" agn=\"${ARGO_DOMAIN}\" agk=\"${ARGO_AUTH}\"; bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh); fi" >> ~/.bashrc
+echo "if ! find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|x)' && ! pgrep -f 'agsb/(s|x)' >/dev/null 2>&1; then echo '检测到系统可能中断过，或者变量格式错误？建议在SSH对话框输入 reboot 重启下服务器。现在自动执行ArgoSB脚本的节点恢复操作，请稍等……'; sleep 6; export cdnym=\"${cdnym}\" name=\"${name}\" ippz=\"${ippz}\" argo=\"${argo}\" uuid=\"${uuid}\" $wap=\"${warp}\" $xhp=\"${port_xh}\" $ssp=\"${port_ss}\" $anp=\"${port_an}\" $arp=\"${port_ar}\" $vlp=\"${port_vl_re}\" $vmp=\"${port_vm_ws}\" $hyp=\"${port_hy2}\" $tup=\"${port_tu}\" reym=\"${ym_vl_re}\" agn=\"${ARGO_DOMAIN}\" agk=\"${ARGO_AUTH}\"; url=https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh; bash <(command -v curl >/dev/null 2>&1 && curl -Ls "$url" || wget -qO- "$url"); fi" >> ~/.bashrc
 COMMAND="agsb"
 SCRIPT_PATH="$HOME/bin/$COMMAND"
 mkdir -p "$HOME/bin"
-curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh > "$SCRIPT_PATH"
+url="https://raw.githubusercontent.com/yonggekkk/argosb/beta/argosb.sh"; (command -v curl >/dev/null 2>&1 && curl -sL "$url" -o "$SCRIPT_PATH") || (command -v wget >/dev/null 2>&1 && wget -qO "$SCRIPT_PATH" "$url")
 chmod +x "$SCRIPT_PATH"
 sed -i '/export PATH="\$HOME\/bin:\$PATH"/d' ~/.bashrc
 echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
@@ -791,7 +791,7 @@ fi
 }
 cip(){
 ipbest(){
-serip=$(curl -s4m5 icanhazip.com -k || curl -s6m5 icanhazip.com -k)
+serip=$((command -v curl >/dev/null 2>&1 && (curl -s4m5 -k "$v46url" || curl -s6m5 -k "$v46url")) || (command -v wget >/dev/null 2>&1 && (wget -4 -qO- --timeout=5 "$v46url" || wget -6 -qO- --timeout=5 "$v46url")))
 if echo "$serip" | grep -q ':'; then
 server_ip="[$serip]"
 echo "$server_ip" > "$HOME/agsb/server_ip.log"
@@ -1034,10 +1034,10 @@ if ! find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -
 for P in /proc/[0-9]*; do if [ -L "$P/exe" ]; then TARGET=$(readlink -f "$P/exe" 2>/dev/null); if echo "$TARGET" | grep -qE '/agsb/c|/agsb/s|/agsb/x'; then PID=$(basename "$P"); kill "$PID" 2>/dev/null && echo "Killed $PID ($TARGET)" || echo "Could not kill $PID ($TARGET)"; fi; fi; done
 kill -15 $(pgrep -f 'agsb/s' 2>/dev/null) $(pgrep -f 'agsb/c' 2>/dev/null) $(pgrep -f 'agsb/x' 2>/dev/null) >/dev/null 2>&1
 v4orv6(){
-if [ -z "$(curl -s4m5 icanhazip.com -k)" ]; then
+if [ -z "$((command -v curl >/dev/null 2>&1 && curl -s4m5 -k "$v46url") || (command -v wget >/dev/null 2>&1 && wget -4 -qO- --timeout=5 "$v46url"))" ]; then
 echo -e "nameserver 2a00:1098:2b::1\nnameserver 2a00:1098:2c::1" > /etc/resolv.conf
 fi
-if [ -n "$(curl -s6m5 icanhazip.com -k)" ]; then
+if [ -n "$((command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url") || (command -v wget >/dev/null 2>&1 && wget -6 -qO- --timeout=5 "$v46url"))" ]; then
 sendip="2606:4700:d0::a29f:c001"
 xendip="[2606:4700:d0::a29f:c001]"
 else
