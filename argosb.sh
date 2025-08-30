@@ -69,8 +69,8 @@ wgcfv4=$((command -v curl >/dev/null 2>&1 && curl -s4m5 "$url" || wget -4 --time
 }
 v4v6(){
 url="https://icanhazip.com"
-v4=$((command -v curl >/dev/null 2>&1 && curl -s4m5 -k "$url") || wget -4 --timeout=5 -qO- "$url" )
-v6=$((command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$url") || wget -6 --timeout=5 -qO- "$url" )
+v4=$((command -v curl >/dev/null 2>&1 && curl -s4m5 -k "$url") || wget -4 --timeout=5 -qO- "$url")
+v6=$((command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$url") || wget -6 --timeout=5 -qO- "$url")
 }
 warpsx(){
 if [ -n "$name" ]; then
@@ -108,7 +108,7 @@ esac
 fi
 fi
 case "$warp" in x4) wxryx='ForceIPv4' ;; x6) wxryx='ForceIPv6' ;; *) wxryx='ForceIPv4v6' ;; esac
-case "$warp" in x4|x6|x) if curl -s6m5 icanhazip.com -k >/dev/null; then xryx='ForceIPv4v6' sbyx='prefer_ipv4'; else xryx='ForceIPv4' sbyx='ipv4_only'; fi ;; *) xryx='ForceIPv4v6' sbyx='prefer_ipv4' ;; esac
+case "$warp" in x4|x6|x) if (command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$url" >/dev/null) || (command -v wget >/dev/null 2>&1 && wget -6 --timeout=5 -qO- "$url" >/dev/null); then xryx='ForceIPv4v6' sbyx='prefer_ipv4'; else xryx='ForceIPv4' sbyx='ipv4_only'; fi ;; *) xryx='ForceIPv4v6' sbyx='prefer_ipv4' ;; esac
 }
 
 insuuid(){
