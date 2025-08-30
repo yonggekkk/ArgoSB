@@ -63,12 +63,14 @@ x86_64) cpu=amd64;;
 esac
 mkdir -p "$HOME/agsb"
 warpcheck(){
-wgcfv6=$(curl -s6m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
-wgcfv4=$(curl -s4m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
+url="https://www.cloudflare.com/cdn-cgi/trace"
+wgcfv6=$((command -v curl >/dev/null 2>&1 && curl -s6m5 "$url" || wget -6 --timeout=5 -qO- "$url") | grep warp | cut -d= -f2)
+wgcfv4=$((command -v curl >/dev/null 2>&1 && curl -s4m5 "$url" || wget -4 --timeout=5 -qO- "$url") | grep warp | cut -d= -f2)
 }
 v4v6(){
-v4=$(curl -s4m5 icanhazip.com -k)
-v6=$(curl -s6m5 icanhazip.com -k)
+url="https://icanhazip.com"
+v4=$((command -v curl >/dev/null 2>&1 && curl -s4m5 -k "$url") || wget -4 --timeout=5 -qO- "$url" )
+v6=$((command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$url") || wget -6 --timeout=5 -qO- "$url" )
 }
 warpsx(){
 if [ -n "$name" ]; then
