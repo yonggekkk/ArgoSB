@@ -33,6 +33,7 @@ export ARGO_AUTH=${agk:-''}
 export ippz=${ippz:-''}
 export warp=${warp:-''}
 export name=${name:-''}
+v46url="https://icanhazip.com"
 showmode(){
 echo "ArgoSB脚本项目地址：https://github.com/yonggekkk/ArgoSB"
 echo "主脚本：bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)"
@@ -68,9 +69,8 @@ wgcfv6=$((command -v curl >/dev/null 2>&1 && curl -s6m5 "$url" || wget -6 --time
 wgcfv4=$((command -v curl >/dev/null 2>&1 && curl -s4m5 "$url" || wget -4 --timeout=5 -qO- "$url") | grep warp | cut -d= -f2)
 }
 v4v6(){
-url="https://icanhazip.com"
-v4=$((command -v curl >/dev/null 2>&1 && curl -s4m5 -k "$url") || wget -4 --timeout=5 -qO- "$url")
-v6=$((command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$url") || wget -6 --timeout=5 -qO- "$url")
+v4=$((command -v curl >/dev/null 2>&1 && curl -s4m5 -k "$v46url") || wget -4 --timeout=5 -qO- "$v46url")
+v6=$((command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url") || wget -6 --timeout=5 -qO- "$v46url")
 }
 warpsx(){
 if [ -n "$name" ]; then
@@ -108,7 +108,7 @@ esac
 fi
 fi
 case "$warp" in x4) wxryx='ForceIPv4' ;; x6) wxryx='ForceIPv6' ;; *) wxryx='ForceIPv4v6' ;; esac
-case "$warp" in x4|x6|x) if (command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$url" >/dev/null) || (command -v wget >/dev/null 2>&1 && wget -6 --timeout=5 -qO- "$url" >/dev/null); then xryx='ForceIPv4v6' sbyx='prefer_ipv4'; else xryx='ForceIPv4' sbyx='ipv4_only'; fi ;; *) xryx='ForceIPv4v6' sbyx='prefer_ipv4' ;; esac
+case "$warp" in x4|x6|x) if command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url" >/dev/null || command -v wget >/dev/null 2>&1 && wget -6 --timeout=5 -qO- "$v46url" >/dev/null; then xryx='ForceIPv4v6' sbyx='prefer_ipv4'; else xryx='ForceIPv4' sbyx='ipv4_only'; fi ;; *) xryx='ForceIPv4v6' sbyx='prefer_ipv4' ;; esac
 }
 
 insuuid(){
