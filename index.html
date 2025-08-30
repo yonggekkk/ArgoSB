@@ -362,6 +362,16 @@
     .theme-switch-label {
       cursor: pointer;
     }
+    .command-type-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .command-type-row label {
+      white-space: nowrap;
+      margin: 0;
+    }
   </style>
 </head>
 <body>
@@ -461,7 +471,7 @@
       </section>
 
       <section class="card argo-tunnel">
-        <h2>Argo临时/固定隧道（Vmess-ws自动启用）：</h2>
+        <h2>Argo临时/固定隧道：</h2>
         <div class="row">
           <label>启用Argo <span class="pill">argo</span></label>
           <div id="argoBtn" class="switch" role="switch" aria-checked="false"></div>
@@ -484,6 +494,11 @@
         <div class="tabs">
           <h2>进入服务器的SSH界面，复制下方生成的一键脚本命令，回车一次搞定</h2>
         </div>
+        <div class="command-type-row">
+            <label>命令类型选择：</label>
+            <label style="margin-bottom: 0;"><input type="radio" name="commandType" value="curl" checked> curl</label>
+            <label style="margin-bottom: 0;"><input type="radio" name="commandType" value="wget"> wget</label>
+        </div>
         <textarea id="output" spellcheck="false"></textarea>
         <div class="actions">
           <button id="reset">重置</button>
@@ -498,6 +513,7 @@
 (function(){
   // Bash命令常量
   const CURL = 'bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)';
+  const WGET = 'bash <(wget -qO- https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)';
   // 协议键名
   const protoKeys = ['vmpt','vlpt','xhpt','arpt','anpt','hypt','tupt','sspt'];
   // 可选参数ID
@@ -517,6 +533,7 @@
   const generateUuidBtn = document.getElementById('generateUuidBtn');
   const uuidInput = document.getElementById('uuid');
   const themeSwitchCheckbox = document.getElementById('theme-switch-checkbox');
+  const commandTypeRadios = document.querySelectorAll('input[name="commandType"]');
 
   // 初始化主题
   function initTheme() {
@@ -646,6 +663,11 @@
     render();
   });
 
+  // 命令类型单选框事件监听
+  commandTypeRadios.forEach(radio => {
+    radio.addEventListener('change', render);
+  });
+
   // --- 核心功能函数 ---
 
   /**
@@ -709,7 +731,8 @@
   function render(){
     const m = collectVars();
     const vars = toBashVars(m);
-    output.value = (vars ? vars + ' ' : '') + CURL;
+    const selectedCommand = document.querySelector('input[name="commandType"]:checked').value === 'curl' ? CURL : WGET;
+    output.value = (vars ? vars + ' ' : '') + selectedCommand;
   }
 
   // 初始化渲染
@@ -728,12 +751,13 @@
     btn.addEventListener('click', () => {
       const command = btn.getAttribute('data-command');
       const ippzValue = ippzSelect.value;
+      const selectedCommand = document.querySelector('input[name="commandType"]:checked').value === 'curl' ? CURL : WGET;
       const shouldPreserveIppz = (command === 'list' && (ippzValue === '4' || ippzValue === '6'));
 
       if (command === 'rep') {
         const m = collectVars();
         const vars = toBashVars(m);
-        output.value = (vars ? vars + ' ' : '') + CURL + ' rep';
+        output.value = (vars ? vars + ' ' : '') + selectedCommand + ' rep';
       } else {
         resetForm(shouldPreserveIppz);
         if (shouldPreserveIppz) {
@@ -741,9 +765,9 @@
           const m = collectVars();
           m['ippz'] = ippzValue;
           const vars = toBashVars(m);
-          output.value = `${vars} ${CURL} ${command}`;
+          output.value = `${vars} ${selectedCommand} ${command}`;
         } else {
-          output.value = `${CURL} ${command}`;
+          output.value = `${selectedCommand} ${command}`;
         }
       }
     });
@@ -773,7 +797,3 @@
 </script>
 </body>
 </html>
-
-
-
-
