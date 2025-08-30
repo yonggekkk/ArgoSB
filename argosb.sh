@@ -1027,7 +1027,8 @@ elif [ "$1" = "list" ]; then
 cip
 exit
 elif [ "$1" = "res" ]; then
-killstart && sleep 5
+killstart
+sleep 5
 echo "重启完成"
 exit
 fi
