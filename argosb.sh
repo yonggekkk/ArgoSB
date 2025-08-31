@@ -321,6 +321,17 @@ cat > "$HOME/agsb/sb.json" <<EOF
     "level": "info",
     "timestamp": true
   },
+  "dns": {
+    "servers": [
+      {
+        "type": "h3",
+        "server": "8.8.8.8"
+      },
+      {
+        "type": "local"
+      }
+    ]
+  },
   "inbounds": [
 EOF
 insuuid
