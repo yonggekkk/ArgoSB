@@ -64,11 +64,6 @@ x86_64) cpu=amd64;;
 *) echo "目前脚本不支持$(uname -m)架构" && exit
 esac
 mkdir -p "$HOME/agsb"
-warpcheck(){
-url="https://www.cloudflare.com/cdn-cgi/trace"
-wgcfv6=$( (command -v curl >/dev/null 2>&1 && curl -s6m5 "$url") || (command -v wget >/dev/null 2>&1 && wget -6 --tries=2 -qO- "$url") | grep warp | cut -d= -f2 )
-wgcfv4=$( (command -v curl >/dev/null 2>&1 && curl -s4m5 "$url") || (command -v wget >/dev/null 2>&1 && wget -4 --tries=2 -qO- "$url") | grep warp | cut -d= -f2 )
-}
 v4v6(){
 v4=$( (command -v curl >/dev/null 2>&1 && curl -s4m5 -k "$v46url") || (command -v wget >/dev/null 2>&1 && wget -4 --tries=2 -qO- "$v46url") )
 v6=$( (command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url") || (command -v wget >/dev/null 2>&1 && wget -6 --tries=2 -qO- "$v46url") )
@@ -843,18 +838,7 @@ else
 ipbest
 fi
 }
-warpcheck
-if ! echo "$wgcfv4" | grep -qE 'on|plus' && ! echo "$wgcfv6" | grep -qE 'on|plus'; then
 ipchange
-else
-systemctl stop wg-quick@wgcf >/dev/null 2>&1
-kill -15 $(pgrep warp-go) >/dev/null 2>&1 && sleep 2
-ipchange
-systemctl start wg-quick@wgcf >/dev/null 2>&1
-systemctl restart warp-go >/dev/null 2>&1
-systemctl enable warp-go >/dev/null 2>&1
-systemctl start warp-go >/dev/null 2>&1
-fi
 rm -rf "$HOME/agsb/jh.txt"
 uuid=$(cat "$HOME/agsb/uuid")
 server_ip=$(cat "$HOME/agsb/server_ip.log")
@@ -1047,18 +1031,7 @@ sendip="162.159.192.1"
 xendip="162.159.192.1"
 fi
 }
-warpcheck
-if ! echo "$wgcfv4" | grep -qE 'on|plus' && ! echo "$wgcfv6" | grep -qE 'on|plus'; then
 v4orv6
-else
-systemctl stop wg-quick@wgcf >/dev/null 2>&1
-kill -15 $(pgrep warp-go) >/dev/null 2>&1 && sleep 2
-v4orv6
-systemctl start wg-quick@wgcf >/dev/null 2>&1
-systemctl restart warp-go >/dev/null 2>&1
-systemctl enable warp-go >/dev/null 2>&1
-systemctl start warp-go >/dev/null 2>&1
-fi
 echo "VPS系统：$op"
 echo "CPU架构：$cpu"
 echo "ArgoSB脚本未安装，开始安装…………" && sleep 2
