@@ -64,14 +64,9 @@ x86_64) cpu=amd64;;
 *) echo "目前脚本不支持$(uname -m)架构" && exit
 esac
 mkdir -p "$HOME/agsb"
-warpcheck(){
-url="https://www.cloudflare.com/cdn-cgi/trace"
-wgcfv6=$((command -v curl >/dev/null 2>&1 && curl -s6m5 "$url" || command -v wget >/dev/null 2>&1 && wget -6 --timeout=5 -qO- "$url") | grep warp | cut -d= -f2)
-wgcfv4=$((command -v curl >/dev/null 2>&1 && curl -s4m5 "$url" || command -v wget >/dev/null 2>&1 && wget -4 --timeout=5 -qO- "$url") | grep warp | cut -d= -f2)
-}
 v4v6(){
-v4=$((command -v curl >/dev/null 2>&1 && curl -s4m5 -k "$v46url") || (command -v wget >/dev/null 2>&1 && wget -4 --timeout=5 -qO- "$v46url"))
-v6=$((command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url") || (command -v wget >/dev/null 2>&1 && wget -6 --timeout=5 -qO- "$v46url"))
+v4=$( (command -v curl >/dev/null 2>&1 && curl -s4m5 -k "$v46url") || (command -v wget >/dev/null 2>&1 && wget -4 --tries=2 -qO- "$v46url") )
+v6=$( (command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url") || (command -v wget >/dev/null 2>&1 && wget -6 --tries=2 -qO- "$v46url") )
 }
 warpsx(){
 if [ -n "$name" ]; then
@@ -109,7 +104,7 @@ esac
 fi
 fi
 case "$warp" in x4) wxryx='ForceIPv4' ;; x6) wxryx='ForceIPv6' ;; *) wxryx='ForceIPv4v6' ;; esac
-case "$warp" in x4|x6|x) if command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url" >/dev/null || command -v wget >/dev/null 2>&1 && wget -6 --timeout=5 -qO- "$v46url" >/dev/null; then xryx='ForceIPv4v6' sbyx='prefer_ipv4'; else xryx='ForceIPv4' sbyx='ipv4_only'; fi ;; *) xryx='ForceIPv4v6' sbyx='prefer_ipv4' ;; esac
+case "$warp" in x4|x6|x) if command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url" >/dev/null || command -v wget >/dev/null 2>&1 && wget -6 --tries=2 -qO- "$v46url" >/dev/null; then xryx='ForceIPv4v6' sbyx='prefer_ipv4'; else xryx='ForceIPv4' sbyx='ipv4_only'; fi ;; *) xryx='ForceIPv4v6' sbyx='prefer_ipv4' ;; esac
 }
 
 insuuid(){
@@ -571,7 +566,7 @@ cat >> "$HOME/agsb/xr.json" <<EOF
       "protocol": "freedom",
       "tag": "direct",
       "settings": {
-      "domainStrategy":"${xryx}"
+      "doStrategy":"${xryx}"
      }
     },
     {
@@ -792,7 +787,7 @@ fi
 }
 cip(){
 ipbest(){
-serip=$((command -v curl >/dev/null 2>&1 && (curl -s4m5 -k "$v46url" || curl -s6m5 -k "$v46url")) || (command -v wget >/dev/null 2>&1 && (wget -4 -qO- --timeout=5 "$v46url" || wget -6 -qO- --timeout=5 "$v46url")))
+serip=$( (command -v curl >/dev/null 2>&1 && (curl -s4m5 -k "$v46url" || curl -s6m5 -k "$v46url") ) || (command -v wget >/dev/null 2>&1 && (wget -4 -qO- --tries=2 "$v46url" || wget -6 -qO- --tries=2 "$v46url") ) )
 if echo "$serip" | grep -q ':'; then
 server_ip="[$serip]"
 echo "$server_ip" > "$HOME/agsb/server_ip.log"
@@ -843,18 +838,7 @@ else
 ipbest
 fi
 }
-warpcheck
-if ! echo "$wgcfv4" | grep -qE 'on|plus' && ! echo "$wgcfv6" | grep -qE 'on|plus'; then
 ipchange
-else
-systemctl stop wg-quick@wgcf >/dev/null 2>&1
-kill -15 $(pgrep warp-go) >/dev/null 2>&1 && sleep 2
-ipchange
-systemctl start wg-quick@wgcf >/dev/null 2>&1
-systemctl restart warp-go >/dev/null 2>&1
-systemctl enable warp-go >/dev/null 2>&1
-systemctl start warp-go >/dev/null 2>&1
-fi
 rm -rf "$HOME/agsb/jh.txt"
 uuid=$(cat "$HOME/agsb/uuid")
 server_ip=$(cat "$HOME/agsb/server_ip.log")
@@ -1028,17 +1012,18 @@ cip
 exit
 elif [ "$1" = "res" ]; then
 killstart
-sleep 5 && echo "重启完成"
+sleep 5
+echo "重启完成"
 exit
 fi
 if ! find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsb/(s|x)' && ! pgrep -f 'agsb/(s|x)' >/dev/null 2>&1; then
 for P in /proc/[0-9]*; do if [ -L "$P/exe" ]; then TARGET=$(readlink -f "$P/exe" 2>/dev/null); if echo "$TARGET" | grep -qE '/agsb/c|/agsb/s|/agsb/x'; then PID=$(basename "$P"); kill "$PID" 2>/dev/null && echo "Killed $PID ($TARGET)" || echo "Could not kill $PID ($TARGET)"; fi; fi; done
 kill -15 $(pgrep -f 'agsb/s' 2>/dev/null) $(pgrep -f 'agsb/c' 2>/dev/null) $(pgrep -f 'agsb/x' 2>/dev/null) >/dev/null 2>&1
 v4orv6(){
-if [ -z "$((command -v curl >/dev/null 2>&1 && curl -s4m5 -k "$v46url") || (command -v wget >/dev/null 2>&1 && wget -4 -qO- --timeout=5 "$v46url"))" ]; then
+if [ -z "$( (command -v curl >/dev/null 2>&1 && curl -s4m5 -k "$v46url") || (command -v wget >/dev/null 2>&1 && wget -4 -qO- --tries=2 "$v46url") )" ]; then
 echo -e "nameserver 2a00:1098:2b::1\nnameserver 2a00:1098:2c::1" > /etc/resolv.conf
 fi
-if [ -n "$((command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url") || (command -v wget >/dev/null 2>&1 && wget -6 -qO- --timeout=5 "$v46url"))" ]; then
+if [ -n "$( (command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url") || (command -v wget >/dev/null 2>&1 && wget -6 -qO- --tries=2 "$v46url") )" ]; then
 sendip="2606:4700:d0::a29f:c001"
 xendip="[2606:4700:d0::a29f:c001]"
 else
@@ -1046,18 +1031,7 @@ sendip="162.159.192.1"
 xendip="162.159.192.1"
 fi
 }
-warpcheck
-if ! echo "$wgcfv4" | grep -qE 'on|plus' && ! echo "$wgcfv6" | grep -qE 'on|plus'; then
 v4orv6
-else
-systemctl stop wg-quick@wgcf >/dev/null 2>&1
-kill -15 $(pgrep warp-go) >/dev/null 2>&1 && sleep 2
-v4orv6
-systemctl start wg-quick@wgcf >/dev/null 2>&1
-systemctl restart warp-go >/dev/null 2>&1
-systemctl enable warp-go >/dev/null 2>&1
-systemctl start warp-go >/dev/null 2>&1
-fi
 echo "VPS系统：$op"
 echo "CPU架构：$cpu"
 echo "ArgoSB脚本未安装，开始安装…………" && sleep 2
