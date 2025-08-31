@@ -133,8 +133,6 @@ fi
 cat > "$HOME/agsb/xr.json" <<EOF
 {
   "log": {
-    "access": "/dev/null",
-    "error": "/dev/null",
     "loglevel": "none"
   },
   "dns": {
@@ -330,7 +328,8 @@ cat > "$HOME/agsb/sb.json" <<EOF
       {
         "type": "local"
       }
-    ]
+    ],
+    "strategy": "${sbyx}"
   },
   "inbounds": [
 EOF
