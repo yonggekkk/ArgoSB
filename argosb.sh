@@ -104,7 +104,8 @@ esac
 fi
 fi
 case "$warp" in *x4*) wxryx='ForceIPv4' ;; *x6*) wxryx='ForceIPv6' ;; *) wxryx='ForceIPv4v6' ;; esac
-case "$warp" in *x*|"") if (command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url" 2>/dev/null) || (command -v wget >/dev/null 2>&1 && wget -6 --tries=2 -qO- "$v46url" 2>/dev/null); then xryx='ForceIPv4v6' sbyx='prefer_ipv4'; else xryx='ForceIPv4' sbyx='ipv4_only'; fi ;; *) xryx='ForceIPv4v6' sbyx='prefer_ipv4' ;; esac
+case "$warp" in *x4*|*s4*) if command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url" >/dev/null || command -v wget >/dev/null 2>&1 && wget -6 --tries=2 -qO- "$v46url" >/dev/null; then xryx='ForceIPv6v4' sbyx='prefer_ipv6'; else xryx='ForceIPv4' sbyx='ipv4_only'; fi ;; *) xryx='ForceIPv6v4' sbyx='prefer_ipv6' ;; esac
+case "$warp" in *x6*|*s6*) if command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url" >/dev/null || command -v wget >/dev/null 2>&1 && wget -6 --tries=2 -qO- "$v46url" >/dev/null; then xryx='ForceIPv4v6' sbyx='prefer_ipv4'; else xryx='ForceIPv6v4' sbyx='prefer_ipv6'; fi ;; *) xryx='ForceIPv6v4' sbyx='prefer_ipv6' ;; esac
 }
 
 insuuid(){
