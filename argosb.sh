@@ -107,12 +107,12 @@ case "$warp" in *x4*) wxryx='ForceIPv4' ;; *x6*) wxryx='ForceIPv6' ;; *) wxryx='
 if (command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url" 2>/dev/null) || (command -v wget >/dev/null 2>&1 && wget -6 --tries=2 -qO- "$v46url" 2>/dev/null); then
 xryx='ForceIPv6v4'; sbyx='prefer_ipv6'
 else
-case "$warp" in *x4*) xryx='UseIPv4' ;; esac
-case "$warp" in *x6*) xryx='UseIPv6v4' ;; esac
+case "$warp" in *x4*) xryx='ForceIPv4' ;; esac
+case "$warp" in *x6*) xryx='ForceIPv6v4' ;; esac
 case "$warp" in *s4*) sbyx='ipv4_only' ;; esac
 case "$warp" in *s6*) sbyx='prefer_ipv6' ;; esac
-[ -z "$xryx" ] && xryx='UseIPv6v4'
-[ -z "$sbyx" ] && sbyx='prefer_ipv6'
+[ -z "$xryx" ] && xryx='ForceIPv4v6'
+[ -z "$sbyx" ] && sbyx='prefer_ipv4'
 fi
 }
 
