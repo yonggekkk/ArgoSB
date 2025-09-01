@@ -587,7 +587,7 @@ cat >> "$HOME/agsb/xr.json" <<EOF
       "protocol": "freedom",
       "tag": "direct",
       "settings": {
-      "doStrategy":"${xryx}"
+      "domainStrategy":"${xryx}"
      }
     },
     {
