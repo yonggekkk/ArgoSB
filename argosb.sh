@@ -322,19 +322,7 @@ cat > "$HOME/agsb/sb.json" <<EOF
     "disabled": false,
     "level": "info",
     "timestamp": true
-  },
-  "dns": {
-    "servers": [
-      {
-        "type": "h3",
-        "server": "8.8.8.8"
-      },
-      {
-        "type": "local"
-      }
-    ],
-    "strategy": "${sbyx}"
-  },
+  }
   "inbounds": [
 EOF
 insuuid
@@ -691,6 +679,18 @@ cat >> "$HOME/agsb/sb.json" <<EOF
       }
     ],
     "final": "${s2outtag}"
+  },
+    "dns": {
+    "servers": [
+      {
+        "type": "h3",
+        "server": "8.8.8.8"
+      },
+      {
+        "type": "local"
+      }
+    ],
+    "strategy": "${sbyx}"
   }
 }
 EOF
