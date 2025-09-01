@@ -146,7 +146,9 @@ cat > "$HOME/agsb/xr.json" <<EOF
   },
   "dns": {
     "servers": [
-       "8.8.8.8"
+     "https+local://8.8.8.8/dns-query",
+       "8.8.8.8",
+       "localhost"
       ]
    },
   "inbounds": [
