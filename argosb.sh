@@ -146,10 +146,7 @@ cat > "$HOME/agsb/xr.json" <<EOF
   },
   "dns": {
     "servers": [
-     "https://dns.google/dns-query",
-       "8.8.8.8",
-       "[2001:4860:4860::8888]", 
-       "localhost"
+      "${xsdns}"
       ]
    },
   "inbounds": [
@@ -693,11 +690,8 @@ cat >> "$HOME/agsb/sb.json" <<EOF
     "dns": {
     "servers": [
       {
-        "type": "h3",
-        "server": "8.8.8.8"
-      },
-      {
-        "type": "local"
+        "type": "https",
+        "server": "${xsdns}"
       }
     ],
     "strategy": "${sbyx}"
@@ -1057,9 +1051,11 @@ fi
 if [ -n "$( (command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url" 2>/dev/null) || (command -v wget >/dev/null 2>&1 && wget -6 -qO- --tries=2 "$v46url" 2>/dev/null) )" ]; then
 sendip="2606:4700:d0::a29f:c001"
 xendip="[2606:4700:d0::a29f:c001]"
+xsdns="[2001:4860:4860::8888]"
 else
 sendip="162.159.192.1"
 xendip="162.159.192.1"
+xsdns="8.8.8.8"
 fi
 }
 v4orv6
