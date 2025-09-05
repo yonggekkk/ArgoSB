@@ -161,8 +161,6 @@ echo "Reality域名：$ym_vl_re"
 mkdir -p "$HOME/agsb/xrk"
 if [ ! -e "$HOME/agsb/xrk/private_key" ]; then
 key_pair=$("$HOME/agsb/xray" x25519)
-#private_key=$(echo "$key_pair" | head -1 | awk '{print $3}')
-#public_key=$(echo "$key_pair" | tail -n 1 | awk '{print $3}')
 private_key=$(echo "$key_pair" | grep "PrivateKey" | awk '{print $2}')
 public_key=$(echo "$key_pair" | grep "Password" | awk '{print $2}')
 short_id=$(date +%s%N | sha256sum | cut -c 1-8)
