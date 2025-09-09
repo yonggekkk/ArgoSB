@@ -690,7 +690,7 @@ cat >> "$HOME/agsb/sb.json" <<EOF
         "server": "${xsdns}"
       }
     ],
-    "strategy": "${sbyx}"
+    "strategy": "${sbdnsyx}"
   }
 }
 EOF
@@ -1048,10 +1048,12 @@ if [ -n "$( (command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url" 2>/dev/n
 sendip="2606:4700:d0::a29f:c001"
 xendip="[2606:4700:d0::a29f:c001]"
 xsdns="[2001:4860:4860::8888]"
+sbdnsyx="ipv6_only"
 else
 sendip="162.159.192.1"
 xendip="162.159.192.1"
 xsdns="8.8.8.8"
+sbdnsyx="ipv4_only"
 fi
 }
 v4orv6
