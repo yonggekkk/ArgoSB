@@ -743,15 +743,15 @@ url="https://github.com/cloudflare/cloudflared/releases/latest/download/cloudfla
 chmod +x "$HOME/agsb/cloudflared"
 fi
 if [ -n "${ARGO_DOMAIN}" ] && [ -n "${ARGO_AUTH}" ]; then
-name='固定'
+argoname='固定'
 nohup "$HOME/agsb/cloudflared" tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token "${ARGO_AUTH}" >/dev/null 2>&1 &
 echo "${ARGO_DOMAIN}" > "$HOME/agsb/sbargoym.log"
 echo "${ARGO_AUTH}" > "$HOME/agsb/sbargotoken.log"
 else
-name='临时'
+argoname='临时'
 nohup "$HOME/agsb/cloudflared" tunnel --url http://localhost:"${port_vm_ws}" --edge-ip-version auto --no-autoupdate --protocol http2 > "$HOME/agsb/argo.log" 2>&1 &
 fi
-echo "申请Argo$name隧道中……请稍等"
+echo "申请Argo$argoname隧道中……请稍等"
 sleep 8
 if [ -n "${ARGO_DOMAIN}" ] && [ -n "${ARGO_AUTH}" ]; then
 argodomain=$(cat "$HOME/agsb/sbargoym.log" 2>/dev/null)
@@ -759,9 +759,9 @@ else
 argodomain=$(grep -a trycloudflare.com "$HOME/agsb/argo.log" 2>/dev/null | awk 'NR==2{print}' | awk -F// '{print $2}' | awk '{print $1}')
 fi
 if [ -n "${argodomain}" ]; then
-echo "Argo$name隧道申请成功"
+echo "Argo$argoname隧道申请成功"
 else
-echo "Argo$name隧道申请失败，请稍后再试"
+echo "Argo$argoname隧道申请失败，请稍后再试"
 fi
 fi
 echo
@@ -991,7 +991,7 @@ sbtk=$(cat "$HOME/agsb/sbargotoken.log" 2>/dev/null)
 if [ -n "$sbtk" ]; then
 nametn="当前Argo固定隧道token：$sbtk"
 fi
-argoshow=$(echo -e "Vmess主协议端口(Argo固定隧道端口)：$port_vm_ws\n当前Argo$name域名：$argodomain\n$nametn\n\n1、💣443端口的vmess-ws-tls-argo节点\n$vmatls_link1\n\n2、💣80端口的vmess-ws-argo节点\n$vma_link7\n")
+argoshow=$(echo -e "Vmess主协议端口(Argo隧道端口)：$port_vm_ws\n当前Argo域名：$argodomain\n$nametn\n\n1、💣443端口的vmess-ws-tls-argo节点\n$vmatls_link1\n\n2、💣80端口的vmess-ws-argo节点\n$vma_link7\n")
 fi
 echo "---------------------------------------------------------"
 echo "$argoshow"
