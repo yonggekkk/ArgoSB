@@ -54,7 +54,7 @@
 
 <img width="926" height="602" alt="a8dd55d7606084a147580c4d292b5d10" src="https://github.com/user-attachments/assets/17509155-ad47-43bd-9943-fc7c57b72e42" />
 
-* #### 节点IP、端口被封依旧可用！套CDN优选4大方案：[点击视频教程](https://youtu.be/RnUT1CNbCr8)
+* #### 节点IP、端口被封依旧可用！套CDN优选4大方案（目前vless-xhttp也支持方案一与二，端口变量vxpt）：[点击视频教程](https://youtu.be/RnUT1CNbCr8)
 
 <img width="1498" height="655" alt="1b05db3ba201b35f440b139e8f0ee4b1" src="https://github.com/user-attachments/assets/dfd9e034-baeb-460e-94e2-32bf88f3112a" />
 
