@@ -19,7 +19,7 @@
 #### 5、根据Sing-box与Xray不同内核，可选15种WARP出站组合，更换落地IP为WARP的IP，解锁流媒体
 
 #### 6、所有代理协议都无需域名（除了argo固定隧道），支持单个或多个代理协议任意组合并快速重置更换
-【 已支持：AnyTLS、Any-reality、Vless-xhttp-reality、Vless-reality-vision、Shadowsocks-2022、Vmess-ws、Hysteria2、Tuic、Argo临时/固定隧道 】
+【 已支持：AnyTLS、Any-reality、Vless-xhttp-reality、Vless-reality-vision、Vless-xhttp、Shadowsocks-2022、Vmess-ws、Hysteria2、Tuic、Argo临时/固定隧道 】
 
 #### 7、如需要多样的功能，推荐使用VPS专用四合一脚本[Sing-box-yg](https://github.com/yonggekkk/sing-box-yg)
 
