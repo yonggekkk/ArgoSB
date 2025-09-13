@@ -316,42 +316,6 @@ EOF
 else
 vlp=vlptargo
 fi
-if [ -n "$ssp" ]; then
-ssp=sspt
-if [ ! -e "$HOME/agsb/sskey" ]; then
-sskey=$(head -c 16 /dev/urandom | base64 -w0)
-echo "$sskey" > "$HOME/agsb/sskey"
-fi
-if [ -z "$port_ss" ] && [ ! -e "$HOME/agsb/port_ss" ]; then
-port_ss=$(shuf -i 10000-65535 -n 1)
-echo "$port_ss" > "$HOME/agsb/port_ss"
-elif [ -n "$port_ss" ]; then
-echo "$port_ss" > "$HOME/agsb/port_ss"
-fi
-sskey=$(cat "$HOME/agsb/sskey")
-port_ss=$(cat "$HOME/agsb/port_ss")
-echo "Shadowsocks-2022端口：$port_ss"
-cat >> "$HOME/agsb/xr.json" <<EOF
-        {
-            "tag":"ss-2022",
-            "listen": "::",
-            "port": $port_ss,
-            "protocol": "shadowsocks",
-                "settings": {
-                "method": "2022-blake3-aes-128-gcm",
-                "password": "$sskey",
-                "network": "tcp,udp"
-        },
-          "sniffing": {
-          "enabled": true,
-          "destOverride": ["http", "tls", "quic"],
-          "metadataOnly": false
-      }
-    },  
-EOF
-else
-ssp=ssptargo
-fi
 }
 
 installsb(){
@@ -539,6 +503,34 @@ cat >> "$HOME/agsb/sb.json" <<EOF
 EOF
 else
 arp=arptargo
+fi
+if [ -n "$ssp" ]; then
+ssp=sspt
+if [ ! -e "$HOME/agsb/sskey" ]; then
+sskey=$("$HOME/agsb/sing-box" generate rand 16 --base64)
+echo "$sskey" > "$HOME/agsb/sskey"
+fi
+if [ -z "$port_ss" ] && [ ! -e "$HOME/agsb/port_ss" ]; then
+port_ss=$(shuf -i 10000-65535 -n 1)
+echo "$port_ss" > "$HOME/agsb/port_ss"
+elif [ -n "$port_ss" ]; then
+echo "$port_ss" > "$HOME/agsb/port_ss"
+fi
+sskey=$(cat "$HOME/agsb/sskey")
+port_ss=$(cat "$HOME/agsb/port_ss")
+echo "Shadowsocks-2022端口：$port_ss"
+cat >> "$HOME/agsb/sb.json" <<EOF
+        {
+            "type": "shadowsocks",
+            "tag":"ss-2022",
+            "listen": "::",
+            "listen_port": $port_ss,
+            "method": "2022-blake3-aes-128-gcm",
+            "password": "$sskey"
+    },  
+EOF
+else
+ssp=ssptargo
 fi
 }
 
@@ -758,18 +750,18 @@ fi
 sleep 6
 }
 ins(){
-if [ "$hyp" != yes ] && [ "$tup" != yes ] && [ "$anp" != yes ] && [ "$arp" != yes ]; then
+if [ "$hyp" != yes ] && [ "$tup" != yes ] && [ "$anp" != yes ] && [ "$arp" != yes ] && [ "$ssp" != yes ]; then
 installxray
 xrsbvm
 warpsx
 xrsbout
-hyp="hyptargo"; tup="tuptargo"; anp="anptargo"; arp="arptargo"
-elif [ "$xhp" != yes ] && [ "$vlp" != yes ] && [ "$ssp" != yes ] && [ "$vxp" != yes ]; then
+hyp="hyptargo"; tup="tuptargo"; anp="anptargo"; arp="arptargo"; ssp="ssptargo"
+elif [ "$xhp" != yes ] && [ "$vlp" != yes ] && [ "$vxp" != yes ]; then
 installsb
 xrsbvm
 warpsx
 xrsbout
-xhp="xhptargo"; vlp="vlptargo"; ssp="ssptargo"; vxp="vxptargo"
+xhp="xhptargo"; vlp="vlptargo"; vxp="vxptargo"
 else
 installsb
 installxray
@@ -908,7 +900,7 @@ rm -rf "$HOME/agsb/jh.txt"
 uuid=$(cat "$HOME/agsb/uuid")
 server_ip=$(cat "$HOME/agsb/server_ip.log")
 sxname=$(cat "$HOME/agsb/name" 2>/dev/null)
-vmcdnym=$(cat "$HOME/agsb/cdnym" 2>/dev/null)
+xvvmcdnym=$(cat "$HOME/agsb/cdnym" 2>/dev/null)
 echo "*********************************************************"
 echo "*********************************************************"
 echo "ArgoSB脚本输出节点配置如下："
@@ -917,18 +909,17 @@ case "$server_ip" in
 104.28*|\[2a09*) echo "检测到有WARP的IP作为客户端地址 (104.28或者2a09开头的IP)，请把客户端地址上的WARP的IP手动更换为VPS本地IPV4或者IPV6地址" && sleep 3 ;;
 esac
 echo
-if [ -e "$HOME/agsb/xray" ]; then
 ym_vl_re=$(cat "$HOME/agsb/ym_vl_re" 2>/dev/null)
+if [ -e "$HOME/agsb/xray" ]; then
 private_key_x=$(cat "$HOME/agsb/xrk/private_key" 2>/dev/null)
 public_key_x=$(cat "$HOME/agsb/xrk/public_key" 2>/dev/null)
 short_id_x=$(cat "$HOME/agsb/xrk/short_id" 2>/dev/null)
-sskey=$(cat "$HOME/agsb/sskey" 2>/dev/null)
 fi
 if [ -e "$HOME/agsb/sing-box" ]; then
-ym_vl_re=$(cat "$HOME/agsb/ym_vl_re" 2>/dev/null)
 private_key_s=$(cat "$HOME/agsb/sbk/private_key" 2>/dev/null)
 public_key_s=$(cat "$HOME/agsb/sbk/public_key" 2>/dev/null)
 short_id_s=$(cat "$HOME/agsb/sbk/short_id" 2>/dev/null)
+sskey=$(cat "$HOME/agsb/sskey" 2>/dev/null)
 fi
 if grep xhttp-reality "$HOME/agsb/xr.json" >/dev/null 2>&1; then
 echo "💣【 vless-xhttp-reality 】节点信息如下："
@@ -945,6 +936,14 @@ vl_vx_link="vless://$uuid@$server_ip:$port_vx?encryption=none&type=xhttp&path=$u
 echo "$vl_vx_link" >> "$HOME/agsb/jh.txt"
 echo "$vl_vx_link"
 echo
+if [ -f "$HOME/agsb/cdnym" ]; then
+echo "💣【 vless-xhttp-cdn 】80系CDN或者回源CDN节点信息如下："
+echo "注：默认地址104.16.0.0可自行更换优选IP域名，如是回源端口需手动修改443或者80系端口"
+vl_vx_cdn_link="vless://$uuid@104.16.0.0:$port_vx?encryption=none&type=xhttp&host=$xvvmcdnym&path=$uuid-vx&mode=auto#${sxname}vl-xhttp-$hostname"
+echo "$vl_vx_cdn_link" >> "$HOME/agsb/jh.txt"
+echo "$vl_vx_cdn_link"
+echo
+fi
 fi
 if grep reality-vision "$HOME/agsb/xr.json" >/dev/null 2>&1; then
 echo "💣【 vless-reality-vision 】节点信息如下："
@@ -954,7 +953,7 @@ echo "$vl_link" >> "$HOME/agsb/jh.txt"
 echo "$vl_link"
 echo
 fi
-if grep ss-2022 "$HOME/agsb/xr.json" >/dev/null 2>&1; then
+if grep ss-2022 "$HOME/agsb/sb.json" >/dev/null 2>&1; then
 echo "💣【 Shadowsocks-2022 】节点信息如下："
 port_ss=$(cat "$HOME/agsb/port_ss")
 ss_link="ss://$(echo -n "2022-blake3-aes-128-gcm:$sskey@$server_ip:$port_ss" | base64 -w0)#${sxname}Shadowsocks-2022-$hostname"
@@ -970,9 +969,9 @@ echo "$vm_link" >> "$HOME/agsb/jh.txt"
 echo "$vm_link"
 echo
 if [ -f "$HOME/agsb/cdnym" ]; then
-echo "💣【 vmess-ws 】80系CDN或者回源CDN节点信息如下："
-echo "注：优选IP地址或者端口可自行手动修改"
-vm_cdn_link="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"${sxname}vm-ws-cdn-$hostname\", \"add\": \"104.16.0.0\", \"port\": \"80\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$vmcdnym\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
+echo "💣【 vmess-ws-cdn 】80系CDN或者回源CDN节点信息如下："
+echo "注：默认地址104.16.0.0可自行更换优选IP域名，如是回源端口需手动修改443或者80系端口"
+vm_cdn_link="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"${sxname}vm-ws-cdn-$hostname\", \"add\": \"104.16.0.0\", \"port\": \"$port_vm_ws\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$xvvmcdnym\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
 echo "$vm_cdn_link" >> "$HOME/agsb/jh.txt"
 echo "$vm_cdn_link"
 echo
