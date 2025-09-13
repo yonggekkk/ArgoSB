@@ -149,8 +149,7 @@ cat > "$HOME/agsb/xr.json" <<EOF
   "dns": {
     "servers": [
       "${xsdns}"
-      ],
-    "queryStrategy": "${xrdnsyx}"
+      ]
    },
   "inbounds": [
 EOF
@@ -1101,13 +1100,11 @@ sendip="2606:4700:d0::a29f:c001"
 xendip="[2606:4700:d0::a29f:c001]"
 xsdns="[2001:4860:4860::8888]"
 sbdnsyx="ipv6_only"
-xrdnsyx="UseIPv6"
 else
 sendip="162.159.192.1"
 xendip="162.159.192.1"
 xsdns="8.8.8.8"
 sbdnsyx="ipv4_only"
-xrdnsyx="UseIPv4"
 fi
 }
 v4orv6
