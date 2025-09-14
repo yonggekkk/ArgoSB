@@ -93,12 +93,12 @@ Vless-Reality-Vision协议节点
 vlpt="" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)
 ```
 
-Vless-Xhttp-Reality协议节点
+Vless-Xhttp-Reality协议节点 (已开启X25519加密)
 ```
 xhpt="" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)
 ```
 
-Vless-Xhttp协议节点
+Vless-Xhttp协议节点 (已开启X25519加密)
 ```
 vxpt="" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)
 ```
