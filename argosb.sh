@@ -144,7 +144,7 @@ fi
 cat > "$HOME/agsb/xr.json" <<EOF
 {
   "log": {
-    "loglevel": "none"
+    "loglevel": "info"
   },
   "dns": {
     "servers": [
