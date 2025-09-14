@@ -144,7 +144,9 @@ fi
 cat > "$HOME/agsb/xr.json" <<EOF
 {
   "log": {
-    "loglevel": "info"
+  "access": "/var/log/xray/access.log",
+  "error": "/var/log/xray/error.log",
+  "loglevel": "info"
   },
   "dns": {
     "servers": [
