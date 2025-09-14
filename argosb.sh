@@ -180,9 +180,9 @@ if [ ! -e "$HOME/agsb/xrk/aukey" ]; then
 aukey=$("$HOME/agsb/xray" vlessenc | grep 'Authentication:' | sed -n '1p' | cut -d' ' -f2-)
 dekey=$("$HOME/agsb/xray" vlessenc | grep '"decryption":' | sed -n '1p' | cut -d' ' -f2- | tr -d '"')
 enkey=$("$HOME/agsb/xray" vlessenc | grep '"encryption":' | sed -n '1p' | cut -d' ' -f2- | tr -d '"')
-echo "aukey" > "$HOME/agsb/xrk/aukey"
-echo "dekey" > "$HOME/agsb/xrk/dekey"
-echo "enkey" > "$HOME/agsb/xrk/enkey"
+echo "$aukey" > "$HOME/agsb/xrk/aukey"
+echo "$dekey" > "$HOME/agsb/xrk/dekey"
+echo "$enkey" > "$HOME/agsb/xrk/enkey"
 fi
 aukey=$(cat "$HOME/agsb/xrk/aukey")
 dekey=$(cat "$HOME/agsb/xrk/dekey")
