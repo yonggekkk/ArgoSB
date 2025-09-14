@@ -144,7 +144,7 @@ fi
 cat > "$HOME/agsb/xr.json" <<EOF
 {
   "log": {
-    "loglevel": "none"
+  "loglevel": "none"
   },
   "dns": {
     "servers": [
@@ -174,6 +174,19 @@ private_key_x=$(cat "$HOME/agsb/xrk/private_key")
 public_key_x=$(cat "$HOME/agsb/xrk/public_key")
 short_id_x=$(cat "$HOME/agsb/xrk/short_id")
 fi
+
+if [ -n "$xhp" ] || [ -n "$vxp" ]; then
+if [ ! -e "$HOME/agsb/xrk/dekey" ]; then
+vlkey=$("$HOME/agsb/xray" vlessenc)
+dekey=$(echo "$vlkey" | grep '"decryption":' | sed -n '1p' | cut -d' ' -f2- | tr -d '"')
+enkey=$(echo "$vlkey" | grep '"encryption":' | sed -n '1p' | cut -d' ' -f2- | tr -d '"')
+echo "$dekey" > "$HOME/agsb/xrk/dekey"
+echo "$enkey" > "$HOME/agsb/xrk/enkey"
+fi
+dekey=$(cat "$HOME/agsb/xrk/dekey")
+enkey=$(cat "$HOME/agsb/xrk/enkey")
+fi
+
 if [ -n "$xhp" ]; then
 xhp=xhpt
 if [ -z "$port_xh" ] && [ ! -e "$HOME/agsb/port_xh" ]; then
@@ -196,7 +209,7 @@ cat >> "$HOME/agsb/xr.json" <<EOF
             "id": "${uuid}"
           }
         ],
-        "decryption": "none"
+        "decryption": "${dekey}"
       },
       "streamSettings": {
         "network": "xhttp",
@@ -248,7 +261,7 @@ cat >> "$HOME/agsb/xr.json" <<EOF
             "id": "${uuid}"
           }
         ],
-        "decryption": "none"
+        "decryption": "${dekey}"
       },
       "streamSettings": {
         "network": "xhttp",
@@ -914,6 +927,7 @@ if [ -e "$HOME/agsb/xray" ]; then
 private_key_x=$(cat "$HOME/agsb/xrk/private_key" 2>/dev/null)
 public_key_x=$(cat "$HOME/agsb/xrk/public_key" 2>/dev/null)
 short_id_x=$(cat "$HOME/agsb/xrk/short_id" 2>/dev/null)
+enkey=$(cat "$HOME/agsb/xrk/enkey" 2>/dev/null)
 fi
 if [ -e "$HOME/agsb/sing-box" ]; then
 private_key_s=$(cat "$HOME/agsb/sbk/private_key" 2>/dev/null)
@@ -924,7 +938,7 @@ fi
 if grep xhttp-reality "$HOME/agsb/xr.json" >/dev/null 2>&1; then
 echo "💣【 vless-xhttp-reality 】节点信息如下："
 port_xh=$(cat "$HOME/agsb/port_xh")
-vl_xh_link="vless://$uuid@$server_ip:$port_xh?encryption=none&security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key_x&sid=$short_id_x&type=xhttp&path=$uuid-xh&mode=auto#${sxname}vl-xhttp-reality-$hostname"
+vl_xh_link="vless://$uuid@$server_ip:$port_xh?encryption=$enkey&security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key_x&sid=$short_id_x&type=xhttp&path=$uuid-xh&mode=auto#${sxname}vl-xhttp-reality-$hostname"
 echo "$vl_xh_link" >> "$HOME/agsb/jh.txt"
 echo "$vl_xh_link"
 echo
@@ -932,14 +946,14 @@ fi
 if grep vless-xhttp "$HOME/agsb/xr.json" >/dev/null 2>&1; then
 echo "💣【 vless-xhttp 】节点信息如下："
 port_vx=$(cat "$HOME/agsb/port_vx")
-vl_vx_link="vless://$uuid@$server_ip:$port_vx?encryption=none&type=xhttp&path=$uuid-vx&mode=auto#${sxname}vl-xhttp-$hostname"
+vl_vx_link="vless://$uuid@$server_ip:$port_vx?encryption=$enkey&type=xhttp&path=$uuid-vx&mode=auto#${sxname}vl-xhttp-$hostname"
 echo "$vl_vx_link" >> "$HOME/agsb/jh.txt"
 echo "$vl_vx_link"
 echo
 if [ -f "$HOME/agsb/cdnym" ]; then
 echo "💣【 vless-xhttp-cdn 】80系CDN或者回源CDN节点信息如下："
 echo "注：默认地址104.16.0.0可自行更换优选IP域名，如是回源端口需手动修改443或者80系端口"
-vl_vx_cdn_link="vless://$uuid@104.16.0.0:$port_vx?encryption=none&type=xhttp&host=$xvvmcdnym&path=$uuid-vx&mode=auto#${sxname}vl-xhttp-$hostname"
+vl_vx_cdn_link="vless://$uuid@104.16.0.0:$port_vx?encryption=$enkey&type=xhttp&host=$xvvmcdnym&path=$uuid-vx&mode=auto#${sxname}vl-xhttp-$hostname"
 echo "$vl_vx_cdn_link" >> "$HOME/agsb/jh.txt"
 echo "$vl_vx_cdn_link"
 echo
