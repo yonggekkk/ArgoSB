@@ -176,16 +176,13 @@ short_id_x=$(cat "$HOME/agsb/xrk/short_id")
 fi
 
 if [ -n "$xhp" ] || [ -n "$vxp" ]; then
-if [ ! -e "$HOME/agsb/xrk/aukey" ]; then
+if [ ! -e "$HOME/agsb/xrk/dekey" ]; then
 vlkey=$("$HOME/agsb/xray" vlessenc)
-aukey=$(echo "$vlkey" | grep 'Authentication:' | sed -n '1p' | cut -d' ' -f2-)
 dekey=$(echo "$vlkey" | grep '"decryption":' | sed -n '1p' | cut -d' ' -f2- | tr -d '"')
 enkey=$(echo "$vlkey" | grep '"encryption":' | sed -n '1p' | cut -d' ' -f2- | tr -d '"')
-echo "$aukey" > "$HOME/agsb/xrk/aukey"
 echo "$dekey" > "$HOME/agsb/xrk/dekey"
 echo "$enkey" > "$HOME/agsb/xrk/enkey"
 fi
-aukey=$(cat "$HOME/agsb/xrk/aukey")
 dekey=$(cat "$HOME/agsb/xrk/dekey")
 enkey=$(cat "$HOME/agsb/xrk/enkey")
 fi
@@ -212,9 +209,7 @@ cat >> "$HOME/agsb/xr.json" <<EOF
             "id": "${uuid}"
           }
         ],
-        "decryption": "${dekey}",
-        "encryption": "${enkey}",
-        "selectedAuth": "${aukey}"
+        "decryption": "${dekey}"
       },
       "streamSettings": {
         "network": "xhttp",
@@ -266,9 +261,7 @@ cat >> "$HOME/agsb/xr.json" <<EOF
             "id": "${uuid}"
           }
         ],
-        "decryption": "${dekey}",
-        "encryption": "${enkey}",
-        "selectedAuth": "${aukey}"
+        "decryption": "${dekey}"
       },
       "streamSettings": {
         "network": "xhttp",
