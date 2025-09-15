@@ -41,7 +41,7 @@ showmode(){
 echo "ArgoSB脚本项目地址：https://github.com/yonggekkk/ArgoSB"
 echo "主脚本：bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh) 或 bash <(wget -qO- https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)"
 echo "显示节点信息命令：agsb list 【或者】 主脚本 list"
-echo "更换代理协议变量组命令：自定义各种协议变量组 agsb rep 【或者】 自定义各种协议变量组 主脚本 rep"
+echo "重置变量组命令：自定义各种协议变量组 agsb rep 【或者】 自定义各种协议变量组 主脚本 rep"
 echo "更新脚本命令：原已安装的自定义各种协议变量组 主脚本 rep"
 echo "重启脚本命令：agsb res 【或者】 主脚本 res"
 echo "卸载脚本命令：agsb del 【或者】 主脚本 del"
