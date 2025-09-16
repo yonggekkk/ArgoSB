@@ -4,7 +4,7 @@
 
 <img width="636" height="238" alt="0cbc3f82134b4fc99afd6cee37e98be" src="https://github.com/user-attachments/assets/a76ca418-badb-4e9a-a771-6682ec713e06" />
 
-### 【ArgoSB当前版本：V25.8.27】
+### 【ArgoSB当前版本：V25.9.16】
 
 ---------------------------------------
 
