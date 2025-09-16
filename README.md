@@ -93,12 +93,12 @@ Vless-Reality-Vision协议节点
 vlpt="" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)
 ```
 
-Vless-Xhttp-Reality协议节点 (默认开启X25519的ENC加密)
+Vless-Xhttp-Reality协议节点 (默认开启ML-KEM-768抗量子ENC加密)
 ```
 xhpt="" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)
 ```
 
-Vless-Xhttp协议节点 (默认开启X25519的ENC加密)
+Vless-Xhttp协议节点 (默认开启ML-KEM-768抗量子ENC加密)
 ```
 vxpt="" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)
 ```
