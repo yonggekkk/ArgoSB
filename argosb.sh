@@ -178,8 +178,8 @@ fi
 if [ -n "$xhp" ] || [ -n "$vxp" ]; then
 if [ ! -e "$HOME/agsb/xrk/dekey" ]; then
 vlkey=$("$HOME/agsb/xray" vlessenc)
-dekey=$(echo "$vlkey" | grep '"decryption":' | sed -n '1p' | cut -d' ' -f2- | tr -d '"')
-enkey=$(echo "$vlkey" | grep '"encryption":' | sed -n '1p' | cut -d' ' -f2- | tr -d '"')
+dekey=$(echo "$vlkey" | grep '"decryption":' | sed -n '2p' | cut -d' ' -f2- | tr -d '"')
+enkey=$(echo "$vlkey" | grep '"encryption":' | sed -n '2p' | cut -d' ' -f2- | tr -d '"')
 echo "$dekey" > "$HOME/agsb/xrk/dekey"
 echo "$enkey" > "$HOME/agsb/xrk/enkey"
 fi
@@ -936,7 +936,7 @@ short_id_s=$(cat "$HOME/agsb/sbk/short_id" 2>/dev/null)
 sskey=$(cat "$HOME/agsb/sskey" 2>/dev/null)
 fi
 if grep xhttp-reality "$HOME/agsb/xr.json" >/dev/null 2>&1; then
-echo "💣【 vless-xhttp-reality 】节点信息如下："
+echo "💣【 vless-xhttp-reality 】已支持ML-KEM-768抗量子加密，节点信息如下："
 port_xh=$(cat "$HOME/agsb/port_xh")
 vl_xh_link="vless://$uuid@$server_ip:$port_xh?encryption=$enkey&security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key_x&sid=$short_id_x&type=xhttp&path=$uuid-xh&mode=auto#${sxname}vl-xhttp-reality-$hostname"
 echo "$vl_xh_link" >> "$HOME/agsb/jh.txt"
@@ -944,14 +944,14 @@ echo "$vl_xh_link"
 echo
 fi
 if grep vless-xhttp "$HOME/agsb/xr.json" >/dev/null 2>&1; then
-echo "💣【 vless-xhttp 】节点信息如下："
+echo "💣【 vless-xhttp 】已支持ML-KEM-768抗量子加密，节点信息如下："
 port_vx=$(cat "$HOME/agsb/port_vx")
 vl_vx_link="vless://$uuid@$server_ip:$port_vx?encryption=$enkey&type=xhttp&path=$uuid-vx&mode=auto#${sxname}vl-xhttp-$hostname"
 echo "$vl_vx_link" >> "$HOME/agsb/jh.txt"
 echo "$vl_vx_link"
 echo
 if [ -f "$HOME/agsb/cdnym" ]; then
-echo "💣【 vless-xhttp-cdn 】80系CDN或者回源CDN节点信息如下："
+echo "💣【 vless-xhttp-cdn 】已支持ML-KEM-768抗量子加密，节点信息如下："
 echo "注：默认地址104.16.0.0可自行更换优选IP域名，如是回源端口需手动修改443或者80系端口"
 vl_vx_cdn_link="vless://$uuid@104.16.0.0:$port_vx?encryption=$enkey&type=xhttp&host=$xvvmcdnym&path=$uuid-vx&mode=auto#${sxname}vl-xhttp-$hostname"
 echo "$vl_vx_cdn_link" >> "$HOME/agsb/jh.txt"
