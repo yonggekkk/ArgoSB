@@ -57,7 +57,7 @@
 * #### 如下图：节点IP、端口被封依旧可用！套CDN优选4大方案：[点击视频教程](https://youtu.be/RnUT1CNbCr8)
 * #### 目前vless-xhttp也支持CDN优选的方案一与二，端口变量vxpt
 
-<img width="1559" height="783" alt="594ec265dd56fe2625f045cb3d6a2381" src="https://github.com/user-attachments/assets/aa7f0fb0-124e-44e5-8ca5-9873939202d2" />
+<img width="1559" height="783" alt="07375c7e39a19b285e88ba2dc133d25f" src="https://github.com/user-attachments/assets/a9d08deb-27ef-45dc-82bb-de30ad43c4c6" />
 
 * #### 如下图：从此抛弃第三方独立的WARP脚本，xray+singbox双内核集成15种WARP出站组合：[点击视频教程](https://youtu.be/iywjT8fIka4)
 
