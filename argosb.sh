@@ -36,6 +36,7 @@ export ippz=${ippz:-''}
 export warp=${warp:-''}
 export name=${name:-''}
 v46url="https://icanhazip.com"
+v46loc="https://ip.fm"
 agsburl="https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh"
 showmode(){
 echo "ArgoSB脚本项目地址：https://github.com/yonggekkk/ArgoSB"
@@ -55,7 +56,7 @@ echo "甬哥Github项目 ：github.com/yonggekkk"
 echo "甬哥Blogger博客 ：ygkkk.blogspot.com"
 echo "甬哥YouTube频道 ：www.youtube.com/@ygkkk"
 echo "ArgoSB一键无交互小钢炮脚本💣"
-echo "当前版本：V25.9.16"
+echo "当前版本：V25.9.17"
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 hostname=$(uname -a | awk '{print $2}')
 op=$(cat /etc/redhat-release 2>/dev/null || cat /etc/os-release 2>/dev/null | grep -i pretty_name | cut -d \" -f2)
@@ -69,6 +70,8 @@ mkdir -p "$HOME/agsb"
 v4v6(){
 v4=$( (command -v curl >/dev/null 2>&1 && curl -s4m5 -k "$v46url" 2>/dev/null) || (command -v wget >/dev/null 2>&1 && timeout 3 wget -4 --tries=2 -qO- "$v46url" 2>/dev/null) )
 v6=$( (command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url" 2>/dev/null) || (command -v wget >/dev/null 2>&1 && timeout 3 wget -6 --tries=2 -qO- "$v46url" 2>/dev/null) )
+v4dq=$( (command -v curl >/dev/null 2>&1 && curl -s4m5 -k "$v46loc" | sed -E 's/.*Location: ([^,]+,[^,]+,[^,]+),.*/\1/' 2>/dev/null) || (command -v wget >/dev/null 2>&1 && timeout 3 wget -4 --tries=2 -qO- "$v46loc" | grep '<span class="has-text-grey-light">Location:' | tail -n1 | sed -E 's/.*>Location: <\/span>([^<]+)<.*/\1/' 2>/dev/null) )
+v6dq=$( (command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46loc" | sed -E 's/.*Location: ([^,]+,[^,]+,[^,]+),.*/\1/' 2>/dev/null) || (command -v wget >/dev/null 2>&1 && timeout 3 wget -6 --tries=2 -qO- "$v46loc" | grep '<span class="has-text-grey-light">Location:' | tail -n1 | sed -E 's/.*>Location: <\/span>([^<]+)<.*/\1/' 2>/dev/null) )
 }
 warpsx(){
 if [ -n "$name" ]; then
@@ -869,12 +872,15 @@ v4v6
 if [ -z "$v4" ]; then
 vps_ipv4='无IPV4'
 vps_ipv6="$v6"
+location="$v6dq"
 elif [ -n "$v4" ] && [ -n "$v6" ]; then
 vps_ipv4="$v4"
 vps_ipv6="$v6"
+location="$v4dq"
 else
 vps_ipv4="$v4"
 vps_ipv6='无IPV6'
+location="$v4dq"
 fi
 if echo "$v6" | grep -q '^2a09'; then
 w6="【WARP】"
@@ -886,6 +892,7 @@ echo
 echo "=========当前服务器本地IP情况========="
 echo "本地IPV4地址：$vps_ipv4 $w4"
 echo "本地IPV6地址：$vps_ipv6 $w6"
+echo "服务器地区：$location"
 echo
 sleep 2
 if [ "$ippz" = "4" ]; then
