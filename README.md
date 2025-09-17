@@ -19,7 +19,7 @@
 #### 5、根据Sing-box与Xray不同内核，可选15种WARP出站组合，更换落地IP为WARP的IP，解锁流媒体
 
 #### 6、所有代理协议都无需域名（除了argo固定隧道），支持单个或多个代理协议任意组合并快速重置更换
-【 已支持：AnyTLS、Any-reality、Vless-xhttp-reality、Vless-reality-vision、Vless-xhttp、Shadowsocks-2022、Vmess-ws、Hysteria2、Tuic、Argo临时/固定隧道 】
+【 已支持：AnyTLS、Any-reality、Vless-xhttp-reality-v、Vless-tcp-reality-v、Vless-xhttp-v、Shadowsocks-2022、Vmess-ws、Hysteria2、Tuic、Argo临时/固定隧道 】
 
 #### 7、如需要多样的功能，推荐使用VPS专用四合一脚本[Sing-box-yg](https://github.com/yonggekkk/sing-box-yg)
 
@@ -29,9 +29,9 @@
 
 | 变量意义 | 变量名称| 在变量值""之间填写| 删除变量 | 在变量值""之间留空 | 变量要求及说明 |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| 1、启用vless-reality-vision | vlpt | 端口指定 | 关闭vless-reality-vision | 端口随机 | 必选之一 【xray内核：TCP】 |
-| 2、启用vless-xhttp-reality | xhpt | 端口指定 | 关闭vless-xhttp-reality | 端口随机 | 必选之一 【xray内核：TCP】 |
-| 3、启用vless-xhttp | vxpt | 端口指定 | 关闭vless-xhttp | 端口随机 | 必选之一 【xray内核：TCP】 |
+| 1、启用vless-tcp-reality-v | vlpt | 端口指定 | 关闭vless-tcp-reality-v | 端口随机 | 必选之一 【xray内核：TCP】 |
+| 2、启用vless-xhttp-reality-v | xhpt | 端口指定 | 关闭vless-xhttp-reality-v | 端口随机 | 必选之一 【xray内核：TCP】 |
+| 3、启用vless-xhttp-v | vxpt | 端口指定 | 关闭vless-xhttp-v | 端口随机 | 必选之一 【xray内核：TCP】 |
 | 4、启用shadowsocks-2022 | sspt | 端口指定 | 关闭shadowsocks-2022 | 端口随机 | 必选之一 【singbox内核：TCP】 |
 | 5、启用anytls | anpt | 端口指定 | 关闭anytls | 端口随机 | 必选之一 【singbox内核：TCP】 |
 | 6、启用any-reality | arpt | 端口指定 | 关闭any-reality | 端口随机 | 必选之一 【singbox内核：TCP】 |
@@ -44,7 +44,7 @@
 | 13、argo固定隧道token | agk | CF获取的ey开头的token | 使用临时隧道 | 使用临时隧道 | 可选，argo填写y才可激活固定隧道 |
 | 14、uuid密码 | uuid | 符合uuid规定格式 | 随机生成 | 随机生成 | 可选 |
 | 15、reality域名（仅支持reality类协议） | reym | 符合reality域名规定 | amd官网 | amd官网 | 可选，使用CF类域名时，可用作ProxyIP/客户端地址反代IP（建议高位端口或纯IPV6下使用，以防被扫泄露）|
-| 16、vmess-ws/vless-xhttp在客户端的host地址 | cdnym | CF解析IP的域名 | vmess-ws/vless-xhttp为直连 | vmess-ws/vless-xhttp为直连 | 可选，使用80系CDN或者回源CDN时可设置，否则客户端host地址需手动更改为CF解析IP的域名|
+| 16、vmess-ws/vless-xhttp-v在客户端的host地址 | cdnym | CF解析IP的域名 | vmess-ws/vless-xhttp-v为直连 | vmess-ws/vless-xhttp-v为直连 | 可选，使用80系CDN或者回源CDN时可设置，否则客户端host地址需手动更改为CF解析IP的域名|
 | 17、切换ipv4或ipv6配置 | ippz | 填写4或者6 | 自动识别IP配置 | 自动识别IP配置 | 可选，4表示IPV4配置输出，6表示IPV6配置输出 |
 | 18、添加所有节点名称前缀 | name | 任意字符 | 默认协议名前缀 | 默认协议名前缀 | 可选 |
 | 19、【仅容器类docker】监听端口，网页查询 | PORT | 端口指定 | 3000 | 3000 | 可选 |
@@ -55,7 +55,7 @@
 <img width="926" height="602" alt="a8dd55d7606084a147580c4d292b5d10" src="https://github.com/user-attachments/assets/17509155-ad47-43bd-9943-fc7c57b72e42" />
 
 * #### 如下图：节点IP、端口被封依旧可用！套CDN优选4大方案：[点击视频教程](https://youtu.be/RnUT1CNbCr8)
-* #### 目前vless-xhttp也支持CDN优选的方案一与二，端口变量vxpt
+* #### 目前vless-xhttp-v也支持CDN优选的方案一与二，端口变量vxpt
 
 <img width="1559" height="783" alt="07375c7e39a19b285e88ba2dc133d25f" src="https://github.com/user-attachments/assets/a9d08deb-27ef-45dc-82bb-de30ad43c4c6" />
 
@@ -88,17 +88,17 @@ sspt="" vlpt="" vmpt="" hypt="" tupt="" xhpt="" vxpt="" anpt="" arpt="" bash <(c
 
 * ### 模版2：主流TCP或UDP单个协议运行
 
-Vless-Reality-Vision协议节点
+Vless-Tcp-Reality-V协议节点
 ```
 vlpt="" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)
 ```
 
-Vless-Xhttp-Reality协议节点 (默认开启ML-KEM-768抗量子ENC加密)
+Vless-Xhttp-Reality-V协议节点 (默认开启ML-KEM-768抗量子ENC加密)
 ```
 xhpt="" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)
 ```
 
-Vless-Xhttp协议节点 (默认开启ML-KEM-768抗量子ENC加密)
+Vless-Xhttp-V协议节点 (默认开启ML-KEM-768抗量子ENC加密)
 ```
 vxpt="" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)
 ```
@@ -152,7 +152,7 @@ Vmess-ws的80系端口、回源端口的CDN优选节点
 vmpt="80系端口、指定回源端口" cdnym="CF解析IP的域名" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)
 ```
 
-Vless-Xhttp的80系端口、回源端口的CDN优选节点
+Vless-Xhttp-V的80系端口、回源端口的CDN优选节点
 ```
 vxpt="80系端口、指定回源端口" cdnym="CF解析IP的域名" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)
 ```
