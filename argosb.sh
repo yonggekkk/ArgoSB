@@ -207,7 +207,8 @@ cat >> "$HOME/agsb/xr.json" <<EOF
       "settings": {
         "clients": [
           {
-            "id": "${uuid}"
+            "id": "${uuid}",
+            "flow": "xtls-rprx-vision"
           }
         ],
         "decryption": "${dekey}"
@@ -259,7 +260,8 @@ cat >> "$HOME/agsb/xr.json" <<EOF
       "settings": {
         "clients": [
           {
-            "id": "${uuid}"
+            "id": "${uuid}",
+            "flow": "xtls-rprx-vision"
           }
         ],
         "decryption": "${dekey}"
@@ -942,7 +944,7 @@ fi
 if grep xhttp-reality "$HOME/agsb/xr.json" >/dev/null 2>&1; then
 echo "💣【 vless-xhttp-reality 】已支持ML-KEM-768抗量子加密，节点信息如下："
 port_xh=$(cat "$HOME/agsb/port_xh")
-vl_xh_link="vless://$uuid@$server_ip:$port_xh?encryption=$enkey&security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key_x&sid=$short_id_x&type=xhttp&path=$uuid-xh&mode=auto#${sxname}vl-xhttp-reality-$hostname"
+vl_xh_link="vless://$uuid@$server_ip:$port_xh?encryption=$enkey&flow=xtls-rprx-vision&security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key_x&sid=$short_id_x&type=xhttp&path=$uuid-xh&mode=auto#${sxname}vl-xhttp-reality-$hostname"
 echo "$vl_xh_link" >> "$HOME/agsb/jh.txt"
 echo "$vl_xh_link"
 echo
@@ -950,14 +952,14 @@ fi
 if grep vless-xhttp "$HOME/agsb/xr.json" >/dev/null 2>&1; then
 echo "💣【 vless-xhttp 】已支持ML-KEM-768抗量子加密，节点信息如下："
 port_vx=$(cat "$HOME/agsb/port_vx")
-vl_vx_link="vless://$uuid@$server_ip:$port_vx?encryption=$enkey&type=xhttp&path=$uuid-vx&mode=auto#${sxname}vl-xhttp-$hostname"
+vl_vx_link="vless://$uuid@$server_ip:$port_vx?encryption=$enkey&flow=xtls-rprx-vision&type=xhttp&path=$uuid-vx&mode=auto#${sxname}vl-xhttp-$hostname"
 echo "$vl_vx_link" >> "$HOME/agsb/jh.txt"
 echo "$vl_vx_link"
 echo
 if [ -f "$HOME/agsb/cdnym" ]; then
 echo "💣【 vless-xhttp-cdn 】已支持ML-KEM-768抗量子加密，节点信息如下："
 echo "注：默认地址104.16.0.0可自行更换优选IP域名，如是回源端口需手动修改443或者80系端口"
-vl_vx_cdn_link="vless://$uuid@104.16.0.0:$port_vx?encryption=$enkey&type=xhttp&host=$xvvmcdnym&path=$uuid-vx&mode=auto#${sxname}vl-xhttp-$hostname"
+vl_vx_cdn_link="vless://$uuid@104.16.0.0:$port_vx?encryption=$enkey&flow=xtls-rprx-vision&type=xhttp&host=$xvvmcdnym&path=$uuid-vx&mode=auto#${sxname}vl-xhttp-$hostname"
 echo "$vl_vx_cdn_link" >> "$HOME/agsb/jh.txt"
 echo "$vl_vx_cdn_link"
 echo
