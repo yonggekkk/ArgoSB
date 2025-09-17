@@ -44,7 +44,7 @@
 | 13、argo固定隧道token | agk | CF获取的ey开头的token | 使用临时隧道 | 使用临时隧道 | 可选，argo填写y才可激活固定隧道 |
 | 14、uuid密码 | uuid | 符合uuid规定格式 | 随机生成 | 随机生成 | 可选 |
 | 15、reality域名（仅支持reality类协议） | reym | 符合reality域名规定 | amd官网 | amd官网 | 可选，使用CF类域名时，可用作ProxyIP/客户端地址反代IP（建议高位端口或纯IPV6下使用，以防被扫泄露）|
-| 16、vmess客户端host地址 | cdnym | IP解析的CF域名 | vmess为直连 | vmess为直连 | 可选，使用80系CDN或者回源CDN时可设置，否则客户端host地址需手动更改为IP解析的CF域名|
+| 16、vmess-ws/vless-xhttp在客户端的host地址 | cdnym | CF解析IP的域名 | vmess-ws/vless-xhttp为直连 | vmess-ws/vless-xhttp为直连 | 可选，使用80系CDN或者回源CDN时可设置，否则客户端host地址需手动更改为CF解析IP的域名|
 | 17、切换ipv4或ipv6配置 | ippz | 填写4或者6 | 自动识别IP配置 | 自动识别IP配置 | 可选，4表示IPV4配置输出，6表示IPV6配置输出 |
 | 18、添加所有节点名称前缀 | name | 任意字符 | 默认协议名前缀 | 默认协议名前缀 | 可选 |
 | 19、【仅容器类docker】监听端口，网页查询 | PORT | 端口指定 | 3000 | 3000 | 可选 |
