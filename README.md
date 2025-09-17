@@ -149,12 +149,12 @@ vmpt="端口" argo="y" agn="解析的CF域名" agk="CF获取的token" bash <(cur
 
 Vmess-ws的80系端口、回源端口的CDN优选节点
 ```
-vmpt="80系端口、指定回源端口" cdnym="ip已解析的CF域名" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)
+vmpt="80系端口、指定回源端口" cdnym="CF解析IP的域名" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)
 ```
 
 Vless-Xhttp的80系端口、回源端口的CDN优选节点
 ```
-vxpt="80系端口、指定回源端口" cdnym="ip已解析的CF域名" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)
+vxpt="80系端口、指定回源端口" cdnym="CF解析IP的域名" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosb/main/argosb.sh)
 ```
 ---------------------------------------------------------
 
