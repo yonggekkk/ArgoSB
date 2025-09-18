@@ -567,7 +567,7 @@ if [ -n "$cdnym" ]; then
 echo "$cdnym" > "$HOME/agsbx/cdnym"
 echo "80系CDN或者回源CDN的host域名 (确保IP已解析在CF域名)：$cdnym"
 fi
-if [ -e "$HOME/agsbx/xray" ]; then
+if [ -e "$HOME/agsbx/xr.json" ]; then
 cat >> "$HOME/agsbx/xr.json" <<EOF
         {
             "tag": "vmess-xr",
@@ -633,7 +633,7 @@ echo "$port_so" > "$HOME/agsbx/port_so"
 fi
 port_so=$(cat "$HOME/agsbx/port_so")
 echo "Socks5端口：$port_so"
-if [ -e "$HOME/agsbx/xray" ]; then
+if [ -e "$HOME/agsbx/xr.json" ]; then
 cat >> "$HOME/agsbx/xr.json" <<EOF
         {
          "tag": "socks5-xr",
