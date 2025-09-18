@@ -2,7 +2,8 @@
 
 ---------------------------------------
 
-<img width="636" height="238" alt="0cbc3f82134b4fc99afd6cee37e98be" src="https://github.com/user-attachments/assets/a76ca418-badb-4e9a-a771-6682ec713e06" />
+<img width="757" height="255" alt="d89e2542c513e705106371acc7fa1d33" src="https://github.com/user-attachments/assets/7d7a4678-4223-478c-afe2-d303ba0f85a4" />
+
 
 ### 【Argosbx当前版本：V25.9.18】
 
@@ -12,7 +13,7 @@
 
 #### 2、支持Linux类主流VPS系统，SSH脚本支持非root环境运行，几乎无需依赖，无脑一次回车搞定
 
-#### 3、支持Docker镜像部署，公开镜像库：```ygkkk/argosb```
+#### 3、支持Docker镜像部署，公开镜像库：```ygkkk/argosbx```
 
 #### 4、支持NIX容器系统，特别推荐[IDX-Google](https://idx.google.com/)、[Clawcloud爪云](https://run.claw.cloud)、[CloudCat](https://cloud.cloudcat.one)、[Sap](https://www.sap.com/products/technology-platform/trial.html)
 
@@ -53,16 +54,16 @@
 
 * #### 如下图：Clawcloud爪云4套价格+7组协议的组合任你选：[点击视频教程](https://youtu.be/xOQV_E1-C84)
 
-<img width="926" height="602" alt="a8dd55d7606084a147580c4d292b5d10" src="https://github.com/user-attachments/assets/17509155-ad47-43bd-9943-fc7c57b72e42" />
+<img width="869" height="602" alt="25d8af7b9b43d49d84ed84826600bebb" src="https://github.com/user-attachments/assets/739e4e86-8326-4c80-861d-5726c7f96481" />
 
 * #### 如下图：节点IP、端口被封依旧可用！套CDN优选4大方案：[点击视频教程](https://youtu.be/RnUT1CNbCr8)
 * #### 目前vless-xhttp-v也支持CDN优选的方案一与二，端口变量vxpt
 
-<img width="1559" height="783" alt="07375c7e39a19b285e88ba2dc133d25f" src="https://github.com/user-attachments/assets/a9d08deb-27ef-45dc-82bb-de30ad43c4c6" />
+<img width="1559" height="783" alt="42ecee8deeccdb808abcd635440eca30" src="https://github.com/user-attachments/assets/0938a398-9037-49a7-b08e-db5a6d65301c" />
 
 * #### 如下图：从此抛弃第三方独立的WARP脚本，xray+singbox双内核集成15种WARP出站组合：[点击视频教程](https://youtu.be/iywjT8fIka4)
 
-<img width="1015" height="689" alt="57d7a7f615b225d40f882702b2a668be" src="https://github.com/user-attachments/assets/08b6bf37-71d3-472f-97f4-56f58569055d" />
+<img width="1015" height="689" alt="11b1e7a415866a09612f4b559acf3b8e" src="https://github.com/user-attachments/assets/12a9b55c-550f-4a7b-b2af-4ff9b349c0ae" />
 
 ----------------------------------------------------------
 
