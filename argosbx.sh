@@ -620,6 +620,68 @@ vmp=vmptargo
 fi
 }
 
+
+
+
+xrsbvm(){
+if [ -n "$sop" ]; then
+sop=sopt
+if [ -z "$port_so" ] && [ ! -e "$HOME/agsbx/port_so" ]; then
+port_so=$(shuf -i 10000-65535 -n 1)
+echo "$port_so" > "$HOME/agsbx/port_so"
+elif [ -n "$port_so" ]; then
+echo "$port_so" > "$HOME/agsbx/port_so"
+fi
+port_so=$(cat "$HOME/agsbx/port_so")
+echo "Socks5端口：$port_so"
+if [ -e "$HOME/agsbx/xray" ]; then
+cat >> "$HOME/agsbx/xr.json" <<EOF
+        {
+         "tag": "socks5-xr",
+         "port": ${port_so},
+         "listen": "::",
+         "protocol": "socks",
+         "settings": {
+            "auth": "password",
+             "accounts": [
+               {
+               "user": "${uuid}",
+               "pass": "${uuid}"
+               }
+            ],
+            "udp": true
+          },
+            "sniffing": {
+            "enabled": true,
+            "destOverride": ["http", "tls", "quic"],
+            "metadataOnly": false
+            }
+         }, 
+EOF
+else
+cat >> "$HOME/agsbx/sb.json" <<EOF
+    {
+      "tag": "socks5-sb",
+      "type": "socks",
+      "listen": "::",
+      "listen_port": ${port_so},
+      "username": "${uuid}",
+      "password": "${uuid}",
+      "version": 5
+    }
+EOF
+fi
+else
+sop=soptargo
+fi
+}
+
+
+
+
+
+
+
 xrsbout(){
 if [ -e "$HOME/agsbx/xr.json" ]; then
 sed -i '${s/,\s*$//}' "$HOME/agsbx/xr.json"
