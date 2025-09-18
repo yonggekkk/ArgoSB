@@ -1003,7 +1003,7 @@ short_id_s=$(cat "$HOME/agsbx/sbk/short_id" 2>/dev/null)
 sskey=$(cat "$HOME/agsbx/sskey" 2>/dev/null)
 fi
 if grep xhttp-reality "$HOME/agsbx/xr.json" >/dev/null 2>&1; then
-echo "💣【 vless-xhttp-reality-v 】已支持ML-KEM-768抗量子加密，节点信息如下："
+echo "💣【 Vless-xhttp-reality-v 】已支持ML-KEM-768抗量子加密，节点信息如下："
 port_xh=$(cat "$HOME/agsbx/port_xh")
 vl_xh_link="vless://$uuid@$server_ip:$port_xh?encryption=$enkey&flow=xtls-rprx-vision&security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key_x&sid=$short_id_x&type=xhttp&path=$uuid-xh&mode=auto#${sxname}vl-xhttp-reality-$hostname"
 echo "$vl_xh_link" >> "$HOME/agsbx/jh.txt"
@@ -1011,14 +1011,14 @@ echo "$vl_xh_link"
 echo
 fi
 if grep vless-xhttp "$HOME/agsbx/xr.json" >/dev/null 2>&1; then
-echo "💣【 vless-xhttp-v 】已支持ML-KEM-768抗量子加密，节点信息如下："
+echo "💣【 Vless-xhttp-v 】已支持ML-KEM-768抗量子加密，节点信息如下："
 port_vx=$(cat "$HOME/agsbx/port_vx")
 vl_vx_link="vless://$uuid@$server_ip:$port_vx?encryption=$enkey&flow=xtls-rprx-vision&type=xhttp&path=$uuid-vx&mode=auto#${sxname}vl-xhttp-$hostname"
 echo "$vl_vx_link" >> "$HOME/agsbx/jh.txt"
 echo "$vl_vx_link"
 echo
 if [ -f "$HOME/agsbx/cdnym" ]; then
-echo "💣【 vless-xhttp-v-cdn 】已支持ML-KEM-768抗量子加密，节点信息如下："
+echo "💣【 Vless-xhttp-v-cdn 】已支持ML-KEM-768抗量子加密，节点信息如下："
 echo "注：默认地址104.16.0.0可自行更换优选IP域名，如是回源端口需手动修改443或者80系端口"
 vl_vx_cdn_link="vless://$uuid@104.16.0.0:$port_vx?encryption=$enkey&flow=xtls-rprx-vision&type=xhttp&host=$xvvmcdnym&path=$uuid-vx&mode=auto#${sxname}vl-xhttp-$hostname"
 echo "$vl_vx_cdn_link" >> "$HOME/agsbx/jh.txt"
@@ -1027,7 +1027,7 @@ echo
 fi
 fi
 if grep reality-vision "$HOME/agsbx/xr.json" >/dev/null 2>&1; then
-echo "💣【 vless-tcp-reality-v 】节点信息如下："
+echo "💣【 Vless-tcp-reality-v 】节点信息如下："
 port_vl_re=$(cat "$HOME/agsbx/port_vl_re")
 vl_link="vless://$uuid@$server_ip:$port_vl_re?encryption=none&flow=xtls-rprx-vision&security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key_x&sid=$short_id_x&type=tcp&headerType=none#${sxname}vl-reality-vision-$hostname"
 echo "$vl_link" >> "$HOME/agsbx/jh.txt"
@@ -1043,14 +1043,14 @@ echo "$ss_link"
 echo
 fi
 if grep vmess-xr "$HOME/agsbx/xr.json" >/dev/null 2>&1 || grep vmess-sb "$HOME/agsbx/sb.json" >/dev/null 2>&1; then
-echo "💣【 vmess-ws 】节点信息如下："
+echo "💣【 Vmess-ws 】节点信息如下："
 port_vm_ws=$(cat "$HOME/agsbx/port_vm_ws")
 vm_link="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"${sxname}vm-ws-$hostname\", \"add\": \"$server_ip\", \"port\": \"$port_vm_ws\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"www.bing.com\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
 echo "$vm_link" >> "$HOME/agsbx/jh.txt"
 echo "$vm_link"
 echo
 if [ -f "$HOME/agsbx/cdnym" ]; then
-echo "💣【 vmess-ws-cdn 】80系CDN或者回源CDN节点信息如下："
+echo "💣【 Vmess-ws-cdn 】节点信息如下："
 echo "注：默认地址104.16.0.0可自行更换优选IP域名，如是回源端口需手动修改443或者80系端口"
 vm_cdn_link="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"${sxname}vm-ws-cdn-$hostname\", \"add\": \"104.16.0.0\", \"port\": \"$port_vm_ws\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$xvvmcdnym\", \"path\": \"/$uuid-vm?ed=2048\", \"tls\": \"\"}" | base64 -w0)"
 echo "$vm_cdn_link" >> "$HOME/agsbx/jh.txt"
@@ -1059,8 +1059,9 @@ echo
 fi
 fi
 if grep socks5-xr "$HOME/agsbx/xr.json" >/dev/null 2>&1 || grep socks5-sb "$HOME/agsbx/sb.json" >/dev/null 2>&1; then
-echo "💣【 socks5 】客户端信息如下："
+echo "💣【 Socks5 】客户端信息如下："
 port_so=$(cat "$HOME/agsbx/port_so")
+echo "请配合其他应用内置代理使用，勿做节点直接使用"
 echo "客户端地址：$server_ip"
 echo "客户端端口：$port_so"
 echo "客户端用户名：$uuid"
