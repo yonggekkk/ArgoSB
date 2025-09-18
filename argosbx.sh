@@ -664,10 +664,13 @@ cat >> "$HOME/agsbx/sb.json" <<EOF
       "type": "socks",
       "listen": "::",
       "listen_port": ${port_so},
+      "users": [
+      {
       "username": "${uuid}",
-      "password": "${uuid}",
-      "version": 5
-    }
+      "password": "${uuid}"
+      }
+     ]
+    },
 EOF
 fi
 else
