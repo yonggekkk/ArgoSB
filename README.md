@@ -127,7 +127,7 @@ vmpt="" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosbx/main
 
 Socks5协议节点 (配合其他应用内置代理使用，勿做节点直接使用)
 ```
-vmpt="" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosbx/main/argosbx.sh)
+sopt="" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosbx/main/argosbx.sh)
 ```
 
 Hysteria2协议节点
