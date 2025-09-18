@@ -161,7 +161,7 @@ EOF
 insuuid
 if [ -n "$xhp" ] || [ -n "$vlp" ]; then
 if [ -z "$ym_vl_re" ]; then
-ym_vl_re=www.amd.com
+ym_vl_re=apple.com
 fi
 echo "$ym_vl_re" > "$HOME/agsbx/ym_vl_re"
 echo "Reality域名：$ym_vl_re"
@@ -467,7 +467,7 @@ fi
 if [ -n "$arp" ]; then
 arp=arpt
 if [ -z "$ym_vl_re" ]; then
-ym_vl_re=www.amd.com
+ym_vl_re=apple.com
 fi
 echo "$ym_vl_re" > "$HOME/agsbx/ym_vl_re"
 echo "Reality域名：$ym_vl_re"
