@@ -52,6 +52,14 @@
 | 20、【仅容器类docker】监听端口，网页查询 | PORT | 端口指定 | 3000 | 3000 | 可选 |
 | 21、【仅容器类docker】启用vless-ws-tls | DOMAIN | 服务器域名 | 关闭vless-ws-tls | 关闭vless-ws-tls | 可选，vless-ws-tls可独立存在，uuid变量必须启用 |
 
+------------------------------------------------------------------
+
+* #### 如下图：一键SSH命令生成器：[点击视频教程，待发布](https://youtube.com/@ygkkk?sub_confirmation=1))
+
+<img width="824" height="891" alt="0e046335a428e07073d370db621e843d" src="https://github.com/user-attachments/assets/5a41163d-7724-4615-a5ed-70a31dd5940f" />
+
+------------------------------------------------------------------
+
 * #### 如下图：Clawcloud爪云4套价格+7组协议的组合任你选：[点击视频教程](https://youtu.be/xOQV_E1-C84)
 
 <img width="869" height="602" alt="25d8af7b9b43d49d84ed84826600bebb" src="https://github.com/user-attachments/assets/739e4e86-8326-4c80-861d-5726c7f96481" />
