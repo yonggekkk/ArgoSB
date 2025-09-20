@@ -54,7 +54,7 @@
 
 ------------------------------------------------------------------
 
-* #### 如下图：一键SSH命令生成器：[点击视频教程，待发布](https://youtube.com/@ygkkk?sub_confirmation=1))
+* #### 如下图：一键SSH命令生成器：[点击视频教程](https://youtu.be/4u6W4c-t3oU)
 
 <img width="824" height="891" alt="0e046335a428e07073d370db621e843d" src="https://github.com/user-attachments/assets/5a41163d-7724-4615-a5ed-70a31dd5940f" />
 
