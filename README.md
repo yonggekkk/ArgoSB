@@ -199,7 +199,9 @@ vxpt="80系端口、指定回源端口" cdnym="CF解析IP的域名" bash <(curl 
 
 更新中……
 
-最新推荐：[ArgoSB一键无交互小钢炮脚本💣（三）：内置15种WARP出站组合，轻松替代独立的WARP脚本](https://youtu.be/iywjT8fIka4)
+最新推荐：[ArgoSBX一键无交互小钢炮脚本💣（四）：一键SSH命令生成器发布，只要点几下，各大代理协议节点任你选](https://youtu.be/4u6W4c-t3oU)
+
+[ArgoSB一键无交互小钢炮脚本💣（三）：内置15种WARP出站组合，轻松替代独立的WARP脚本](https://youtu.be/iywjT8fIka4)
 
 [ArgoSB一键无交互小钢炮脚本💣（二）：代理节点的IP、端口被封依旧可用！ArgoSB脚本套CDN优选4大方案教程](https://youtu.be/RnUT1CNbCr8)
 
