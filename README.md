@@ -108,7 +108,7 @@ Vless-Xhttp-Reality-V协议节点 (默认开启ML-KEM-768抗量子ENC加密)
 xhpt="" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosbx/main/argosbx.sh)
 ```
 
-Vless-Xhttp-V协议节点 (默认开启ML-KEM-768抗量子ENC加密)
+Vless-Xhttp-V协议节点 (默认开启ML-KEM-768抗量子ENC加密，IDX-Google-VPS容器支持)
 ```
 vxpt="" bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosbx/main/argosbx.sh)
 ```
