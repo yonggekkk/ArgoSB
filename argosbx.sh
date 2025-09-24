@@ -951,7 +951,6 @@ if echo "$v4" | grep -q '^104.28'; then
 w4="【WARP】"
 fi
 echo
-argosbxstatus
 echo
 echo "=========当前服务器本地IP情况========="
 echo "本地IPV4地址：$vps_ipv4 $w4"
@@ -1145,24 +1144,6 @@ echo "========================================================="
 echo "相关快捷方式如下：(首次安装成功后需重连SSH，agsbx快捷方式才可生效)"
 showmode
 }
-argosbxstatus(){
-procs=$(find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null)
-if echo "$procs" | grep -Eq 'agsbx/s' && pgrep -f 'agsbx/s' >/dev/null 2>&1; then
-echo "Sing-box运行中"
-else
-echo "Sing-box未启用"
-fi
-if echo "$procs" | grep -Eq 'agsbx/x' && pgrep -f 'agsbx/x' >/dev/null 2>&1; then
-echo "Xray运行中"
-else
-echo "Xray未启用"
-fi
-if echo "$procs" | grep -Eq 'agsbx/c' && pgrep -f 'agsbx/c' >/dev/null 2>&1; then
-echo "Argo运行中"
-else
-echo "Argo未启用"
-fi
-}
 cleandel(){
 for P in /proc/[0-9]*; do if [ -L "$P/exe" ]; then TARGET=$(readlink -f "$P/exe" 2>/dev/null); if echo "$TARGET" | grep -qE '/agsbx/c|/agsbx/s|/agsbx/x'; then PID=$(basename "$P"); kill "$PID" 2>/dev/null && echo "Killed $PID ($TARGET)" || echo "Could not kill $PID ($TARGET)"; fi; fi; done
 kill -15 $(pgrep -f 'agsbx/s' 2>/dev/null) $(pgrep -f 'agsbx/c' 2>/dev/null) $(pgrep -f 'agsbx/x' 2>/dev/null) >/dev/null 2>&1
@@ -1247,7 +1228,6 @@ echo
 else
 echo "Argosbx脚本已安装"
 echo
-argosbxstatus
 echo
 echo "相关快捷方式如下："
 showmode
