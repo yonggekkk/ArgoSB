@@ -919,7 +919,7 @@ echo "Argosbx脚本进程未启动，安装失败" && exit
 fi
 }
 argosbxstatus(){
-echo "=========当前代理内核运行状态========="
+echo "=========当前三大内核运行状态========="
 procs=$(find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null)
 if echo "$procs" | grep -Eq 'agsbx/s' && pgrep -f 'agsbx/s' >/dev/null 2>&1; then
 echo "Sing-box：运行中"
