@@ -918,6 +918,24 @@ else
 echo "Argosbx脚本进程未启动，安装失败" && exit
 fi
 }
+argosbxstatus(){
+procs=$(find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null)
+if echo "$procs" | grep -Eq 'agsbx/s' && pgrep -f 'agsbx/s' >/dev/null 2>&1; then
+echo "Sing-box运行中"
+else
+echo "Sing-box未启用"
+fi
+if echo "$procs" | grep -Eq 'agsbx/x' && pgrep -f 'agsbx/x' >/dev/null 2>&1; then
+echo "Xray运行中"
+else
+echo "Xray未启用"
+fi
+if echo "$procs" | grep -Eq 'agsbx/c' && pgrep -f 'agsbx/c' >/dev/null 2>&1; then
+echo "Argo运行中"
+else
+echo "Argo未启用"
+fi
+}
 cip(){
 ipbest(){
 serip=$( (command -v curl >/dev/null 2>&1 && (curl -s4m5 -k "$v46url" 2>/dev/null || curl -s6m5 -k "$v46url" 2>/dev/null) ) || (command -v wget >/dev/null 2>&1 && (timeout 3 wget -4 -qO- --tries=2 "$v46url" 2>/dev/null || timeout 3 wget -6 -qO- --tries=2 "$v46url" 2>/dev/null) ) )
@@ -1144,24 +1162,6 @@ echo "聚合节点信息，请查看$HOME/agsbx/jh.txt文件或者运行cat $HOM
 echo "========================================================="
 echo "相关快捷方式如下：(首次安装成功后需重连SSH，agsbx快捷方式才可生效)"
 showmode
-}
-argosbxstatus(){
-procs=$(find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null)
-if echo "$procs" | grep -Eq 'agsbx/s' && pgrep -f 'agsbx/s' >/dev/null 2>&1; then
-echo "Sing-box运行中"
-else
-echo "Sing-box未启用"
-fi
-if echo "$procs" | grep -Eq 'agsbx/x' && pgrep -f 'agsbx/x' >/dev/null 2>&1; then
-echo "Xray运行中"
-else
-echo "Xray未启用"
-fi
-if echo "$procs" | grep -Eq 'agsbx/c' && pgrep -f 'agsbx/c' >/dev/null 2>&1; then
-echo "Argo运行中"
-else
-echo "Argo未启用"
-fi
 }
 cleandel(){
 for P in /proc/[0-9]*; do if [ -L "$P/exe" ]; then TARGET=$(readlink -f "$P/exe" 2>/dev/null); if echo "$TARGET" | grep -qE '/agsbx/c|/agsbx/s|/agsbx/x'; then PID=$(basename "$P"); kill "$PID" 2>/dev/null && echo "Killed $PID ($TARGET)" || echo "Could not kill $PID ($TARGET)"; fi; fi; done
