@@ -921,17 +921,17 @@ fi
 argosbxstatus(){
 echo "=========当前三大内核运行状态========="
 procs=$(find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null)
-if echo "$procs" | grep -Eq 'agsbx/s' && pgrep -f 'agsbx/s' >/dev/null 2>&1; then
+if echo "$procs" | grep -Eq 'agsbx/s' || pgrep -f 'agsbx/s' >/dev/null 2>&1; then
 echo "Sing-box：运行中"
 else
 echo "Sing-box：未启用"
 fi
-if echo "$procs" | grep -Eq 'agsbx/x' && pgrep -f 'agsbx/x' >/dev/null 2>&1; then
+if echo "$procs" | grep -Eq 'agsbx/x' || pgrep -f 'agsbx/x' >/dev/null 2>&1; then
 echo "Xray：运行中"
 else
 echo "Xray：未启用"
 fi
-if echo "$procs" | grep -Eq 'agsbx/c' && pgrep -f 'agsbx/c' >/dev/null 2>&1; then
+if echo "$procs" | grep -Eq 'agsbx/c' || pgrep -f 'agsbx/c' >/dev/null 2>&1; then
 echo "Argo：运行中"
 else
 echo "Argo：未启用"
