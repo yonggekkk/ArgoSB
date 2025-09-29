@@ -1309,7 +1309,7 @@ if [ "$1" = "del" ]; then
 cleandel
 rm -rf "$HOME/agsbx" "$HOME/agsb"
 echo "卸载完成"
-echo "欢迎继续使用甬哥侃侃侃ygkkk的Argosbx一键无交互小钢炮脚本💣"
+echo "欢迎继续使用甬哥侃侃侃ygkkk的Argosbx一键无交互小钢炮脚本💣" && sleep 2
 echo
 showmode
 exit
