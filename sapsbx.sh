@@ -117,6 +117,11 @@ sapcfevn() {
     cf set-env "$APP_NAME" agk "$AGK"
     cf set-env "$APP_NAME" vmpt "$VMPT"
     cf set-env "$APP_NAME" argo "y"
+    else
+    cf unset-env "$APP_NAME" agn "$AGN"
+    cf unset-env "$APP_NAME" agk "$AGK"
+    cf unset-env "$APP_NAME" vmpt "$VMPT"
+    cf unset-env "$APP_NAME" argo "y"
   fi
   ROUTE=$(cf app "$APP_NAME" | grep "routes:" | awk '{print $2}')
   cf set-env "$APP_NAME" DOMAIN "$ROUTE"
