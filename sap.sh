@@ -94,7 +94,7 @@ quoted=$(printf '%s ' $input)
 sed -i "71s/^.*$/AGKS=\"${quoted% }\"/" $HOME/sapsbx.sh
 fi
 
-read -p "可选！请输入8-9点的保活时间间隔（单位:分钟，回车默认3分钟间隔。针对个人账户，企业账号回车跳过）: " input
+read -p "可选！请输入8-9点的保活时间间隔（单位:分钟，回车默认3分钟间隔）: " input
 if [ -z "$input" ]; then
 sed -i "74s/^.*$/crontime=3/" $HOME/sapsbx.sh
 else
