@@ -15,7 +15,7 @@ elif command -v apt >/dev/null 2>&1; then
     echo "deb [signed-by=/usr/share/keyrings/cloudfoundry-cli-archive-keyring.gpg] https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list > /dev/null
     apt-get update && apt-get install -y cf8-cli
 else
-    echo "不支持当前系统"
+    echo "脚本仅支持Alpine、Debian、Ubuntu系统"
     exit 1
 fi
 fi
