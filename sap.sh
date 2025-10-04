@@ -65,6 +65,8 @@ fi
 read -p "可选！请输入Argo固定隧道端口（回车表示关闭Argo隧道，多个按顺序用空格分隔）: " input
 if [ -z "$input" ]; then
 sed -i "65s/^.*$/VMPTS=\"\"/" $HOME/sapsbx.sh
+sed -i "68s/^.*$/AGNS=\"\"/" $HOME/sapsbx.sh
+sed -i "71s/^.*$/AGKS=\"\"/" $HOME/sapsbx.sh
 else
 quoted=$(printf '%s ' $input)
 sed -i "65s/^.*$/VMPTS=\"${quoted% }\"/" $HOME/sapsbx.sh
