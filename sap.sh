@@ -142,7 +142,7 @@ echo " 0. 退出"
 read -p "请输入数字【0-4】:" Input 
 case "$Input" in  
  1 ) sapsbxinstall;;
- 2 ) showgo;;
+ 2 ) goagain;;
  3 ) showlog;;
  4 ) unins;;
  * ) exit 
