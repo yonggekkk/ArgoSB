@@ -105,6 +105,7 @@ echo "下载文件失败，请检查当前服务器是否支持curl或wget，网
 fi
 }
 unins(){
+echo "请稍等……"
 apt-get remove --purge -y cf8-cli >/dev/null 2>&1
 rm -rf /usr/local/bin/cf8 $HOME/sapsbx.sh $HOME/sap.log
 crontab -l 2>/dev/null > /tmp/crontab.tmp
@@ -124,7 +125,7 @@ showlog(){
 if [ -s "$HOME/sap.log" ] && [ -s "$HOME/sapsbx.sh" ]; then
 cat $HOME/sap.log
 else
-echo "未生成自动执行日志，请明天上午9点后再来看"
+echo "无自动执行日志，请明天上午9点后再来看"
 fi
 }
 echo "*****************************************************"
