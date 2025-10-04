@@ -100,6 +100,7 @@ sed -i "74s/^.*$/crontime=3/" $HOME/sapsbx.sh
 else
 sed -i "74s/^.*$/crontime=$input/" $HOME/sapsbx.sh
 fi
+echo "脚本安装设置完毕，将在每天上午8:15-9:00之间自动运行保活"
 else
 echo "下载文件失败，请检查当前服务器是否支持curl或wget，网络是否支持github"
 fi
@@ -136,8 +137,11 @@ echo "甬哥YouTube频道 ：www.youtube.com/@ygkkk"
 echo "Argosbx小钢炮脚本-SAP多账户自动部署并保活脚本【VPS】"
 echo "版本：V25.10.4"
 echo "*****************************************************"
+cf_line=$(sed -n '50p' "$HOME/sapsbx.sh")
+cf_value=$(echo "$cf_line" | sed -E 's/CF_USERNAMES="(.*)"/\1/' | xargs)
+[ -z "$cf_value" ] && echo "未安装脚本" || { echo "已安装脚本"; sed -n '46,77p' "$HOME/sapsbx.sh"; }
 echo "*****************************************************"
-echo " 1. 安装/重置脚本" 
+echo " 1. 安装脚本" 
 echo " 2. 手动执行一次"
 echo " 3. 查看最近一次自动执行日志"
 echo " 4. 卸载脚本"   
