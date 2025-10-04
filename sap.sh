@@ -137,7 +137,7 @@ echo "甬哥YouTube频道 ：www.youtube.com/@ygkkk"
 echo "Argosbx小钢炮脚本-SAP多账户自动部署并保活脚本【VPS】"
 echo "版本：V25.10.4"
 echo "*****************************************************"
-echo "提示：请确保已创建好空间，重置已生效变量需先删除应用程序"
+echo "提示：重置已生效变量需先后台删除应用程序"
 echo "*****************************************************"
 cf_line=$(sed -n '50p' "$HOME/sapsbx.sh")
 cf_value=$(echo "$cf_line" | sed -E 's/CF_USERNAMES="(.*)"/\1/' | xargs)
