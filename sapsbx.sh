@@ -1,8 +1,8 @@
 #!/bin/bash
 export LANG=en_US.UTF-8
 echo
-echo "$(date): SAP开始执行定时任务"
-echo "运行cat $HOME/sap.log查看最近一次执行日志"
+echo "$(date): SAP开始执行任务"
+echo "运行cat $HOME/sap.log查看最近一次定时执行日志"
 echo
 if ! command -v cf8 >/dev/null 2>&1; then
 if command -v apk >/dev/null 2>&1; then
