@@ -12,7 +12,7 @@ command -v curl > /dev/null 2>&1 && curl -sSL $URL -o $DEST || wget -q $URL -O $
 if [ -s "$HOME/sapsbx.sh" ]; then
 chmod +x $HOME/sapsbx.sh
 while true; do
-read -p "必填！请输入sap账号（用空格分隔）: " input
+read -p "必填！请输入SAP邮箱账号（多个按顺序用空格分隔）: " input
 if [ -z "$input" ]; then
 echo "输入不能为空，请重新输入！"
 else
@@ -23,7 +23,7 @@ quoted=$(printf '%s ' $input)
 sed -i "50s/^.*$/CF_USERNAMES=\"${quoted% }\"/" $HOME/sapsbx.sh
 
 while true; do
-read -p "必填！请输入sap密码（多个按顺序用空格分隔）: " input
+read -p "必填！请输入SAP密码（多个按顺序用空格分隔）: " input
 if [ -z "$input" ]; then
 echo "输入不能为空，请重新输入！"
 else
@@ -34,7 +34,7 @@ quoted=$(printf '%s ' $input)
 sed -i "53s/^.*$/CF_PASSWORDS=\"${quoted% }\"/" $HOME/sapsbx.sh
 
 while true; do
-read -p "必填！请输入地区（US或者SG，多个按顺序用空格分隔）: " input
+read -p "必填！请输入SAP地区（详见地区文件表，多个按顺序用空格分隔）: " input
 if [ -z "$input" ]; then
 echo "输入不能为空，请重新输入！"
 else
@@ -55,7 +55,7 @@ done
 quoted=$(printf '%s ' $input)
 sed -i "59s/^.*$/UUIDS=\"${quoted% }\"/" $HOME/sapsbx.sh
 
-read -p "可选！请输入sapsbx应用名称（回车为地区邮箱名称，多个按顺序用空格分隔）: " input
+read -p "可选！请输入SAP应用名称（回车为地区-邮箱名称，多个按顺序用空格分隔）: " input
 if [ -z "$input" ]; then
 sed -i "62s/^.*$/APP_NAMES=\"\"/" $HOME/sapsbx.sh
 else
@@ -63,7 +63,7 @@ quoted=$(printf '%s ' $input)
 sed -i "62s/^.*$/APP_NAMES=\"${quoted% }\"/" $HOME/sapsbx.sh
 fi
 
-read -p "可选！请输入Argo固定端口（回车跳过表示关闭Argo，仅用vless，多个按顺序用空格分隔）: " input
+read -p "可选！请输入Argo固定隧道端口（回车表示关闭Argo隧道，多个按顺序用空格分隔）: " input
 if [ -z "$input" ]; then
 sed -i "65s/^.*$/VMPTS=\"\"/" $HOME/sapsbx.sh
 else
@@ -93,7 +93,7 @@ quoted=$(printf '%s ' $input)
 sed -i "71s/^.*$/AGKS=\"${quoted% }\"/" $HOME/sapsbx.sh
 fi
 
-read -p "可选！请输入保活时间间隔（单位:分钟，默认3分钟间隔）: " input
+read -p "可选！请输入8-9点的保活时间间隔（单位:分钟，回车默认3分钟间隔。针对个人账户，企业账号回车跳过）: " input
 if [ -z "$input" ]; then
 sed -i "74s/^.*$/crontime=3/" $HOME/sapsbx.sh
 else
