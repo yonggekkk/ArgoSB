@@ -5,6 +5,11 @@ echo "脚本仅支持Alpine、Debian、Ubuntu系统" && exit
 fi
 [[ $EUID -ne 0 ]] && echo "请以root模式运行脚本" && exit
 sapsbxinstall(){
+cf_line=$(sed -n '50p' "$HOME/sapsbx.sh")
+cf_value=$(echo "$cf_line" | sed -E 's/CF_USERNAMES="(.*)"/\1/' | xargs)
+if [ -n "$cf_value" ]; then
+
+
 URL="https://raw.githubusercontent.com/yonggekkk/argosbx/beta/sapsbx.sh"
 DEST="$HOME/sapsbx.sh"
 command -v curl > /dev/null 2>&1 && curl -sSL $URL -o $DEST || wget -q $URL -O $DEST
@@ -137,12 +142,13 @@ echo "甬哥YouTube频道 ：www.youtube.com/@ygkkk"
 echo "Argosbx小钢炮脚本-SAP多账户自动部署并保活脚本【VPS】"
 echo "版本：V25.10.4"
 echo "*****************************************************"
+echo "提示：请确保SAP实例已创建好空间"
 cf_line=$(sed -n '50p' "$HOME/sapsbx.sh")
 cf_value=$(echo "$cf_line" | sed -E 's/CF_USERNAMES="(.*)"/\1/' | xargs)
-[ -z "$cf_value" ] && echo "未安装脚本" || { echo "已安装脚本"; sed -n '46,77p' "$HOME/sapsbx.sh"; }
+[ -z "$cf_value" ] && echo "未添加SAP变量，选择1添加变量" || { echo "已添加SAP变量，可选择2执行一次"; sed -n '46,77p' "$HOME/sapsbx.sh"; }
 echo "*****************************************************"
-echo " 1. 安装脚本" 
-echo " 2. 手动执行一次"
+echo " 1. 安装脚本添加变量" 
+echo " 2. 手动测试执行一次"
 echo " 3. 查看最近一次自动执行日志"
 echo " 4. 卸载脚本"   
 echo " 0. 退出"
