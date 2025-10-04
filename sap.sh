@@ -1,7 +1,7 @@
 #!/bin/bash
 export LANG=en_US.UTF-8
 if ! command -v apk >/dev/null 2>&1 && ! command -v apt >/dev/null 2>&1; then
-echo "脚本仅支持Alpine、Debian、Ubuntu系统，脚本退出" && exit
+echo "脚本仅支持Alpine、Debian、Ubuntu系统" && exit
 fi
 [[ $EUID -ne 0 ]] && echo "请以root模式运行脚本" && exit
 sapsbxinstall(){
