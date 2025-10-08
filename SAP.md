@@ -1,15 +1,53 @@
-#### 个人区
+Argosbx在SAP平台部署代理节点，基于[eooce](https://github.com/eooce/Auto-deploy-sap-and-keepalive)相关功能现实，可用vless-ws-tls(cdn)、vmess-ws-argo-cdn、vmess-ws-tls-argo-cdn
 
-| IP服务商 | 地区      | 国家城市  | 变量代码(大写) |
+Vless-ws-tls为默认安装，Argo固定或临时隧道为可选，也可使用workers/pages反代方式启用Vless-ws-tls的CDN替代Argo的CDN
+
+* 方式一：[Github方式](https://github.com/yonggekkk/argosbx/blob/main/.github/workflows/main.yml)，请自建私库设置运行。安装启动同时进行，无定时保活
+
+* 方式二：Docker方式，镜像地址：```ygkkk/sapsbx```，可在clawcloud爪云等docker平台上运行。安装启动同时进行，自带定时保活
+
+* 方式三：VPS服务器方式。安装启动同时进行，自带定时保活
+
+VPS服务器方式脚本地址：（再次进入快捷方式```bash sap.sh```）：
+
+```curl -sSL https://raw.githubusercontent.com/yonggekkk/argosbx/main/sap.sh -o sap.sh && chmod +x sap.sh && bash sap.sh```
+
+或者
+
+```wget -q https://raw.githubusercontent.com/yonggekkk/argosbx/main/sap.sh -O sap.sh && chmod +x sap.sh && bash sap.sh```
+
+----------------------------------------- 
+
+* 变量设置说明
+  
+| 变量名称 | 变更值（多个之间空一格）| 是否必填  | 变量作用 |
+| :----- | :-------- | :-------- | :--- |
+| CF_USERNAMES | 单个或多个SAP账号邮箱  | 必填  | 登录账号 |
+| CF_PASSWORDS | 单个或多个SAP密码  | 必填  | 登录密码 |
+| REGIONS | 单个或多个地区变量代码 | 必填 | 登录实例地区 |
+| UUIDS | 单个或多个UUID | 必填 | 代理协议UUID |
+| APP_NAMES | 单个或多个应用程序名称 | 可选，留空则为地区码+邮箱 | 应用程序名称 |
+| VMPTS | 单个或多个argo固定/临时隧道端口| 可选，留空则关闭argo隧道  | vmess主协议端口 |
+| AGNS  | 单个或多个argo固定隧道域名 | 可选，留空则启用临时隧道  | 使用argo固定域名才需要 |
+| AGKS | 单个或多个argo固定隧道token | 可选，留空则启用临时隧道  | 使用argo固定域名才需要 |
+| DELAPP | 单个或多个应用程序名 | 优先独立执行 | 删除指定应用程序才需要，github或docker执行后务必还原留空状态 |
+
+
+---------------------------------------
+
+### REGIONS：地区变量代码表
+
+#### 个人区专用：
+
+| IP服务商 | 地区      | 国家城市  | 地区变量代码(大写) |
 | :----- | :-------- | :-------- | :--- |
 | Azure微软   | 亚洲      | 新加坡    | SG   |
 | AWS亚马逊 | 北美      | 美国      | US   |
 
-------------------------------
 
-#### 企业区
+#### 企业区专用：
 
-| IP服务商 | 地区      | 国家城市    | 变量代码(大写)    |
+| IP服务商 | 地区      | 国家城市    | 地区变量代码(大写)    |
 | :----- | :-------- | :---------- | :------ |
 | AWS亚马逊 | 亚洲      | 澳大利亚-悉尼 | AU-A    |
 | AWS亚马逊 | 亚洲      | 日本-东京    | JP-A    |
