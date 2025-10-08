@@ -2,6 +2,8 @@ Argosbx在SAP平台部署代理节点，基于[eooce](https://github.com/eooce/A
 
 Vless-ws-tls为默认安装，Argo固定或临时隧道为可选，也可使用workers/pages反代方式启用Vless-ws-tls的CDN替代Argo的CDN
 
+SAP个人注册地址：https://www.sap.com/products/technology-platform/trial.html
+
 * 方式一：[Github方式](https://github.com/yonggekkk/argosbx/blob/main/.github/workflows/main.yml)，请自建私库设置运行。安装启动同时进行，无定时保活
 
 * 方式二：Docker方式，镜像地址：```ygkkk/sapsbx```，可在clawcloud爪云等docker平台上运行。安装启动同时进行，自带定时保活
