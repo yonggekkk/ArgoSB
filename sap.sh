@@ -121,7 +121,7 @@ fi
 unins(){
 echo "请稍等……"
 apt-get remove --purge -y cf8-cli >/dev/null 2>&1
-rm -rf /usr/local/bin/cf8 $HOME/sapsbx.sh $HOME/sap.log
+rm -rf /usr/local/bin/cf8 "$HOME"/{sapsbx.sh,sap.log,sap.sh}
 crontab -l 2>/dev/null > /tmp/crontab.tmp
 sed -i '/sapsbx/d' /tmp/crontab.tmp >/dev/null 2>&1
 crontab /tmp/crontab.tmp
