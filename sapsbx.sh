@@ -148,8 +148,8 @@ for i in "${!CF_USERNAMES[@]}"; do
   [ "$AGN" = "no" ] && AGN=""
   [ "$AGK" = "no" ] && AGK=""
   case "$REGION" in
-    SG) CF_API="https://api.cf.ap21.hana.ondemand.com"; serv="sg-m-p" ;;
-    US) CF_API="https://api.cf.us10-001.hana.ondemand.com"; serv="us-a-p" ;;
+    SG) CF_API="https://api.cf.ap21.hana.ondemand.com"; serv="sg" ;;
+    US) CF_API="https://api.cf.us10-001.hana.ondemand.com"; serv="us" ;;
     AU-A) CF_API="https://api.cf.ap10.hana.ondemand.com"; serv="au-a" ;;
     BR-A) CF_API="https://api.cf.br10.hana.ondemand.com"; serv="br-a" ;;
     KR-A) CF_API="https://api.cf.ap12.hana.ondemand.com"; serv="us-a" ;;
