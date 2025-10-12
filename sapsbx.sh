@@ -1,5 +1,4 @@
 #!/bin/bash
-exec > "$HOME/sap.log" 2>&1
 export LANG=en_US.UTF-8
 if ! command -v cf8 >/dev/null 2>&1; then
 if command -v apk >/dev/null 2>&1; then
@@ -40,6 +39,7 @@ if command -v apt >/dev/null 2>&1; then
    apt-get update -y >/dev/null 2>&1 && apt-get install -y cron >/dev/null 2>&1
 fi
 fi
+
 echo "*************************************"
 echo "中国时间 $(date): SAP开始执行任务"
 echo "运行cat $HOME/sap.log查看最近一次定时执行日志"
@@ -98,7 +98,7 @@ read -ra AGKS <<< "$AGKS"
 jbpath=$(readlink -f "$0")
 crontab -l 2>/dev/null > /tmp/crontab.tmp
 sed -i "\|$jbpath|d" /tmp/crontab.tmp
-echo "10-59/${crontime} 8 * * * /bin/bash $jbpath" >> /tmp/crontab.tmp
+echo "10-59/${crontime} 8 * * * /bin/bash $jbpath > $HOME/sap.log 2>&1" >> /tmp/crontab.tmp
 crontab /tmp/crontab.tmp
 rm /tmp/crontab.tmp
 pushout() {
