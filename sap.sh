@@ -170,9 +170,9 @@ echo "Argosbx小钢炮脚本-SAP多账户自动部署并保活脚本【VPS】"
 echo "版本：V25.10.5"
 echo "*****************************************************"
 echo "*****************************************************"
-cf_line=$(sed -n '50p' "$HOME/sapsbx.sh" 2>/dev/null)
+cf_line=$(sed -n '51p' "$HOME/sapsbx.sh" 2>/dev/null)
 cf_value=$(echo "$cf_line" | sed -E 's/CF_USERNAMES="(.*)"/\1/' | xargs 2>/dev/null)
-[ -z "$cf_value" ] && echo "当前未设置SAP变量，选择1添加变量" || { echo "当前已设置过SAP变量，详情如下显示，可选择2执行一次"; sed -n '46,77p' "$HOME/sapsbx.sh" 2>/dev/null; }
+[ -z "$cf_value" ] && echo "当前未设置SAP变量，选择1添加变量" || { echo "当前已设置过SAP变量，详情如下显示，可选择2执行一次"; sed -n '47,81p' "$HOME/sapsbx.sh" 2>/dev/null; }
 echo "*****************************************************"
 echo " 1. 安装脚本并添加/重置变量" 
 echo " 2. 手动测试执行一次"
