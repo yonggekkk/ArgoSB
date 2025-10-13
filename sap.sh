@@ -105,14 +105,14 @@ sed -i "71s/^.*$/AGKS=\"${quoted% }\"/" $HOME/sapsbx.sh
 fi
 fi
 echo
-read -p "选填！请输入8-9点的保活时间间隔（单位:分钟，回车默认3分钟间隔）: " input
+read -p "选填！请输入8:10-9:00点的保活时间间隔（单位:分钟，回车默认5分钟间隔）: " input
 if [ -z "$input" ]; then
 sed -i "74s/^.*$/crontime=3/" $HOME/sapsbx.sh
 else
 sed -i "74s/^.*$/crontime=$input/" $HOME/sapsbx.sh
 fi
 echo "脚本安装设置完毕"
-echo "每天上午8:15-9:00之间脚本自动运行保活，可以再次进入脚本选择2测试执行一次" && sleep 3
+echo "每天上午8:10-9:00之间脚本自动运行保活，可以再次进入脚本选择2测试执行一次" && sleep 3
 command -v curl > /dev/null 2>&1 && bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosbx/main/sap.sh) || bash <(wget -qO- https://raw.githubusercontent.com/yonggekkk/argosbx/main/sap.sh)
 else
 echo "下载文件失败，请检查当前服务器是否支持curl或wget，网络是否支持github"
