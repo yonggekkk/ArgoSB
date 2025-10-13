@@ -71,7 +71,7 @@ AGNS=""
 AGKS=""
 
 # 8-9点保活时间间隔，单位：分钟
-crontime=3
+crontime=5
 
 # 设置区=====================================================================
 
@@ -103,7 +103,7 @@ crontab /tmp/crontab.tmp
 rm /tmp/crontab.tmp
 pushout() {
   if echo "$push_out" | grep -iq "insufficient"; then
-    echo "🔴第 $((i+1)) 个实例部署：${APP_NAME} 失败了，SAP资源被人抢光了，明早8:15-9:00再来吧，再见！！"
+    echo "🔴第 $((i+1)) 个实例部署：${APP_NAME} 失败了，SAP资源被人抢光了，明早8:10-9:00再来吧，再见！！"
     return 1
   elif echo "$push_out" | grep -q "FAILED"; then
     echo "🔴第 $((i+1)) 个实例部署：${APP_NAME} 失败了，SAP繁忙中！请自查参数设置是否有误，后台实例是否超配额"
