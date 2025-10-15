@@ -203,7 +203,7 @@ for i in "${!CF_USERNAMES[@]}"; do
   ROUTE=$(cf app "$APP_NAME" | grep "routes:" | awk '{print $2}')
   if [ -n "$ROUTE" ]; then
     url="https://$ROUTE/$UUID"
-    if curl -s "$url" | grep -iq "vless"; then
+    if curl -sf "$url" | grep -iq "vless"; then
       echo "✅ ${APP_NAME} SAP正在运行中，跳过执行。"
       result
       continue
