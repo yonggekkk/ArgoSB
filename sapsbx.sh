@@ -105,6 +105,9 @@ pushout() {
   if echo "$push_out" | grep -iq "insufficient"; then
     echo "🔴第 $((i+1)) 个实例部署：${APP_NAME} 失败了，SAP资源被人抢光了，明早8:10-9:00再来吧，再见！！"
     return 1
+  elif echo "$push_out" | grep -q "mapped"; then
+    echo "🔴第 $((i+1)) 个实例部署：${APP_NAME} 失败了，请更换应用程序APP名称：${APP_NAME}，再运行一次"
+    return 1
   elif echo "$push_out" | grep -q "FAILED"; then
     echo "🔴第 $((i+1)) 个实例部署：${APP_NAME} 失败了，SAP繁忙中！请自查参数设置是否有误，后台实例是否超配额"
     return 1
