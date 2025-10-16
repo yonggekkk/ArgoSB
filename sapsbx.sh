@@ -129,11 +129,18 @@ sapcfevn() {
 }
 result() {
   ROUTE=$(cf app "$APP_NAME" | grep "routes:" | awk '{print $2}')
+  url="https://$ROUTE/$UUID"
+  if curl -s "$url" | grep -iq "requested"; then
+  echo "🔴 ${APP_NAME} SAP创建失败，SAP资源被人抢光了，明早8:10-9:00再来吧，再见！！"
+  result
+  continue
+  else
   echo "🚀第 $((i+1)) 个实例部署成功"
   echo "🟢实例名称: $APP_NAME"
   echo "🟢服务器地区: $REGION"
   echo "🌐点击打开代理节点的链接网址🔗: https://$ROUTE/$UUID"
   echo
+  fi
 }
 for i in "${!CF_USERNAMES[@]}"; do
   set +e
@@ -203,7 +210,7 @@ for i in "${!CF_USERNAMES[@]}"; do
   ROUTE=$(cf app "$APP_NAME" | grep "routes:" | awk '{print $2}')
   if [ -n "$ROUTE" ]; then
     url="https://$ROUTE/$UUID"
-    if curl -sf "$url" | grep -iq "vless"; then
+    if curl -s "$url" | grep -iq "vless"; then
       echo "✅ ${APP_NAME} SAP正在运行中，跳过执行。"
       result
       continue
