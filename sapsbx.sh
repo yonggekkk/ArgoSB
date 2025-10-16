@@ -109,7 +109,7 @@ pushout() {
     echo "🔴第 $((i+1)) 个实例部署：${APP_NAME} 失败了，请更换应用程序APP名称：${APP_NAME}，再运行一次"
     return 1
   elif echo "$push_out" | grep -q "FAILED"; then
-    echo "🔴第 $((i+1)) 个实例部署：${APP_NAME} 失败了，SAP繁忙中！请自查参数设置是否有误，后台实例是否超配额"
+    echo "🔴第 $((i+1)) 个实例部署：${APP_NAME} 失败了，SAP繁忙中！请自查参数设置是否有误，空间是否被删除"
     return 1
   else
     echo "${APP_NAME} 完成"
