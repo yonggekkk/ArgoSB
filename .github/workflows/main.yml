@@ -12,28 +12,28 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # 必填！每个账号邮箱空一格
-      CF_USERNAMES: "" 
+      CF_USERNAMES: "zhoupu313@gmail.com zhoupu313@gmail.com" 
 
       # 必填！每个账号对应密码空一格
-      CF_PASSWORDS: ""
+      CF_PASSWORDS: "zhao670828@Jun zhao670828@Jun"
 
       # 必填！每个账号对应地区空一格
-      REGIONS: "" 
+      REGIONS: "SG US" 
       
       # 必填！每个账号对应UUID空一格
-      UUIDS: "" 
+      UUIDS: "8dc1a0b9-a812-4dac-bfc3-baa064f68a38 8dc1a0b9-a812-4dac-bfc3-baa064f68a38" 
 
       # 选填！每个账号对应名称空一格，不填则每个实例自动生成，多个账号中有个别账号自动生成填no
-      APP_NAMES: ""
+      APP_NAMES: "123456 no"
 
       # 选填！Argo固定/临时隧道端口，每个账号对应端口空一格，不填则每个实例不启用argo，多个账号中有个别账号不启用填no
-      VMPTS: ""
+      VMPTS: "no 33333"
 
       # 选填！Argo固定隧道域名，每个账号对应域名空一格，不填则每个实例启用argo临时隧道，多个账号中有个别账号不启用填no
-      AGNS: ""
+      AGNS: "no zhao.yaoyao.sbs"
 
       # 选填！Argo固定隧道token，每个账号对应token空一格，不填则每个实例启用argo临时隧道，多个账号中有个别账号不启用填no
-      AGKS: ""
+      AGKS: "no eyJhIjoiYmNiZDU5NGFhMjYwZDc5NzBjM2M2ZjBiZTEzYzRlZTUiLCJ0IjoiNzIwMzZjZmMtNDdhNy00ZjIwLWIzZmMtZDUzN2U1OTU1NjUwIiwicyI6Ik4yUm1ZakEzWXpndE16ZzBOUzAwWlRneExUbGxNVGN0TnpFeVpXVmpaVE16TURrNSJ9"
 
       # 优先独立执行！删除账户内的APP名称，多个APP空一格，执行后务必还原留空状态：DELAPP: "" 
       DELAPP: "" 
