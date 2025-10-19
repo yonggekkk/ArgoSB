@@ -24,7 +24,7 @@ VPS服务器方式脚本地址：（再次进入快捷方式```bash sap.sh```）
 
 ----------------------------------------- 
 
-#### 注意：以下三种方式仅保活可用！仅```CF_USERNAMES ``` ```CF_PASSWORDS``` ```REGIONS``` ```UUIDS```四个变量可用且为必填
+#### 注意：以下三种方式仅支持保活！仅```CF_USERNAMES ``` ```CF_PASSWORDS``` ```REGIONS``` ```UUIDS```四个变量可用且为必填
 
 * 方式一：[Github方式](https://github.com/yonggekkk/argosbx/blob/main/.github/workflows/mainh.yml)，请自建私库设置运行。仅适用手动保活
 
