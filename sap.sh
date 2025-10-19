@@ -107,7 +107,7 @@ fi
 echo
 read -p "选填！请输入8:10-9:00点的保活时间间隔（单位:分钟，回车默认5分钟间隔）: " input
 if [ -z "$input" ]; then
-sed -i "74s/^.*$/crontime=3/" $HOME/sapsbx.sh
+sed -i "74s/^.*$/crontime=5/" $HOME/sapsbx.sh
 else
 sed -i "74s/^.*$/crontime=$input/" $HOME/sapsbx.sh
 fi
