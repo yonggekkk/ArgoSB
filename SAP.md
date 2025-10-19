@@ -4,6 +4,10 @@ Vless-ws-tls为默认安装，Argo固定或临时隧道为可选，也可使用[
 
 SAP个人注册地址：https://www.sap.com/products/technology-platform/trial.html
 
+----------------------------------------- 
+
+#### 注意：目前以下三种方式的部署部分已不可用！！！
+
 * 方式一：[Github方式](https://github.com/yonggekkk/argosbx/blob/main/.github/workflows/main.yml)，请自建私库设置运行。安装启动同时进行，无定时保活
 
 * 方式二：Docker方式，镜像地址：```ygkkk/sapsbx```，可在clawcloud爪云等docker平台上运行。安装启动同时进行，自带8:10-9:00每5分钟的定时保活
@@ -17,6 +21,24 @@ VPS服务器方式脚本地址：（再次进入快捷方式```bash sap.sh```）
 或者
 
 ```wget -q https://raw.githubusercontent.com/yonggekkk/argosbx/main/sap.sh -O sap.sh && chmod +x sap.sh && bash sap.sh```
+
+----------------------------------------- 
+
+#### 注意：以下三种方式仅保活可用！仅```CF_USERNAMES ``` ```CF_PASSWORDS``` ```REGIONS``` ```UUIDS```四个变量可用且为必填
+
+* 方式一：[Github方式](https://github.com/yonggekkk/argosbx/blob/main/.github/workflows/mainh.yml)，请自建私库设置运行。仅适用手动保活
+
+* 方式二：Docker方式，镜像地址：```ygkkk/sapsbxh```，可在clawcloud爪云等docker平台上运行。仅保活，自带8:10-9:00每5分钟的定时保活
+
+* 方式三：VPS服务器方式。仅保活，支持自定义8:10-9:00定时保活时间段间隔
+
+VPS服务器方式脚本地址：（再次进入快捷方式```bash saph.sh```）：
+
+```curl -sSL https://raw.githubusercontent.com/yonggekkk/argosbx/main/saph.sh -o saph.sh && chmod +x saph.sh && bash saph.sh```
+
+或者
+
+```wget -q https://raw.githubusercontent.com/yonggekkk/argosbx/main/saph.sh -O saph.sh && chmod +x saph.sh && bash saph.sh```
 
 ----------------------------------------- 
 
