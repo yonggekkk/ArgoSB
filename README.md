@@ -5,7 +5,7 @@
 <img width="757" height="255" alt="d89e2542c513e705106371acc7fa1d33" src="https://github.com/user-attachments/assets/7d7a4678-4223-478c-afe2-d303ba0f85a4" />
 
 
-### 【Argosbx当前版本：V25.9.29】
+### 【Argosbx当前版本：V25.10.5】
 
 ---------------------------------------
 
