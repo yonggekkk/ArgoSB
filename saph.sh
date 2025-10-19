@@ -59,13 +59,12 @@ done
 quoted=$(printf '%s ' $input)
 sed -i "59s/^.*$/UUIDS=\"${quoted% }\"/" $HOME/sapsbxh.sh
 
-
 echo
 read -p "选填！请输入8:10-9:00点的保活时间间隔（单位:分钟，回车默认5分钟间隔）: " input
 if [ -z "$input" ]; then
-sed -i "74s/^.*$/crontime=3/" $HOME/sapsbxh.sh
+sed -i "62s/^.*$/crontime=5/" $HOME/sapsbxh.sh
 else
-sed -i "74s/^.*$/crontime=$input/" $HOME/sapsbxh.sh
+sed -i "62s/^.*$/crontime=$input/" $HOME/sapsbxh.sh
 fi
 echo "脚本安装设置完毕"
 echo "每天上午8:10-9:00之间脚本自动运行保活，可以再次进入脚本选择2测试执行一次" && sleep 3
@@ -110,7 +109,7 @@ echo "*****************************************************"
 echo "*****************************************************"
 cf_line=$(sed -n '50p' "$HOME/sapsbxh.sh" 2>/dev/null)
 cf_value=$(echo "$cf_line" | sed -E 's/CF_USERNAMES="(.*)"/\1/' | xargs 2>/dev/null)
-[ -z "$cf_value" ] && echo "当前未设置SAP变量，选择1添加变量" || { echo "当前已设置过SAP变量，详情如下显示，可选择2执行一次"; sed -n '47,76p' "$HOME/sapsbxh.sh" 2>/dev/null; }
+[ -z "$cf_value" ] && echo "当前未设置SAP变量，选择1添加变量" || { echo "当前已设置过SAP变量，详情如下显示，可选择2执行一次"; sed -n '47,64p' "$HOME/sapsbxh.sh" 2>/dev/null; }
 echo "*****************************************************"
 echo " 1. 安装脚本并添加/重置变量" 
 echo " 2. 手动测试执行一次"
