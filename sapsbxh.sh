@@ -178,6 +178,6 @@ result
 continue
 fi
 else
-echo "🔴$apps 部署未成功，请重新再部署一次"
+echo "🔴$apps 部署未成功，请自查参数设置是否有误，空间是否被删除"
 fi
 done
