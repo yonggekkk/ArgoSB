@@ -65,7 +65,7 @@
 <img width="869" height="602" alt="25d8af7b9b43d49d84ed84826600bebb" src="https://github.com/user-attachments/assets/739e4e86-8326-4c80-861d-5726c7f96481" />
 
 * #### 如下图：节点IP、端口被封依旧可用！套CDN优选4大方案：[点击视频教程](https://youtu.be/RnUT1CNbCr8)
-* #### 目前vless-xhttp-v也支持CDN优选的方案一与二，端口变量vxpt
+* #### 目前vless-xhttp-v也支持CDN优选的方案1与2，端口变量vxpt
 
 <img width="1559" height="783" alt="42ecee8deeccdb808abcd635440eca30" src="https://github.com/user-attachments/assets/0938a398-9037-49a7-b08e-db5a6d65301c" />
 
